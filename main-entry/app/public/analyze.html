@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Résultat de l'Audit Web</title>
+    <link rel="stylesheet" href="styles-analyze.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="audit-container">
+        <div class="header">
+            <h1>Outil d'Audit Web</h1>
+            <div class="score-container">
+                <canvas id="score-chart" width="80" height="80"></canvas> <!-- Réduire la taille du graphique -->
+            </div>
+        </div>
+        
+        
+
+        <div class="results-summary">
+            <div class="summary-item correct">
+                <h2>Corrects</h2>
+                <p>0 éléments</p>
+            </div>
+            <div class="summary-item improve">
+                <h2>À améliorer</h2>
+                <p>0 éléments</p>
+            </div>
+            <div class="summary-item critical">
+                <h2>Critiques</h2>
+                <p>0 éléments</p>
+            </div>
+        </div>
+
+        <div class="detailed-results" id="detailed-results">
+            <p>Chargement des résultats détaillés...</p>
+        </div>
+
+        <a href="/" class="back-link">Retour à l'accueil</a>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
