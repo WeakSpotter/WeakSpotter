@@ -1,17 +1,28 @@
 # WeakSpotter Backend
 
-## Prerequisites
+## How 2 Run
+
+First install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Running the Application
+Then run the application:
 
-### Development Mode
 ```bash
 fastapi dev backend/app/main.py
 ```
+
+## How 2 Build
+
+To build the docker image:
+
+```bash
+docker build -t weakspotter-back .
+```
+
+Or be a *respectable human being* and use the `docker-compose.yml` file [here](../docker-compose.yml).
 
 ## API Documentation
 

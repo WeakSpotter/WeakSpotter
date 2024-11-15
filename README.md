@@ -1,8 +1,36 @@
-# plain-fastapi-react-docker
+# WeakSpotter
 
-This project is a basic setup for a web application using FastAPI and React, containerized with Docker. The backend serves a simple API that communicates with the frontend, which displays data retrieved from the API.
+[![Backend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-back&metric=alert_status&token=sqb_3ae758bdb5879a0bacb69a412189fa7a8e7960d0)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-back)
+[![Frontend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-front&metric=alert_status&token=sqb_0cfdac2ac685e76d67e408264f8f875b29d0a449)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-front)
 
-## Project Structure
+Description
+
+## Usage
+
+You can use the `docker-compose.yml` file to run the application in a containerized environment.
+
+```bash
+docker-compose up
+```
+
+And then access the application at `http://localhost:3000`.
+
+## Contributing
+
+### Branching Strategy
+
+This repository follows the a simple branching strategy:
+- `main`: Main branch for the project.
+- `develop`: Unstable branch for development.
+- `litteraly-anything-else`: Do your shiet here before merging to `develop` or commit directly to `develop` if you're feeling lucky.
+
+### Commit Standards
+
+This repository follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard for commit messages.
+
+Please use it. **Please.**
+
+### Project Structure
 
 - `backend/`: Contains the FastAPI application.
   - `app/main.py`: Entry point for the FastAPI application.
@@ -19,44 +47,11 @@ This project is a basic setup for a web application using FastAPI and React, con
 - `docker-compose.yml`: Defines and runs multi-container Docker applications.
 - `README.md`: Documentation about this project.
 
-## Requirements
+### Automation & Releases
 
-To run this project, you will need Docker and Docker Compose installed on your machine. Installation guides for Docker can be found [here](https://docs.docker.com/get-docker/) and for Docker Compose [here](https://docs.docker.com/compose/install/).
+We use semantic relase to automate the versioning and release process. We do a pre-release on every commit to `develop` and a release on every commit to `main`.
 
-## Running the Application
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://yourrepositoryurl/plain-fastapi-react-docker.git
-   cd plain-fastapi-react-docker
-   ```
-
-2. **Build and Run the Docker Containers**
-   ```bash
-   docker-compose up --build
-   ```
-
-   This command builds the images for the frontend and backend if they don't exist and starts the containers. The backend is available at `http://localhost:80/` and the frontend at `http://localhost:3000/`.
-
-3. **Viewing the Application**
-
-   Open a browser and navigate to `http://localhost:3000/` to view the React application. It should display a message fetched from the FastAPI backend.
-
-## API Endpoints
-
-The backend server has the following API endpoint:
-- `GET /`: Returns a simple JSON `{ "Hello": "World" }`.
-
-## Stopping the Application
-
-To stop the application and remove containers, networks, and volumes created by `docker-compose up`, you can use:
-```bash
-docker-compose down -v
-```
-
-## Contributing
-
-Contributions to this project are welcome. Please fork the repository and submit a pull request.
+We also use sonarqube to analyze the code quality of the project. You can access the sonarqube dashboard [here](https://sonarqube.devops-tools.apoorva64.com).
 
 ## License
 
