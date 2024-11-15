@@ -1,73 +1,19 @@
 services:
-  # Site Principal
-  main-entry:
-    build: ./main-entry
-    container_name: main-entry
-    restart: always
-    networks:
-      main-network:
-        ipv4_address: 192.168.10.2
+  backend:
+    build: ./backend
     ports:
-      - "8080:80"
-      
-    # Service d'Analyse 
-  web-analyzer:
-    build: ./web-analyzer
-    container_name: web-analyzer
-    restart: always
-    networks:
-      main-network:
-        ipv4_address: 192.168.10.3
-    expose:
-      - "5000"  # Port interne pour la communication avec main-entry
-     
-
-  # Site vulnerable
-  vulnerable-site-1:
-    image: vulnerables/web-dvwa
-    container_name: vulnerable-site-1
-    restart: always
-    networks:
-      vuln-network-1:
-        ipv4_address: 192.168.11.2
-    ports:
-      - "8081:80"
+      - "8000:8000"
     environment:
-      # Variables d'environnement pour DVWA
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=dvwa
-      - MYSQL_PASSWORD=p@ssw0rd
-      - MYSQL_DATABASE=dvwa
+      - DATABASE_URL=/data/db.sqlite3
+    volumes:
+      - backend_data:/data
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
     depends_on:
-      - mysql
+      - backend
 
-  # Base de données pour le site vulnérable DVWA
-  mysql:
-    image: mysql:5.7
-    container_name: dvwa-mysql
-    restart: always
-    networks:
-      vuln-network-1:
-        ipv4_address: 192.168.11.3
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: dvwa
-      MYSQL_USER: dvwa
-      MYSQL_PASSWORD: p@ssw0rd
-
-  
-
-networks:
-  # Réseau pour le serveur web principal
-  main-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.10.0/24
-
-  # Réseau pour le site vulnérable 1
-  vuln-network-1:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.11.0/24
+volumes:
+  backend_data:
