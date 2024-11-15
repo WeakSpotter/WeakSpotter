@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 
 *.db
+
+node_modules/
+package-lock.json
