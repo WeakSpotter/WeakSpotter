@@ -2,6 +2,7 @@
 
 [![Backend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-back&metric=alert_status&token=sqb_3ae758bdb5879a0bacb69a412189fa7a8e7960d0)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-back)
 [![Frontend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-front&metric=alert_status&token=sqb_0cfdac2ac685e76d67e408264f8f875b29d0a449)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-front)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter?ref=badge_shield&issueType=license)
 
 Description
 
@@ -55,4 +56,4 @@ We also use sonarqube to analyze the code quality of the project. You can access
 
 ## License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the MIT License.
