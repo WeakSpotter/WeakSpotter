@@ -8,12 +8,25 @@ export default function CreateScan() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const formatUrl = (input: string) => {
+    // Remove any leading/trailing whitespace
+    input = input.trim();
+
+    // Check if the URL already starts with a protocol
+    if (!/^https?:\/\//i.test(input)) {
+      // Add https:// if no protocol is present
+      return `https://${input}`;
+    }
+    return input;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await api.createScan(url, complex);
+      const formattedUrl = formatUrl(url);
+      const response = await api.createScan(formattedUrl, complex);
       navigate(`/scan/${response.data.id}`);
     } catch (error) {
       console.error("Error creating scan:", error);
@@ -33,10 +46,10 @@ export default function CreateScan() {
               <span className="label-text">URL to scan</span>
             </label>
             <input
-              type="url"
+              type="text" // Changed from type="url" to type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com"
+              placeholder="example.com"
               className="input input-bordered"
               required
             />

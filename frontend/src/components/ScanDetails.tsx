@@ -7,6 +7,7 @@ import {
   getScanStatusClass,
   ScanStatus,
 } from "../types/scan";
+import { ScoreCircle } from "./ScoreCircle";
 
 export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();
@@ -119,13 +120,18 @@ export default function ScanDetails() {
               {new Date(scan.created_at).toLocaleString()}
             </p>
           </div>
-          <div>
-            <div className="stat">
-              <div className="stat-title">Security Score</div>
-              <div className="stat-value text-primary">
-                {score !== null ? `${score}/100` : "-"}
+          <div className="flex flex-col items-center justify-center">
+            {score !== null ? (
+              <>
+                <h3 className="font-semibold mb-2">Security Score</h3>
+                <ScoreCircle score={score} size="md" />
+              </>
+            ) : (
+              <div className="text-center">
+                <h3 className="font-semibold mb-2">Security Score</h3>
+                <span className="text-gray-500">-</span>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
