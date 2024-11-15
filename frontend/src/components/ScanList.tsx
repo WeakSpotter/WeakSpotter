@@ -42,10 +42,9 @@ export default function ScanList() {
 
   return (
     <div className="overflow-x-auto">
-      <table className="table">
+      <table className="table bg-base-100">
         <thead>
           <tr>
-            <th>ID</th>
             <th>URL</th>
             <th>Status</th>
             <th>Created At</th>
@@ -55,7 +54,6 @@ export default function ScanList() {
         <tbody>
           {scans.map((scan) => (
             <tr key={scan.id}>
-              <td>{scan.id}</td>
               <td>{scan.url}</td>
               <td>
                 <span className={`badge ${getScanStatusClass(scan.status)}`}>
