@@ -21,7 +21,7 @@ And then access the application at `http://localhost:3000`.
 ### Branching Strategy
 
 This repository follows the a simple branching strategy:
-- `main`: Main branch for the project.
+- `main`: Main branch for the project, do not directly commit to it brother, don't break shiet.
 - `develop`: Unstable branch for development.
 - `litteraly-anything-else`: Do your shiet here before merging to `develop` or commit directly to `develop` if you're feeling lucky.
 
