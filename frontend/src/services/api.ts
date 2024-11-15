@@ -1,7 +1,15 @@
 import axios from "axios";
 import { Scan } from "../types/scan";
 
-const API_URL = "http://localhost:8000/api";
+declare global {
+  interface Window {
+    __APP_CONFIG__: {
+      API_URL: string;
+    };
+  }
+}
+
+const API_URL = window.__APP_CONFIG__?.API_URL || "http://localhost:8000/api";
 
 export const api = {
   getScans: () => axios.get<Scan[]>(`${API_URL}/scans/`),
