@@ -25,5 +25,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Expose port 80
 EXPOSE 80
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Start nginx with the entrypoint script
 ENTRYPOINT ["/docker-entrypoint.sh"]
