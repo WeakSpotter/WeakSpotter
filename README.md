@@ -10,7 +10,7 @@ Description
 You can use the `docker-compose.yml` file to run the application in a containerized environment.
 
 ```bash
-docker-compose up
+docker compose up -d && docker compose logs -f
 ```
 
 And then access the application at `http://localhost:3000`.
