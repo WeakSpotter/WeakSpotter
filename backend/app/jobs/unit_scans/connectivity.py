@@ -1,12 +1,22 @@
+import socket
+
 import requests
 
 from app.models.scan import Scan
 
-def scan(scan: Scan) -> dict:
+def http_status(scan: Scan) -> dict:
     try:
-        response = requests.get(scan.url)
-        status = "up" if response.status_code == 200 else "down"
+        req = requests.get(scan.url)
+        return {"status": req.status_code}
     except requests.exceptions.RequestException:
-        status = "down"
+        return {"status": 0}
 
-    return {"status": status}
+def ip(scan: Scan) -> dict:
+    domain = scan.url.split("//")[-1]
+
+    domain = domain.split("/")[0] if "/" in domain else domain
+
+    try:
+        return {"ip": socket.gethostbyname(domain)}
+    except socket.gaierror:
+        return {"ip": None}
