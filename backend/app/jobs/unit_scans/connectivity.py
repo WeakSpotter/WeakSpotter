@@ -9,7 +9,7 @@ def http_status(scan: Scan) -> dict:
         req = requests.get(scan.url)
         return {"status": req.status_code}
     except requests.exceptions.RequestException:
-        return {"status": 0}
+        return {"status": 999}
 
 def ip(scan: Scan) -> dict:
     domain = scan.url.split("//")[-1]
