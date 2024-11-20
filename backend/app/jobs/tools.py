@@ -1,4 +1,4 @@
 def sanitize_url(url: str) -> str:
     if not url.startswith("http"):
-        url = f"http://{url}"
+        url = f"https://{url}"
     return url
