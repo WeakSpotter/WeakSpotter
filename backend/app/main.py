@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import scan
+from .routes import version, scan
 from .database import create_db_and_tables
 
 app = FastAPI()
@@ -16,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(version.router, prefix="/api")
 app.include_router(scan.router, prefix="/api")
 
 @app.on_event("startup")
