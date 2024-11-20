@@ -19,6 +19,10 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
+# Add commit hash as an environment variable
+ARG COMMIT_HASH
+ENV COMMIT_HASH=${COMMIT_HASH}
+
 # Copy built assets from builder stage to nginx directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
