@@ -6,6 +6,7 @@ declare global {
     __APP_CONFIG__: {
       API_URL: string;
       COMMIT_HASH: string;
+      ENV: string;
     };
   }
 }

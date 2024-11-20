@@ -23,6 +23,8 @@ FROM nginx:alpine
 ARG COMMIT_HASH
 ENV COMMIT_HASH=${COMMIT_HASH}
 
+ENV ENV=production
+
 # Copy built assets from builder stage to nginx directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
