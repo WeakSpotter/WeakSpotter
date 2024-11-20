@@ -19,9 +19,11 @@ app.add_middleware(
 app.include_router(version.router, prefix="/api")
 app.include_router(scan.router, prefix="/api")
 
+
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
+
 
 @app.get("/")
 async def root():

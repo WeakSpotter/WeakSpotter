@@ -3,6 +3,7 @@ from app.database import SessionDep, save
 
 from app.jobs import common
 
+
 def scan(scan: Scan, session: SessionDep) -> None:
     try:
         common.scan(scan, session)

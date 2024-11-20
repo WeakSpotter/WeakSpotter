@@ -4,6 +4,7 @@ from app.database import SessionDep, save
 from app.jobs.unit_scans import connectivity
 from app.jobs.tools import sanitize_url
 
+
 def scan(scan: Scan, session: SessionDep) -> None:
     scan.status = ScanStatus.running
     scan.url = sanitize_url(scan.url)

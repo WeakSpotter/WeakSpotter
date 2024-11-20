@@ -1,5 +1,6 @@
 from app.models.scan import Scan
 
+
 def calculate_score(scan: Scan) -> int:
     if "http_status" not in scan.data_dict:
         return 0

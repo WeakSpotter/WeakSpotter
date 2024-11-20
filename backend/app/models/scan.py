@@ -3,14 +3,15 @@ import json
 from enum import IntEnum
 from datetime import datetime
 
-from sqlalchemy import JSON
 from sqlmodel import Field, SQLModel
+
 
 class ScanStatus(IntEnum):
     pending = 0
     running = 1
     completed = 2
     failed = 3
+
 
 class Scan(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
