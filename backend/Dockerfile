@@ -1,6 +1,10 @@
 # Use an official Python runtime as a parent image
 FROM python:3.12-slim
 
+# Add commit hash as an environment variable
+ARG COMMIT_HASH
+ENV COMMIT_HASH=${COMMIT_HASH}
+
 # Set the working directory in the container
 WORKDIR /code
 
