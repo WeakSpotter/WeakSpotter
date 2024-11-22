@@ -1,19 +1,10 @@
-from app.models.scan import Scan, ScanStatus
-from app.database import SessionDep, save
-
+from app.database import SessionDep
 from app.jobs import common
+from app.jobs.executor import Executor
+from app.models.scan import Scan
 
 
 def scan(scan: Scan, session: SessionDep) -> None:
-    try:
-        common.scan(scan, session)
+    jobs = common.common_scans
 
-        print(f"Finished Scanning {scan.url}")
-
-        scan.status = ScanStatus.completed
-        save(session, scan)
-    except Exception as e:
-        scan.status = ScanStatus.failed
-        save(session, scan)
-        print(f"Failed Scanning {scan.url}")
-        print(e)
+    Executor(jobs).run(scan, session)
