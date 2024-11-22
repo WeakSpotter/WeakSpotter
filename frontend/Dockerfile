@@ -32,4 +32,4 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 COPY 11-only-serve-root.sh 21-generate-config-js.sh /docker-entrypoint.d/
-RUN chmod +x docker-entrypoint.d -R
+RUN chmod +x docker-entrypoint.d -R && dos2unix /docker-entrypoint.d/*
