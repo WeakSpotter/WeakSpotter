@@ -8,6 +8,17 @@ services:
       - COMMIT_HASH=dev
     volumes:
       - backend_data:/data
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./backend/app
+          target: /code/app
+        - action: rebuild
+          path: ./backend/requirements.txt
+          target: /code/requirements.txt
+        - action: rebuild
+          path: ./backend/Dockerfile
+          target: /code/Dockerfile
 
   frontend:
     build: ./frontend
@@ -19,6 +30,11 @@ services:
       - API_URL=http://localhost:8000/api
       - COMMIT_HASH=dev
       - ENV=development
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend
+          target: /app
 
 volumes:
   backend_data:
