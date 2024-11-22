@@ -1,8 +1,10 @@
-from app.models.scan import Scan, ScanStatus
 from app.database import SessionDep, save
+from app.jobs.tools import add_data, sanitize_url
+from app.jobs.unit_scans import dns, host_scanning
+from app.models.scan import Scan, ScanStatus
 
-from app.jobs.unit_scans import connectivity
-from app.jobs.tools import sanitize_url
+dns_scans = [dns.domain_extract, dns.dns_records, dns.whois, dns.cloudflare_detect]
+host_scans = [host_scanning.nmap_scan]
 
 
 def scan(scan: Scan, session: SessionDep) -> None:
@@ -10,10 +12,9 @@ def scan(scan: Scan, session: SessionDep) -> None:
     scan.url = sanitize_url(scan.url)
     save(session, scan)
 
-    scans = [connectivity.http_status, connectivity.ip]
+    scans = dns_scans + host_scans
 
     for s in scans:
-        data = scan.data_dict
-        data[s.__name__] = s(scan)
-        scan.data_dict = data
+        key, value = s(scan)
+        add_data(scan, key, value)
         save(session, scan)

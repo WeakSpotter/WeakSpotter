@@ -139,7 +139,10 @@ export default function ScanDetails() {
           <button
             onClick={handleViewData}
             className="btn btn-primary"
-            disabled={scan.status !== ScanStatus.completed}
+            disabled={
+              scan.status !== ScanStatus.completed &&
+              scan.status !== ScanStatus.failed
+            }
           >
             View Data
           </button>
