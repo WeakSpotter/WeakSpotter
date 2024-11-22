@@ -18,6 +18,20 @@ And then access the application at `http://localhost:3000`.
 
 ## Contributing
 
+### Prerequisites & Running Locally
+
+To run this project locally, you need to have Docker installed.
+
+This project leverages `docker compose watch` to facilitate development for both the frontend and backend. This tool automatically rebuilds the images and restarts the containers whenever you make changes to the code.
+
+To get started, simply execute the following command:
+
+```bash
+docker compose watch
+```
+
+This will start the project in development mode, allowing you to see your changes in "real-time".
+
 ### Branching Strategy
 
 This repository follows the a simple branching strategy:
