@@ -1,7 +1,6 @@
 import json
-
-from enum import IntEnum
 from datetime import datetime
+from enum import IntEnum
 
 from sqlmodel import Field, SQLModel
 
@@ -18,6 +17,8 @@ class Scan(SQLModel, table=True):
     url: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     status: ScanStatus = ScanStatus.pending
+    progress: int = 0
+    current_step: str = ""
     data: str = "{}"
 
     @property

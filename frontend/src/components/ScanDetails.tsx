@@ -119,6 +119,12 @@ export default function ScanDetails() {
               <strong>Created:</strong>{" "}
               {new Date(scan.created_at).toLocaleString()}
             </p>
+            <p>
+              <strong>Progress:</strong> {scan.progress}%
+            </p>
+            <p>
+              <strong>Current Step:</strong> {scan.current_step}
+            </p>
           </div>
           <div className="flex flex-col items-center justify-center">
             {score !== null ? (
