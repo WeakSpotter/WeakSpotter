@@ -4,6 +4,8 @@ import Footer from "./components/Footer";
 import ScanList from "./components/ScanList";
 import CreateScan from "./components/CreateScan";
 import ScanDetails from "./components/ScanDetails";
+import Login from "./components/Login";
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
             <Route path="/" element={<ScanList />} />
             <Route path="/create" element={<CreateScan />} />
             <Route path="/scan/:id" element={<ScanDetails />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
         <Footer />

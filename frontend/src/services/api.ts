@@ -23,4 +23,6 @@ export const api = {
   createScan: (url: string, complex: boolean) =>
     axios.post<Scan>(`${API_URL}/scans/`, null, { params: { url, complex } }),
   deleteScan: (id: number) => axios.delete(`${API_URL}/scans/${id}`),
+  login: (credentials: { username: string; password: string }) =>
+    axios.post<{ token: string }>(`${API_URL}/auth/login/`, credentials),
 };
