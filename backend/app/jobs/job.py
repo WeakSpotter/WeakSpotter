@@ -35,7 +35,9 @@ class ParallelJob(JobInterface):
 
     def run(self, scan: Scan, session: SessionDep) -> None:
         with ThreadPoolExecutor() as executor:
-            futures = {executor.submit(job.run, scan, session): job for job in self.jobs}
+            futures = {
+                executor.submit(job.run, scan, session): job for job in self.jobs
+            }
             for future in as_completed(futures):
                 job = futures[future]
                 try:
