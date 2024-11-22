@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any, Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Any, Callable, List
 
 from app.database import SessionDep, save
 from app.jobs.tools import add_data
@@ -25,7 +26,7 @@ class Job(JobInterface):
 
 
 class ParallelJob(JobInterface):
-    def __init__(self, jobs: list[Job]):
+    def __init__(self, jobs: List[Job]):
         self.jobs = jobs
 
     @property
@@ -33,5 +34,11 @@ class ParallelJob(JobInterface):
         return ",".join([job.name for job in self.jobs])
 
     def run(self, scan: Scan, session: SessionDep) -> None:
-        for job in self.jobs:
-            job.run(scan, session)
+        with ThreadPoolExecutor() as executor:
+            futures = {executor.submit(job.run, scan, session): job for job in self.jobs}
+            for future in as_completed(futures):
+                job = futures[future]
+                try:
+                    future.result()
+                except Exception as e:
+                    print(f"Job {job.name} generated an exception: {e}")
