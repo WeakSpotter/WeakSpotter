@@ -19,14 +19,17 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
+# Add commit hash as an environment variable
+ARG COMMIT_HASH
+ENV COMMIT_HASH=${COMMIT_HASH}
+
+ENV ENV=production
+
 # Copy built assets from builder stage to nginx directory
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy nginx configuration (optional, if you need custom nginx config)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+COPY 11-only-serve-root.sh 21-generate-config-js.sh /docker-entrypoint.d/
+RUN chmod +x docker-entrypoint.d -R && dos2unix /docker-entrypoint.d/*

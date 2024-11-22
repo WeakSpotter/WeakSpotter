@@ -18,12 +18,40 @@ And then access the application at `http://localhost:3000`.
 
 ## Contributing
 
+### Prerequisites & Running Locally
+
+To run this project locally, you need to have Docker installed.
+
+This project leverages `docker compose watch` to facilitate development for both the frontend and backend. This tool automatically rebuilds the images and restarts the containers whenever you make changes to the code.
+
+To get started, simply execute the following command:
+
+```bash
+docker compose watch
+```
+
+This will start the project in development mode, allowing you to see your changes in "real-time".
+
 ### Branching Strategy
 
 This repository follows the a simple branching strategy:
+
 - `main`: Main branch for the project, do not directly commit to it brother, don't break shiet.
 - `develop`: Unstable branch for development.
 - `litteraly-anything-else`: Do your shiet here before merging to `develop` or commit directly to `develop` if you're feeling lucky.
+
+```mermaid
+gitGraph
+   commit id: "Initial Commit" tag: "v1.0.0"
+   branch develop
+   commit id: "Feature A" tag: "v1.1.0-develop.1"
+   branch feature-branch
+   commit id: "Feature B"
+   checkout develop
+   merge feature-branch tag: "v1.1.0-develop.2"
+   checkout main
+   merge develop tag: "v1.1.0"
+```
 
 ### Commit Standards
 
@@ -34,11 +62,13 @@ Please use it. **Please.**
 ### Project Structure
 
 - `backend/`: Contains the FastAPI application.
+
   - `app/main.py`: Entry point for the FastAPI application.
   - `Dockerfile`: Docker configuration for building the backend image.
   - `requirements.txt`: Python dependencies required by the backend.
 
 - `frontend/`: Contains the React application.
+
   - `public/index.html`: HTML template for the React application.
   - `src/`: React source files including `App.js` and `index.js`.
   - `Dockerfile`: Docker configuration for building the frontend image.

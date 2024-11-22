@@ -20,9 +20,11 @@ def get_session():
     with Session(engine) as session:
         yield session
 
+
 def save(session: Session, model: SQLModel):
     session.add(model)
     session.commit()
     session.refresh(model)
+
 
 SessionDep = Annotated[Session, Depends(get_session)]
