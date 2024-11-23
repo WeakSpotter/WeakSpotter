@@ -2,3 +2,5 @@ fastapi
 uvicorn
 sqlmodel
 requests
+pyjwt
+passlib

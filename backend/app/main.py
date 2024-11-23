@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
-from .routes import version, scan
 from .database import create_db_and_tables
+from .routes import scan, user, version
 
 app = FastAPI()
 
@@ -18,7 +18,7 @@ app.add_middleware(
 
 app.include_router(version.router, prefix="/api")
 app.include_router(scan.router, prefix="/api")
-
+app.include_router(user.router, prefix="/api")
 
 
 @app.on_event("startup")
