@@ -17,7 +17,6 @@ export default function ScanDetails() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Function to load scan details
   const loadScanDetails = useCallback(async () => {
     if (!id) return;
 
@@ -35,15 +34,11 @@ export default function ScanDetails() {
     }
   }, [id]);
 
-  // Setup polling
   useEffect(() => {
     let intervalId: number;
 
     const startPolling = () => {
-      // Initial load
       loadScanDetails();
-
-      // Setup interval for polling
       intervalId = window.setInterval(() => {
         if (
           scan?.status === ScanStatus.pending ||
@@ -51,12 +46,11 @@ export default function ScanDetails() {
         ) {
           loadScanDetails();
         }
-      }, 5000); // Poll every 5 seconds
+      }, 5000);
     };
 
     startPolling();
 
-    // Cleanup function
     return () => {
       if (intervalId) {
         window.clearInterval(intervalId);
