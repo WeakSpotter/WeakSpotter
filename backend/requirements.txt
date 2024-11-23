@@ -4,3 +4,4 @@ sqlmodel
 requests
 pyjwt
 passlib
+python-multipart
