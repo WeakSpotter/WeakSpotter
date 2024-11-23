@@ -13,13 +13,15 @@ export default function Navbar() {
       </div>
       <div className="flex-none gap-2">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link to="/create">New Scan</Link>
-          </li>
           {isAuthenticated && (
-            <li>
-              <Link to="/scans">My Scans</Link>
-            </li>
+            <>
+              <li>
+                <Link to="/create">New Scan</Link>
+              </li>
+              <li>
+                <Link to="/scans">My Scans</Link>
+              </li>
+            </>
           )}
         </ul>
         {isAuthenticated ? (

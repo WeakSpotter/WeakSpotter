@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Icon from "@mdi/react";
+import { mdiArrowRight, mdiPlayCircle, mdiCheck, mdiClose } from "@mdi/js";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -11,17 +13,26 @@ export default function Home() {
           <div className="max-w-md">
             <h1 className="text-5xl font-bold">Welcome to WeakSpotter</h1>
             <p className="py-6">
-              Discover vulnerabilities in your web applications with ease.
+              Discover and address vulnerabilities in your web applications with
+              ease and confidence.
             </p>
             <div className="flex justify-center gap-4">
-              <Link to="/create" className="btn btn-primary">
+              <Link
+                to={isAuthenticated ? "/create" : "/register"}
+                className="btn btn-primary flex items-center"
+              >
                 Get Started
+                <Icon path={mdiArrowRight} size={1} className="ml-2" />
               </Link>
-              {!isAuthenticated && (
-                <Link to="/register" className="btn btn-secondary">
-                  Create Account
-                </Link>
-              )}
+              <a
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline btn-primary flex items-center"
+              >
+                <Icon path={mdiPlayCircle} size={1} className="mr-2" />
+                Watch Demo
+              </a>
             </div>
           </div>
         </div>
@@ -30,7 +41,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-4 text-center">
           Feature Comparison
         </h2>
-        <table className="table-auto w-full bg-white shadow-md rounded-lg shadow-xl">
+        <table className="table-auto w-full bg-white rounded-lg shadow-xl">
           <thead>
             <tr>
               <th className="px-4 py-2">Feature</th>
@@ -39,36 +50,29 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border px-4 py-2">Basic Vulnerability Check</td>
-              <td className="border px-4 py-2">✔️</td>
-              <td className="border px-4 py-2">✔️</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">DNS Records</td>
-              <td className="border px-4 py-2">✔️</td>
-              <td className="border px-4 py-2">✔️</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">WHOIS Information</td>
-              <td className="border px-4 py-2">✔️</td>
-              <td className="border px-4 py-2">✔️</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">Cloudflare Detection</td>
-              <td className="border px-4 py-2">✔️</td>
-              <td className="border px-4 py-2">✔️</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">Nmap Scan</td>
-              <td className="border px-4 py-2">❌</td>
-              <td className="border px-4 py-2">✔️</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">HTTP Version Check</td>
-              <td className="border px-4 py-2">❌</td>
-              <td className="border px-4 py-2">✔️</td>
-            </tr>
+            {[
+              ["Basic Vulnerability Check", true, true],
+              ["DNS Records", true, true],
+              ["WHOIS Information", true, true],
+              ["Cloudflare Detection", true, true],
+              ["Nmap Scan", false, true],
+              ["HTTP Version Check", false, true],
+            ].map(([feature, simple, complex], idx) => (
+              <tr
+                key={idx}
+                className={`border ${
+                  idx % 2 === 0 ? "bg-gray-50" : "bg-gray-100"
+                }`}
+              >
+                <td className="px-6 py-4 text-gray-700">{feature}</td>
+                <td className="px-6 py-4 text-center">
+                  <Icon path={simple ? mdiCheck : mdiClose} size={1} />
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <Icon path={complex ? mdiCheck : mdiClose} size={1} />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

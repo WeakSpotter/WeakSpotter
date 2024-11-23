@@ -33,7 +33,7 @@ function App() {
             />{" "}
           </Routes>
         </div>
-        <Footer />
+        {window.__APP_CONFIG__?.ENV === "development" && <Footer />}
       </div>
     </Router>
   );

@@ -39,10 +39,13 @@ export const api = {
     }),
   deleteScan: (id: number) => axiosInstance.delete(`${API_URL}/scans/${id}`),
   login: (credentials: { username: string; password: string }) =>
-    axiosInstance.post<{ token: string }>(
+    axiosInstance.post<{ access_token: string }>(
       `${API_URL}/auth/login/`,
       new URLSearchParams(credentials),
     ),
   register: (credentials: { username: string; password: string }) =>
-    axiosInstance.post<{ token: string }>(`${API_URL}/users/`, credentials),
+    axiosInstance.post<{ access_token: string }>(
+      `${API_URL}/users/`,
+      credentials,
+    ),
 };

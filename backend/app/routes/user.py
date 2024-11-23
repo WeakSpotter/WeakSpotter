@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from app.database import SessionDep
-from app.models.user import User
+from app.models.user import User, UserCreate
 from app.security import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     UserDep,
@@ -32,18 +32,29 @@ def login(
 
 
 @router.post("/users/", tags=["users"])
-def register_user(username: str, password: str, session: SessionDep):
-    existing_user = session.exec(select(User).where(User.username == username)).first()
+def register_user(user_create: UserCreate, session: SessionDep):
+    existing_user = session.exec(
+        select(User).where(User.username == user_create.username)
+    ).first()
+
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already exists")
-    hashed_password = hash_password(password)
-    user = User(username=username, hashed_password=hashed_password)
+
+    hashed_password = hash_password(user_create.password)
+
+    user = User(username=user_create.username, hashed_password=hashed_password)
+
     session.add(user)
     session.commit()
     session.refresh(user)
+
     return {
         "message": "User registered successfully",
         "user": {"id": user.id, "username": user.username},
+        "access_token": create_access_token(
+            {"sub": user.username},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        ),
     }
 
 

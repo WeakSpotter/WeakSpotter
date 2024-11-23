@@ -70,11 +70,7 @@ def get_current_user(session: SessionDep, token: str = Depends(oauth2_scheme)) -
     if not token:
         return None
 
-    try:
-        payload = decode_access_token(token)
-    except HTTPException:
-        pass
-
+    payload = decode_access_token(token)
     username = payload.get("sub")
 
     if username is None:

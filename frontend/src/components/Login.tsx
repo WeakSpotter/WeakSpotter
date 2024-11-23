@@ -16,7 +16,8 @@ export default function Login() {
 
     try {
       const response = await api.login({ username, password });
-      login(username, response.data.token);
+      login(username, response.data.access_token);
+      localStorage.setItem("authToken", response.data.access_token); // Store token in localStorage
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
