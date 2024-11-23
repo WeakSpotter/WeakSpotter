@@ -1,27 +1,26 @@
+from app.database import SessionDep
+from app.jobs import complex_scan, simple_scan
+from app.models.scan import Scan
+from app.scoring.calculator import calculate_score
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
 from sqlmodel import select
 
-from app.jobs import simple_scan, complex_scan
-from app.database import SessionDep
-from app.models.scan import Scan
-from app.scoring.calculator import calculate_score
-
 router = APIRouter()
 
 
-@router.get("/scans/")
+@router.get("/scans/", tags=["scans"])
 def read_scans(session: SessionDep, offset: int = 0, limit: int = 100):
     scans = session.exec(select(Scan).offset(offset).limit(limit)).all()
     return scans
 
 
-@router.get("/scans/{scan_id}")
+@router.get("/scans/{scan_id}", tags=["scans"])
 def read_scan(scan_id: int, session: SessionDep):
     return session.get(Scan, scan_id)
 
 
-@router.get("/scans/{scan_id}/data")
+@router.get("/scans/{scan_id}/data", tags=["scans"])
 def read_scan_data(scan_id: int, session: SessionDep) -> dict:
     scan: Scan | None = session.get(Scan, scan_id)
 
@@ -31,7 +30,7 @@ def read_scan_data(scan_id: int, session: SessionDep) -> dict:
     return scan.data_dict
 
 
-@router.get("/scans/{scan_id}/score")
+@router.get("/scans/{scan_id}/score", tags=["scans"])
 def read_scan_score(scan_id: int, session: SessionDep) -> int:
     scan: Scan | None = session.get(Scan, scan_id)
 
@@ -41,7 +40,7 @@ def read_scan_score(scan_id: int, session: SessionDep) -> int:
     return calculate_score(scan)
 
 
-@router.post("/scans/")
+@router.post("/scans/", tags=["scans"])
 def create_scan(
     url: str,
     background_tasks: BackgroundTasks,
@@ -59,7 +58,7 @@ def create_scan(
     return scan
 
 
-@router.delete("/scans/{scan_id}")
+@router.delete("/scans/{scan_id}", tags=["scans"])
 def delete_scan(scan_id: int, session: SessionDep) -> dict:
     scan = session.get(Scan, scan_id)
     session.delete(scan)

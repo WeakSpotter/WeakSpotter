@@ -15,21 +15,42 @@ from sqlmodel import select
 
 router = APIRouter()
 
-# OAuth2PasswordBearer pour valider les tokens
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login/")
+
+@router.post("/auth/login/", tags=["auth"])
+def login(
+    session: SessionDep,
+    form_data: OAuth2PasswordRequestForm = Depends(),
+):
+    # Search for the user by username
+    user = session.exec(select(User).where(User.username == form_data.username)).first()
+
+    if not user or not verify_password(form_data.password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+
+    # Generate a JWT token
+    access_token = create_access_token(
+        {"sub": user.username},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+    )
+
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.post("/users/")
+# OAuth2PasswordBearer to validate tokens
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login/")
+
+
+@router.post("/users/", tags=["users"])
 def register_user(username: str, password: str, session: SessionDep):
-    # Vérifier si l'utilisateur existe déjà
+    # Check if the user already exists
     existing_user = session.exec(select(User).where(User.username == username)).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already exists")
 
-    # Hacher le mot de passe
+    # Hash the password
     hashed_password = hash_password(password)
 
-    # Créer un nouvel utilisateur
+    # Create a new user
     user = User(username=username, hashed_password=hashed_password)
     session.add(user)
     session.commit()
@@ -41,29 +62,9 @@ def register_user(username: str, password: str, session: SessionDep):
     }
 
 
-@router.post("/auth/login/")
-def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    session: SessionDep = Depends(),
-):
-    # Rechercher l'utilisateur par nom d'utilisateur
-    user = session.exec(select(User).where(User.username == form_data.username)).first()
-
-    if not user or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid username or password")
-
-    # Générer un token JWT
-    access_token = create_access_token(
-        {"sub": user.username},
-        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
-
-    return {"access_token": access_token, "token_type": "bearer"}
-
-
 def get_current_user(token: str = Depends(oauth2_scheme)):
     """
-    Dépendance pour vérifier le token JWT et récupérer l'utilisateur connecté.
+    Dependency to verify the JWT token and retrieve the connected user.
     """
     payload = decode_access_token(token)
     username = payload.get("sub")
@@ -72,9 +73,9 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     return username
 
 
-@router.get("/users/me")
+@router.get("/users/me", tags=["users"])
 def read_current_user(current_user: str = Depends(get_current_user)):
     """
-    Retourne les informations de l'utilisateur connecté.
+    Returns the information of the connected user.
     """
     return {"username": current_user}
