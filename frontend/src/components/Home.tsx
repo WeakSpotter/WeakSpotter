@@ -65,11 +65,19 @@ export default function Home() {
                 }`}
               >
                 <td className="px-6 py-4 text-gray-700">{feature}</td>
-                <td className="px-6 py-4 text-center">
-                  <Icon path={simple ? mdiCheck : mdiClose} size={1} />
+                <td className="px-6 py-4">
+                  <Icon
+                    path={simple ? mdiCheck : mdiClose}
+                    size={1}
+                    className={`m-auto ${simple ? "text-green-500" : "text-red-500"}`}
+                  />
                 </td>
-                <td className="px-6 py-4 text-center">
-                  <Icon path={complex ? mdiCheck : mdiClose} size={1} />
+                <td className="px-6 py-4">
+                  <Icon
+                    path={complex ? mdiCheck : mdiClose}
+                    size={1}
+                    className={`m-auto ${complex ? "text-green-500" : "text-red-500"}`}
+                  />
                 </td>
               </tr>
             ))}
