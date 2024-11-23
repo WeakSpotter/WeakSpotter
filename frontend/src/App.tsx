@@ -17,22 +17,10 @@ function App() {
         <div className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route
-              path="/create"
-              element={
-                <ProtectedRoute>
-                  <CreateScan />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/scan/:id"
-              element={
-                <ProtectedRoute>
-                  <ScanDetails />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/create" element={<CreateScan />} />{" "}
+            {/* Remove ProtectedRoute */}
+            <Route path="/scan/:id" element={<ScanDetails />} />{" "}
+            {/* Remove ProtectedRoute */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
@@ -43,7 +31,6 @@ function App() {
                 </ProtectedRoute>
               }
             />{" "}
-            {/* Protect the ScanList route */}
           </Routes>
         </div>
         <Footer />

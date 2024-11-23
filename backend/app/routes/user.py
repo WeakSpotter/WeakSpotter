@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from app.database import SessionDep
-from app.models.user import User
+from app.models.user import User, UserCreate
 from app.security import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     create_access_token,
@@ -41,17 +41,19 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login/")
 
 
 @router.post("/users/", tags=["users"])
-def register_user(username: str, password: str, session: SessionDep):
+def register_user(user_create: UserCreate, session: SessionDep):
     # Check if the user already exists
-    existing_user = session.exec(select(User).where(User.username == username)).first()
+    existing_user = session.exec(
+        select(User).where(User.username == user_create.username)
+    ).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already exists")
 
     # Hash the password
-    hashed_password = hash_password(password)
+    hashed_password = hash_password(user_create.password)
 
     # Create a new user
-    user = User(username=username, hashed_password=hashed_password)
+    user = User(username=user_create.username, hashed_password=hashed_password)
     session.add(user)
     session.commit()
     session.refresh(user)

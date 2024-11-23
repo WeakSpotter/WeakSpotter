@@ -12,40 +12,38 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex-none gap-2">
+        <ul className="menu menu-horizontal px-1">
+          <li>
+            <Link to="/create">New Scan</Link>
+          </li>
+        </ul>
         {isAuthenticated ? (
-          <>
-            <ul className="menu menu-horizontal px-1">
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full bg-neutral text-neutral-content content-center">
+                <span className="text-xl content-center">
+                  {username.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
               <li>
-                <Link to="/create">New Scan</Link>
+                <Link to="/profile" className="justify-between">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <button onClick={logout}>Logout</button>
               </li>
             </ul>
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 rounded-full bg-neutral text-neutral-content content-center">
-                  <span className="text-xl content-center">
-                    {username.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <Link to="/profile" className="justify-between">
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <button onClick={logout}>Logout</button>
-                </li>
-              </ul>
-            </div>
-          </>
+          </div>
         ) : (
           <Link to="/login" className="btn btn-primary">
             Login

@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function CreateScan() {
   const [url, setUrl] = useState("");
   const [complex, setComplex] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const formatUrl = (input: string) => {
-    // Remove any leading/trailing whitespace
     input = input.trim();
-
-    // Check if the URL already starts with a protocol
     if (!/^https?:\/\//i.test(input)) {
-      // Add https:// if no protocol is present
       return `https://${input}`;
     }
     return input;
@@ -46,7 +44,7 @@ export default function CreateScan() {
               <span className="label-text">URL to scan</span>
             </label>
             <input
-              type="text" // Changed from type="url" to type="text"
+              type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="example.com"
@@ -63,8 +61,14 @@ export default function CreateScan() {
                 checked={complex}
                 onChange={(e) => setComplex(e.target.checked)}
                 className="checkbox"
+                disabled={!isAuthenticated}
               />
             </label>
+            {!isAuthenticated && (
+              <p className="text-sm text-red-500 mt-2">
+                Please log in to access the complex scan feature.
+              </p>
+            )}
           </div>
 
           <div className="card-actions justify-end mt-4">
