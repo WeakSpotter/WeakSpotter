@@ -30,7 +30,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-4 text-center">
           Feature Comparison
         </h2>
-        <table className="table-auto w-full bg-white shadow-md rounded-lg">
+        <table className="table-auto w-full bg-white shadow-md rounded-lg shadow-xl">
           <thead>
             <tr>
               <th className="px-4 py-2">Feature</th>

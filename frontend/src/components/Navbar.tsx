@@ -16,6 +16,11 @@ export default function Navbar() {
           <li>
             <Link to="/create">New Scan</Link>
           </li>
+          {isAuthenticated && (
+            <li>
+              <Link to="/scans">My Scans</Link>
+            </li>
+          )}
         </ul>
         {isAuthenticated ? (
           <div className="dropdown dropdown-end">
