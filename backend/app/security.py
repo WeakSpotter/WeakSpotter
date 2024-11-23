@@ -16,7 +16,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Secret key for JWT encoding and decoding
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 44640  # 1 month
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login/")
 
@@ -66,7 +66,6 @@ def decode_access_token(token: str) -> dict:
 
 
 def get_current_user(session: SessionDep, token: str = Depends(oauth2_scheme)) -> User:
-    print("token", token)
     if not token:
         return None
 
