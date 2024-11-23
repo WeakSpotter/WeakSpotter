@@ -5,6 +5,13 @@ FROM python:3.12-slim
 ARG COMMIT_HASH
 ENV COMMIT_HASH=${COMMIT_HASH}
 
+RUN apt-get update && apt-get install -y \
+    curl \
+    dnsutils \
+    whois \
+    nmap \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /code
 

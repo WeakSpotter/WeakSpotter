@@ -4,7 +4,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=/data/db.sqlite3
+      - SQLITE_PATH=/data/db.sqlite3
       - COMMIT_HASH=dev
     volumes:
       - backend_data:/data
@@ -28,7 +28,7 @@ services:
       - backend
     environment:
       - API_URL=http://localhost:8000/api
-      - COMMIT_HASH=YFTCKJGHVJHFJYFCKYC
+      - COMMIT_HASH=dev
       - ENV=development
     develop:
       watch:
