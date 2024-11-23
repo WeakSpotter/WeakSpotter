@@ -1,26 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
-import { useAuth } from "../context/AuthContext";
 
-export default function Login() {
+export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await api.login({ username, password });
-      login(username, response.data.token);
+      const response = await api.register({ username, password });
+      localStorage.setItem("authToken", response.data.token);
+      localStorage.setItem("username", username);
       navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
-      alert("Invalid username or password. Please try again.");
+      console.error("Registration failed:", error);
+      alert("Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -29,7 +28,7 @@ export default function Login() {
   return (
     <div className="card bg-base-100 shadow-xl max-w-xl mx-auto">
       <div className="card-body">
-        <h2 className="card-title">Login</h2>
+        <h2 className="card-title">Register</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label className="label">
@@ -65,7 +64,7 @@ export default function Login() {
               className={`btn btn-primary ${loading ? "loading" : ""}`}
               disabled={loading}
             >
-              Login
+              Register
             </button>
           </div>
         </form>
