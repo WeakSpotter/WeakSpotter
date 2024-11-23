@@ -41,12 +41,12 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-4 text-center">
           Feature Comparison
         </h2>
-        <table className="table-auto w-full bg-white rounded-lg shadow-xl">
+        <table className="table w-full bg-base-100 rounded-lg shadow-xl">
           <thead>
             <tr>
               <th className="px-4 py-2">Feature</th>
-              <th className="px-4 py-2">Simple Scan</th>
-              <th className="px-4 py-2">Complex Scan</th>
+              <th className="px-4 py-2 text-center">Simple Scan</th>
+              <th className="px-4 py-2 text-center">Complex Scan</th>
             </tr>
           </thead>
           <tbody>
@@ -60,11 +60,9 @@ export default function Home() {
             ].map(([feature, simple, complex], idx) => (
               <tr
                 key={idx}
-                className={`border ${
-                  idx % 2 === 0 ? "bg-gray-50" : "bg-gray-100"
-                }`}
+                className={`${idx % 2 === 0 ? "bg-base-200" : "bg-base-300"}`}
               >
-                <td className="px-6 py-4 text-gray-700">{feature}</td>
+                <td className="px-6 py-4">{feature}</td>
                 <td className="px-6 py-4">
                   <Icon
                     path={simple ? mdiCheck : mdiClose}
