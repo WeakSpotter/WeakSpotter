@@ -5,12 +5,32 @@ FROM python:3.12-slim
 ARG COMMIT_HASH
 ENV COMMIT_HASH=${COMMIT_HASH}
 
+
 RUN apt-get update && apt-get install -y \
     curl \
     dnsutils \
     whois \
     nmap \
+    git \
+    bsdmainutils \
     && rm -rf /var/lib/apt/lists/*
+
+
+# Clone theHarvester repository
+RUN git clone https://github.com/laramies/theHarvester /opt/theHarvester
+
+# Installer Nikto depuis GitHub
+RUN git clone https://github.com/sullo/nikto.git /opt/nikto \
+    && ln -s /opt/nikto/program/nikto.pl /usr/local/bin/nikto
+    
+# Set the working directory to theHarvester
+WORKDIR /opt/theHarvester
+
+# Install theHarvester dependencies
+RUN python3 -m pip install --no-cache-dir -r requirements/base.txt
+
+# Add theHarvester to the PATH for global access
+RUN ln -s /opt/theHarvester/theHarvester.py /usr/local/bin/theHarvester
 
 # Set the working directory in the container
 WORKDIR /code
@@ -27,6 +47,9 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Change ownership of the working directory
 RUN chown -R appuser:appuser /code
+
+# Créer le répertoire requis par theHarvester
+RUN mkdir -p /home/appuser/.theHarvester && chown -R appuser:appuser /home/appuser
 
 # Switch to non-root user
 USER appuser
