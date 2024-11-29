@@ -5,7 +5,7 @@ from app.models.scan import Scan
 
 class NiktoJob(Job):
     def __init__(self):
-        super().__init__("Nikto Scanner", "nikto_scan", self.perform_scan)
+        super().__init__("Nikto", "nikto_scan", self.perform_scan)
 
     @staticmethod
     def perform_scan(scan: Scan) -> dict:
@@ -19,24 +19,16 @@ class NiktoJob(Job):
         command = [
             "nikto",
             "-h",
-            domain,
-            "-o",
-            "/tmp/nikto_report.txt",  # Chemin pour stocker le rapport temporaire
-            "-Format",
-            "txt"
+            domain
         ]
 
         print(f"Commande exécutée : {' '.join(command)}")
 
         try:
-            # Exécuter la commande
-            subprocess.run(command, check=True, text=True)
-
-            # Lire le contenu du rapport généré
-            with open("/tmp/nikto_report.txt", "r") as report_file:
-                report_content = report_file.read()
-            print(report_content)
-            return NiktoJob.parse_nikto_output(report_content)
+            # Exécuter la commande et capturer la sortie en temps réel
+            result = subprocess.check_output(command, text=True)
+            print(f"Résultat brut :\n{result}")
+            return NiktoJob.parse_nikto_output(result)
         except subprocess.CalledProcessError as e:
             print(f"Nikto scan échoué pour le domaine {domain}\nErreur : {e}")
             return None

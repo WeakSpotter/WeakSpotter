@@ -1,13 +1,13 @@
 from app.jobs.job import LinearJob, ParallelJob
-from app.jobs.unit_scans import dns, host_scanning, http, email_harvester, nikto
+from app.jobs.unit_scans import dns, http, nikto
+from backend.app.jobs.unit_scans import harvester, scanning
 
 
 common_scans = [
     dns.DomainExtractJob(),
     ParallelJob([dns.DNSRecordsJob(), dns.WhoisJob()]),
     dns.CloudflareDetectJob(),
-    #email_harvester.EmailHarvesterJob(),
-    host_scanning.NmapScanJob(),
+    scanning.NmapScanJob(),
     http.VersionCheckJob(),
 ]
 
@@ -17,8 +17,8 @@ common_scans = [
             LinearJob(
                 [
                     dns.DomainExtractJob(),
+                    harvester.EmailHarvesterJob(),
                     nikto.NiktoJob(),
-                    #email_harvester.EmailHarvesterJob(),
                     ParallelJob(
                         [
                             LinearJob(
@@ -27,7 +27,7 @@ common_scans = [
                                     dns.CloudflareDetectJob(),
                                 ]
                             ),
-                            host_scanning.NmapScanJob(),
+                            scanning.NmapScanJob(),
                         ]
                     ),
                     http.VersionCheckJob(),
@@ -35,4 +35,13 @@ common_scans = [
             )
         ]
     )
+]
+
+test_scan = [
+    LinearJob(
+                [
+                    dns.DomainExtractJob(),
+                    http.VersionCheckJob(),
+                ]
+            )
 ]

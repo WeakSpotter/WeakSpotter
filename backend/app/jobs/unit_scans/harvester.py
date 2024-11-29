@@ -14,6 +14,7 @@ class EmailHarvesterJob(Job):
         """Effectue un scan de récolte d'emails avec theHarvester."""
         domain = scan.data_dict.get("domain")
         if not domain:
+            print("Aucun domaine spécifié.")
             return None
 
         # Chemin absolu vers theHarvester.py
@@ -39,11 +40,34 @@ class EmailHarvesterJob(Job):
         print(f"Commande exécutée : {' '.join(command)}")
 
         try:
-            result = subprocess.check_output(command, shell=True).decode("utf-8")
-            print(result)
-            return EmailHarvesterJob.parse_theharvester_output(result)
-        except subprocess.CalledProcessError as e:
-            print(f"theHarvester scan failed for domain {domain}\nError: {e}")
+            # Exécuter la commande en temps réel
+            process = subprocess.Popen(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+
+            output = []
+            # Lire la sortie ligne par ligne
+            for line in process.stdout:
+                print(line.strip())  # Affiche chaque ligne de la sortie standard
+                output.append(line.strip())
+
+            for line in process.stderr:
+                print(f"ERREUR : {line.strip()}")  # Affiche chaque ligne de la sortie d'erreur
+
+            process.wait()  # Attendre la fin de l'exécution
+
+            # Vérifier si le processus s'est terminé correctement
+            if process.returncode != 0:
+                print(f"theHarvester a échoué avec le code : {process.returncode}")
+                return None
+
+            # Retourner la sortie complète après exécution
+            return EmailHarvesterJob.parse_theharvester_output("\n".join(output))
+        except FileNotFoundError:
+            print("Python ou theHarvester est introuvable dans l'environnement.")
             return None
 
     @staticmethod
@@ -51,7 +75,7 @@ class EmailHarvesterJob(Job):
         """Analyse la sortie de theHarvester et extrait les emails."""
         emails = set()
         lines = output.splitlines()
-
+        print(lines)
         for line in lines:
             if "@" in line and line.strip().startswith("-"):
                 # Format d'exemple : "- email@example.com"
