@@ -25,7 +25,7 @@ export default function Navbar() {
           )}
         </ul>
         {isAuthenticated ? (
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end mr-3">
             <div
               tabIndex={0}
               role="button"
@@ -52,7 +52,7 @@ export default function Navbar() {
             </ul>
           </div>
         ) : (
-          <Link to="/login" className="btn btn-primary">
+          <Link to="/login" className="btn btn-primary mr-3">
             Login
           </Link>
         )}
