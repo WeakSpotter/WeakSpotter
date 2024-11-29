@@ -5,6 +5,7 @@ FROM python:3.12-slim
 ARG COMMIT_HASH
 ENV COMMIT_HASH=${COMMIT_HASH}
 
+RUN mkdir -p /data && chmod 777 /data
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -15,36 +16,42 @@ RUN apt-get update && apt-get install -y \
     bsdmainutils \
     && rm -rf /var/lib/apt/lists/*
 
+# Installer setuptools et wheel (prérequis pour setup.py)
+RUN pip install --no-cache-dir setuptools wheel
 
 # Create a non-root user and group
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
+
 # Installer theHarvester et configurer son répertoire
 RUN git clone https://github.com/laramies/theHarvester /opt/theHarvester \
     && pip install --no-cache-dir -r /opt/theHarvester/requirements/base.txt \
-    && ln -s /opt/theHarvester/theHarvester.py /usr/local/bin/theHarvester \
+    && ln -sf /opt/theHarvester/theHarvester.py /usr/local/bin/theHarvester \
     && mkdir -p /home/appuser/.theHarvester \
     && chown -R appuser:appuser /home/appuser
 
-
-# Créer le répertoire requis par theHarvester
-RUN mkdir -p /home/appuser/.theHarvester && chown -R appuser:appuser /home/appuser
-
 # Installer Nikto depuis GitHub
 RUN git clone https://github.com/sullo/nikto.git /opt/nikto \
-    && ln -s /opt/nikto/program/nikto.pl /usr/local/bin/nikto
+    && ln -sf /opt/nikto/program/nikto.pl /usr/local/bin/nikto
+
+
+#Install exploitdb
+RUN git clone https://gitlab.com/exploit-database/exploitdb.git /opt/exploitdb \
+    && ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
+
+RUN git config --global --add safe.directory /opt/exploitdb
 
 # Installer CMSmap
 RUN git clone https://github.com/Dionach/CMSmap.git /opt/cmsmap \
-    && ln -s /opt/cmsmap/cmsmap.py /usr/local/bin/cmsmap
-
-# Installer SearchSploit
-RUN git clone https://github.com/offensive-security/exploitdb.git /opt/exploitdb \
-    && ln -s /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
+    && cd /opt/cmsmap \
+    && sed -i 's|edbtype = apt|edbtype = GIT|' /opt/cmsmap/cmsmap/cmsmap.conf \
+    && sed -i 's|edbpath = /usr/share/exploitdb/|edbpath = /opt/exploitdb/|' /opt/cmsmap/cmsmap/cmsmap.conf \
+    && chown -R appuser:appuser /opt/cmsmap \
+    && pip3 install . 
 
 # Installer SQLMap
 RUN git clone https://github.com/sqlmapproject/sqlmap.git /opt/sqlmap \
-    && ln -s /opt/sqlmap/sqlmap.py /usr/local/bin/sqlmap
+    && ln -sf /opt/sqlmap/sqlmap.py /usr/local/bin/sqlmap
 
 # Set the working directory in the container
 WORKDIR /code
@@ -58,6 +65,8 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Change ownership of the working directory
 RUN chown -R appuser:appuser /code
+
+RUN chown -R appuser:appuser /usr/local/lib/python3.12/site-packages/cmsmap/
 
 # Switch to non-root user
 USER appuser
