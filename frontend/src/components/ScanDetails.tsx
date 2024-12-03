@@ -70,6 +70,12 @@ export default function ScanDetails() {
     }
   };
 
+  const handleCloseModal = (event: React.MouseEvent) => {
+    if ((event.target as HTMLElement).classList.contains("modal")) {
+      setShowModal(false);
+    }
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-64">
@@ -150,7 +156,7 @@ export default function ScanDetails() {
       </div>
 
       {showModal && (
-        <div className="modal modal-open">
+        <div className="modal modal-open" onClick={handleCloseModal}>
           <div className="modal-box max-w-3xl">
             <h3 className="font-bold text-lg">Scan Data</h3>
             <pre className="mt-4 overflow-x-auto bg-base-200 p-4 rounded-lg">
