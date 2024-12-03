@@ -1,7 +1,5 @@
 from app.jobs.job import LinearJob, ParallelJob
-from app.jobs.unit_scans import dns, http, nikto
-from backend.app.jobs.unit_scans import harvester, scanning
-
+from app.jobs.unit_scans import dns, harvester, http, nikto, scanning
 
 common_scans = [
     dns.DomainExtractJob(),
@@ -39,9 +37,9 @@ common_scans = [
 
 test_scan = [
     LinearJob(
-                [
-                    dns.DomainExtractJob(),
-                    http.VersionCheckJob(),
-                ]
-            )
+        [
+            dns.DomainExtractJob(),
+            http.VersionCheckJob(),
+        ]
+    )
 ]

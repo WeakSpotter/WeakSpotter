@@ -6,8 +6,10 @@ services:
     environment:
       - SQLITE_PATH=/data/db.sqlite3
       - COMMIT_HASH=dev
+      - PUID=500
     volumes:
       - backend_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
     develop:
       watch:
         - action: sync+restart

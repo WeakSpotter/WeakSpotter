@@ -5,3 +5,4 @@ requests
 pyjwt
 passlib
 python-multipart
+docker
