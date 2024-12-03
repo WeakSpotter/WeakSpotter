@@ -1,6 +1,6 @@
 import docker
+from app.jobs.container import run_container
 from app.jobs.job import Job
-from app.jobs.tools import run_container
 from app.models.scan import Scan
 
 
