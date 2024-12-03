@@ -17,9 +17,7 @@ class NiktoJob(Job):
             return None
 
         try:
-            result = run_container(
-                "ghcr.io/ozeliurs/ozeliurs/nikto", f"nikto -h {domain}"
-            )
+            result = run_container("ghcr.io/ozeliurs/nikto", f"nikto -h {domain}")
             return NiktoJob.parse_nikto_output(result)
         except docker.errors.DockerException as e:
             print(f"Erreur lors de l'exécution du conteneur Docker: {e}")

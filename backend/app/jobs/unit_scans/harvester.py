@@ -19,7 +19,7 @@ class EmailHarvesterJob(Job):
 
         try:
             result = run_container(
-                "ghcr.io/ozeliurs/ozeliurs/theharvester",
+                "ghcr.io/ozeliurs/theharvester",
                 f"-d {domain} -l 100 -b crtsh",
                 entrypoint="/root/.local/bin/theHarvester",
             )
