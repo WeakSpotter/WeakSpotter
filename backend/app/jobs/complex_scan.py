@@ -5,6 +5,6 @@ from app.models.scan import Scan
 
 
 def scan(scan: Scan, session: SessionDep) -> None:
-    jobs = common.test_scan
+    jobs = common.common_scans
 
     Executor(jobs).run(scan, session)
