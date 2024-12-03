@@ -8,6 +8,7 @@ services:
       - COMMIT_HASH=dev
     volumes:
       - backend_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
     develop:
       watch:
         - action: sync+restart
