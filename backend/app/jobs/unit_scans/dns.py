@@ -1,8 +1,10 @@
+import datetime
 import ipaddress
 import subprocess
 from urllib.parse import urlparse
 
 import requests
+import whois
 from app.jobs.job import Job
 from app.models.scan import Scan
 
@@ -26,19 +28,34 @@ class WhoisJob(Job):
         super().__init__("Whois", "whois", self.whois)
 
     @staticmethod
-    def whois(scan: Scan) -> str:
+    def whois(scan: Scan) -> dict | None:
         """Retrieves the WHOIS record for the domain."""
         domain = scan.data_dict.get("domain")
         if not domain:
             return None
 
-        command = f"whois {domain}"
-        try:
-            result = subprocess.check_output(command, shell=True).decode("utf-8")
-            return result
-        except subprocess.CalledProcessError as e:
-            print(f"WHOIS command failed for domain {domain}\nError: {e}")
-            return None
+        result = whois.whois(domain)
+
+        result = dict(result)
+
+        # Convert datetime objects to strings
+        for key, value in result.items():
+            if isinstance(value, list):
+                result[key] = [str(item) for item in value]
+            elif isinstance(value, dict):
+                result[key] = {
+                    subkey: str(subvalue) for subkey, subvalue in value.items()
+                }
+            elif isinstance(value, type(None)):
+                result[key] = None
+            elif isinstance(value, type):
+                result[key] = str(value)
+            elif isinstance(value, datetime.datetime):
+                result[key] = str(value)
+
+        print(result)
+
+        return result
 
 
 class DNSRecordsJob(Job):

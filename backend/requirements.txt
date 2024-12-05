@@ -6,3 +6,5 @@ pyjwt
 passlib
 python-multipart
 docker
+kubernetes
+python-whois
