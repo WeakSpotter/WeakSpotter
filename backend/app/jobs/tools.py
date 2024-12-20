@@ -1,8 +1,7 @@
-import uuid
+import subprocess
+from typing import Any
 
-import docker
-
-DOCKER_SOCK = "unix:///var/run/docker.sock"
+from app.models.scan import Scan
 
 
 def sanitize_url(url: str) -> str:
@@ -11,19 +10,17 @@ def sanitize_url(url: str) -> str:
     return url
 
 
-def add_data(scan, key, value):
+def add_data(scan: Scan, key: str, value: Any):
     data = scan.data_dict
     data[key] = value
     scan.data_dict = data
 
 
-def run_container(image: str, command: str, entrypoint: str | None = None) -> str:
-    client = docker.DockerClient(base_url=DOCKER_SOCK)
-
-    container_name = f"weakspotter-{uuid.uuid4()}"
-
-    result = client.containers.run(
-        image, command, name=container_name, entrypoint=entrypoint
-    ).decode("utf-8")
-    client.containers.get(container_name).remove()
-    return result
+def execute_command(command: str) -> list:
+    """Executes a shell command and returns the output as a list of lines."""
+    try:
+        output = subprocess.check_output(command, shell=True).decode("utf-8").strip()
+        return output.split("\n") if output else []
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed: {command}\nError: {e}")
+        return []

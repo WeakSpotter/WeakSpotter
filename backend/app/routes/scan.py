@@ -1,5 +1,5 @@
 from app.database import SessionDep
-from app.jobs import complex_scan, simple_scan
+from app.jobs.executor import Executor
 from app.models.scan import Scan
 from app.scoring.calculator import calculate_score
 from app.security import UserDep
@@ -73,8 +73,9 @@ def create_scan(
     session.commit()
     session.refresh(scan)
 
-    scanner = complex_scan if complex else simple_scan
-    background_tasks.add_task(scanner.scan, scan, session)
+    scan_type = "complex" if complex else "simple"
+    executor = Executor(scan_type)
+    background_tasks.add_task(executor.run, scan, session)
 
     return scan
 

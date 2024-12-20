@@ -3,6 +3,7 @@ import uuid
 from pathlib import Path
 
 import docker
+from docker.errors import DockerException
 from kubernetes import client as k8s_client
 from kubernetes import config as k8s_config
 
@@ -10,6 +11,10 @@ DOCKER_SOCK = "unix://var/run/docker.sock"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+class ContainerError(Exception):
+    pass
 
 
 def run_container(image: str, command: str, entrypoint: str | None = None) -> str:
@@ -58,17 +63,28 @@ def run_container(image: str, command: str, entrypoint: str | None = None) -> st
 
         return logs
     else:
-        docker_client = docker.DockerClient(base_url=DOCKER_SOCK)
+        try:
+            docker_client = docker.DockerClient(base_url=DOCKER_SOCK)
 
-        container_name = f"weakspotter-{uuid.uuid4()}"
-        logger.info(f"Running Docker container: {container_name} with image: {image}")
+            container_name = f"weakspotter-{uuid.uuid4()}"
+            logger.info(
+                f"Running Docker container: {container_name} with image: {image}"
+            )
 
-        result = docker_client.containers.run(
-            image, command, name=container_name, entrypoint=entrypoint
-        ).decode("utf-8")
-        logger.info(f"Logs from Docker container {container_name}: {result}")
+            container = docker_client.containers.run(
+                image, command, name=container_name, entrypoint=entrypoint, detach=True
+            )
+            result = container.logs().decode("utf-8")
+            logger.info(f"Logs from Docker container {container_name}: {result}")
 
-        docker_client.containers.get(container_name).remove()
-        logger.info(f"Deleted Docker container: {container_name}")
+            logger.info(f"Stopping Docker container: {container_name}")
+            container.stop()
+            logger.info(f"Stopped Docker container: {container_name}")
 
-        return result
+            logger.info(f"Deleting Docker container: {container_name}")
+            container.remove()
+            logger.info(f"Deleted Docker container: {container_name}")
+
+            return result
+        except DockerException as e:
+            raise ContainerError(f"Failed to run Docker container: {e}")
