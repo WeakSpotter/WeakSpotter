@@ -72,18 +72,11 @@ def run_container(image: str, command: str, entrypoint: str | None = None) -> st
             )
 
             container = docker_client.containers.run(
-                image, command, name=container_name, entrypoint=entrypoint, detach=True
+                image, command, name=container_name, entrypoint=entrypoint, remove=True
             )
-            result = container.logs().decode("utf-8")
+
+            result = container.decode("utf-8")
             logger.info(f"Logs from Docker container {container_name}: {result}")
-
-            logger.info(f"Stopping Docker container: {container_name}")
-            container.stop()
-            logger.info(f"Stopped Docker container: {container_name}")
-
-            logger.info(f"Deleting Docker container: {container_name}")
-            container.remove()
-            logger.info(f"Deleted Docker container: {container_name}")
 
             return result
         except DockerException as e:

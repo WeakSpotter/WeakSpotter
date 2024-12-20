@@ -21,11 +21,15 @@ class Job(ABC):
             if not scan.data_dict.get(requirement):
                 raise ValueError(f"Missing required data: {requirement}")
 
-        # Run the scan
-        self.run()
+        try:
+            # Run the scan
+            self.run()
 
-        # Parse the results
-        self.parse_results()
+            # Parse the results
+            self.parse_results()
+        except Exception as e:
+            print(f"Error running job {self.key}: {e}")
+            self.result = None
 
         # Save the results
         add_data(scan, self.key, self.result)
