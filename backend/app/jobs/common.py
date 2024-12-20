@@ -11,5 +11,4 @@ common_scans = [
     harvester.EmailHarvesterJob(),
     cmsmap.CMSmapJob(),
     sublist3r.Sublist3rJob(),
-
 ]
