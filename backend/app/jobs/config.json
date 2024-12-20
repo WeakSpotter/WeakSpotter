@@ -20,6 +20,7 @@
     "recon.cmsmap.CMSMapJob",
     "recon.harvester.EmailHarvesterJob",
     "recon.nmap.NmapJob",
+    "recon.sublist3r.Sublist3rJob",
     "vulnerability.nikto.NiktoJob"
   ]
 }
