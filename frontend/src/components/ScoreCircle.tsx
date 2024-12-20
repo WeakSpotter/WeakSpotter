@@ -14,9 +14,9 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
 
   // Determine color based on score
   const getColor = (score: number) => {
-    if (score >= 80) return "#22c55e"; // green
-    if (score >= 50) return "#eab308"; // yellow
-    return "#ef4444"; // red
+    if (score >= 80) return "su"; // green (success)
+    if (score >= 50) return "wa"; // yellow (warning)
+    return "er"; // red (error)
   };
 
   // Size configurations
@@ -42,8 +42,8 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
       className={`relative ${sizeConfig[size].circle} rounded-full flex items-center justify-center`}
       style={{
         background: `conic-gradient(
-          ${color} ${validScore}%,
-          #e5e7eb ${validScore}%
+          oklch(var(--${color})) ${validScore}%,
+          oklch(var(--b3)) ${validScore}%
         )`,
         boxShadow: "0 0 10px rgba(0,0,0,0.1)",
       }}
@@ -51,7 +51,7 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
       <div
         className={`
           absolute
-          bg-white
+          bg-base-100
           rounded-full
           flex
           items-center
@@ -66,7 +66,7 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
             font-bold
             ${sizeConfig[size].text}
           `}
-          style={{ color }}
+          style={{ color: `oklch(var(--${color}))` }}
         >
           {Math.round(validScore)}
         </span>

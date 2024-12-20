@@ -1,7 +1,7 @@
 import json
-
-from enum import IntEnum
 from datetime import datetime
+from enum import IntEnum
+from typing import Optional
 
 from sqlmodel import Field, SQLModel
 
@@ -14,11 +14,14 @@ class ScanStatus(IntEnum):
 
 
 class Scan(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int = Field(default=None, primary_key=True)
     url: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     status: ScanStatus = ScanStatus.pending
+    progress: int = 0
+    current_step: str = ""
     data: str = "{}"
+    user_id: Optional[int] = Field(default=None, foreign_key="user.id")
 
     @property
     def data_dict(self):
