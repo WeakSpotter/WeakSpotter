@@ -1,0 +1,16 @@
+{
+  "simple": ["dns.domain.DomainJob", "recon.ssh_audit.SSHAuditJob"],
+  "complex": [
+    "dns.domain.DomainJob",
+    "dns.cloudflare.CloudflareDetectJob",
+    "dns.records.DNSRecordsJob",
+    "dns.whois.WhoisJob",
+    "http.http.HTTPVersionJob",
+    "recon.cmsmap.CMSMapJob",
+    "recon.harvester.EmailHarvesterJob",
+    "recon.nmap.NmapScanJob",
+    "recon.sublist3r.Sublist3rJob",
+    "recon.ssh_audit.SSHAuditJob",
+    "vulnerability.nikto.NiktoJob"
+  ]
+}

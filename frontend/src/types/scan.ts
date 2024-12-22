@@ -10,6 +10,8 @@ export interface Scan {
   url: string;
   status: ScanStatus;
   created_at: string;
+  progress: number;
+  current_step: string;
   data: string;
 }
 

@@ -17,7 +17,6 @@ export default function ScanDetails() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Function to load scan details
   const loadScanDetails = useCallback(async () => {
     if (!id) return;
 
@@ -35,15 +34,11 @@ export default function ScanDetails() {
     }
   }, [id]);
 
-  // Setup polling
   useEffect(() => {
     let intervalId: number;
 
     const startPolling = () => {
-      // Initial load
       loadScanDetails();
-
-      // Setup interval for polling
       intervalId = window.setInterval(() => {
         if (
           scan?.status === ScanStatus.pending ||
@@ -51,12 +46,11 @@ export default function ScanDetails() {
         ) {
           loadScanDetails();
         }
-      }, 5000); // Poll every 5 seconds
+      }, 5000);
     };
 
     startPolling();
 
-    // Cleanup function
     return () => {
       if (intervalId) {
         window.clearInterval(intervalId);
@@ -73,6 +67,12 @@ export default function ScanDetails() {
       setShowModal(true);
     } catch (error) {
       console.error("Error loading scan data:", error);
+    }
+  };
+
+  const handleCloseModal = (event: React.MouseEvent) => {
+    if ((event.target as HTMLElement).classList.contains("modal")) {
+      setShowModal(false);
     }
   };
 
@@ -119,6 +119,12 @@ export default function ScanDetails() {
               <strong>Created:</strong>{" "}
               {new Date(scan.created_at).toLocaleString()}
             </p>
+            <p>
+              <strong>Progress:</strong> {scan.progress}%
+            </p>
+            <p>
+              <strong>Current Step:</strong> {scan.current_step}
+            </p>
           </div>
           <div className="flex flex-col items-center justify-center">
             {score !== null ? (
@@ -139,7 +145,10 @@ export default function ScanDetails() {
           <button
             onClick={handleViewData}
             className="btn btn-primary"
-            disabled={scan.status !== ScanStatus.completed}
+            disabled={
+              scan.status !== ScanStatus.completed &&
+              scan.status !== ScanStatus.failed
+            }
           >
             View Data
           </button>
@@ -147,7 +156,7 @@ export default function ScanDetails() {
       </div>
 
       {showModal && (
-        <div className="modal modal-open">
+        <div className="modal modal-open" onClick={handleCloseModal}>
           <div className="modal-box max-w-3xl">
             <h3 className="font-bold text-lg">Scan Data</h3>
             <pre className="mt-4 overflow-x-auto bg-base-200 p-4 rounded-lg">
