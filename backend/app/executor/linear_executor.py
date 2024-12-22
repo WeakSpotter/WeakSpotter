@@ -1,55 +1,25 @@
-import json
-from pathlib import Path
 from typing import List
 
 from app.database import SessionDep, save
+from app.executor.abstract_executor import Executor
 from app.jobs.abstract_job import Job
 from app.models.scan import Scan, ScanStatus
 
 
-class Executor:
-    IMPORT_PREFIX = "app.jobs.unit_jobs"
-    CONF_PATH = Path(__file__).parent / "config.json"
-
+class LinearExecutor(Executor):
     def __init__(self, job_cat: str):
-        self.jobs = [self._import_job(job)() for job in self._read_config(job_cat)]
+        super().__init__(job_cat)
         self.jobs = self._order_jobs(self.jobs)
 
-    def _read_config(self, job_cat) -> List[str]:
-        try:
-            return json.loads(self.CONF_PATH.read_text())[job_cat]
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Config file not found at {self.CONF_PATH}")
-        except KeyError:
-            raise KeyError(f"Category {job_cat} not found in config file")
-
-    def _import_job(self, job_path: str) -> type:
-        """
-        Imports a job class from a given job path.
-
-        Args:
-            job_path (str): The dot-separated path to the job class.
-
-        Returns:
-            type: The imported job class.
-        """
-        job = f"{self.IMPORT_PREFIX}.{job_path}"
-        job = job.split(".")
-        module = ".".join(job[:-1])
-        job_name = job[-1]
-        job_module = __import__(module, fromlist=[job_name])
-        job_class = getattr(job_module, job_name)
-        return job_class
-
-    def _order_jobs(self, jobs: list[Job]) -> list[Job]:
+    def _order_jobs(self, jobs: List[Job]) -> List[Job]:
         """
         Orders the jobs based on their requirements.
 
         Args:
-            jobs (list[Job]): The list of jobs to order.
+            jobs (List[Job]): The list of jobs to order.
 
         Returns:
-            list[Job]: The ordered list of jobs.
+            List[Job]: The ordered list of jobs.
         """
         ordered_jobs = []
         jobs_dict = {job.key: job for job in jobs}

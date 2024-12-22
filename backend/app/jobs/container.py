@@ -17,7 +17,13 @@ class ContainerError(Exception):
     pass
 
 
-def run_container(image: str, command: str, entrypoint: str | None = None) -> str:
+def run_container(
+    image: str,
+    command: str,
+    entrypoint: str | None = None,
+    remove=True,
+    ignore_errors=False,
+) -> str:
     namespace_path = Path("/var/run/secrets/kubernetes.io/serviceaccount/namespace")
 
     if namespace_path.exists():
@@ -65,19 +71,36 @@ def run_container(image: str, command: str, entrypoint: str | None = None) -> st
     else:
         try:
             docker_client = docker.DockerClient(base_url=DOCKER_SOCK)
-
-            container_name = f"weakspotter-{uuid.uuid4()}"
-            logger.info(
-                f"Running Docker container: {container_name} with image: {image}"
-            )
-
-            container = docker_client.containers.run(
-                image, command, name=container_name, entrypoint=entrypoint, remove=True
-            )
-
-            result = container.decode("utf-8")
-            logger.info(f"Logs from Docker container {container_name}: {result}")
-
-            return result
         except DockerException as e:
-            raise ContainerError(f"Failed to run Docker container: {e}")
+            logger.error(f"Failed to connect to Docker: {e}")
+            raise ContainerError(f"Failed to connect to Docker: {e}")
+
+        container_name = f"weakspotter-{uuid.uuid4()}"
+        logger.info(
+            f'Running Docker container: {container_name} with image "{image}" and command "{command}"'
+        )
+
+        try:
+            container = docker_client.containers.run(
+                image=image,
+                command=command,
+                name=container_name,
+                entrypoint=entrypoint,
+                stdout=True,
+                stderr=True,
+            )
+        except DockerException as e:
+            logger.error(f"Error running Docker container: {e}")
+            if not ignore_errors:
+                raise ContainerError(f"Failed to run Docker container: {e}")
+            logger.info("Ignoring error.")
+
+        logging.info(f"Reading logs of {container_name}")
+        container = docker_client.containers.get(container_name)
+        result = container.logs().decode("utf-8")
+
+        if remove:
+            container.remove()
+            logger.info(f"Removed Docker container: {container_name}")
+
+        return result

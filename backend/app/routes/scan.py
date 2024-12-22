@@ -1,5 +1,5 @@
 from app.database import SessionDep
-from app.jobs.executor import Executor
+from app.executor.linear_executor import LinearExecutor
 from app.models.scan import Scan
 from app.scoring.calculator import calculate_score
 from app.security import UserDep
@@ -74,7 +74,7 @@ def create_scan(
     session.refresh(scan)
 
     scan_type = "complex" if complex else "simple"
-    executor = Executor(scan_type)
+    executor = LinearExecutor(scan_type)
     background_tasks.add_task(executor.run, scan, session)
 
     return scan
