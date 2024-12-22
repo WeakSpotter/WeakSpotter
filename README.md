@@ -1,12 +1,24 @@
 # WeakSpotter
 
-[![Backend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-back&metric=alert_status&token=sqb_3ae758bdb5879a0bacb69a412189fa7a8e7960d0)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-back)
-[![Frontend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-front&metric=alert_status&token=sqb_0cfdac2ac685e76d67e408264f8f875b29d0a449)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-front)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter?ref=badge_shield&issueType=license)
+<div align="center">
+    <a href="https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-back">
+        <img src="https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-back&metric=alert_status&token=sqb_3ae758bdb5879a0bacb69a412189fa7a8e7960d0" alt="Backend Quality Gate Status">
+    </a>
+    <a href="https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-front">
+        <img src="https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-front&metric=alert_status&token=sqb_0cfdac2ac685e76d67e408264f8f875b29d0a449" alt="Frontend Quality Gate Status">
+    </a>
+    <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter?ref=badge_shield&issueType=license">
+        <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter.svg?type=shield&issueType=license" alt="FOSSA Status">
+    </a>
+</div>
 
 <div align="center">
-[![App Status](https://argocd.weakspotter.ozeliurs.com/api/badge?name=weakspotter-production&revision=true&showAppName=true)](https://argocd.weakspotter.ozeliurs.com/applications/weakspotter-production)
-[![App Status](https://argocd.weakspotter.ozeliurs.com/api/badge?name=weakspotter-staging&revision=true&showAppName=true)](https://argocd.weakspotter.ozeliurs.com/applications/weakspotter-staging)
+    <a href="https://argocd.weakspotter.ozeliurs.com/applications/weakspotter-production">
+        <img src="https://argocd.weakspotter.ozeliurs.com/api/badge?name=weakspotter-production&revision=true&showAppName=true" alt="App Status - Production">
+    </a>
+    <a href="https://argocd.weakspotter.ozeliurs.com/applications/weakspotter-staging">
+        <img src="https://argocd.weakspotter.ozeliurs.com/api/badge?name=weakspotter-staging&revision=true&showAppName=true" alt="App Status - Staging">
+    </a>
 </div>
 
 
