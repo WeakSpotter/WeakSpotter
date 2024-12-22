@@ -12,10 +12,7 @@ class CMSMapJob(Job):
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")
 
-        self._raw_output = run_container(
-            "ghcr.io/ozeliurs/cmsmap",
-            f"http://{domain}",
-        )
+        self._raw_output = run_container("ghcr.io/ozeliurs/cmsmap", f"http://{domain}")
 
     def parse_results(self) -> None:
         self.result = [
