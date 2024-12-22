@@ -4,6 +4,12 @@
 [![Frontend Quality Gate Status](https://sonarqube.devops-tools.apoorva64.com/api/project_badges/measure?project=weakspotter-front&metric=alert_status&token=sqb_0cfdac2ac685e76d67e408264f8f875b29d0a449)](https://sonarqube.devops-tools.apoorva64.com/dashboard?id=weakspotter-front)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FWeakSpotter%2FWeakSpotter?ref=badge_shield&issueType=license)
 
+<div align="center">
+[![App Status](https://argocd.weakspotter.ozeliurs.com/api/badge?name=weakspotter-production&revision=true&showAppName=true)](https://argocd.weakspotter.ozeliurs.com/applications/weakspotter-production)
+[![App Status](https://argocd.weakspotter.ozeliurs.com/api/badge?name=weakspotter-staging&revision=true&showAppName=true)](https://argocd.weakspotter.ozeliurs.com/applications/weakspotter-staging)
+</div>
+
+
 Description
 
 ## Usage
