@@ -2,11 +2,14 @@ import subprocess
 
 from app.jobs.abstract_job import Job
 
+from backend.app.jobs.license import License
+
 
 class HTTPVersionJob(Job):
     requirements = []
     key = "http_version"
     name = "HTTP Version"
+    license = License.MIT
 
     def run(self) -> None:
         url = self._scan.url

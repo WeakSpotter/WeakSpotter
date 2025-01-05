@@ -4,11 +4,14 @@ from typing import Any, List
 from app.jobs.tools import add_data
 from app.models.scan import Scan
 
+from backend.app.jobs.license import License
+
 
 class Job(ABC):
     requirements: List[str]  # List of required data keys
     key: str  # Unique key for the job
     name: str  # Human readable name of the job
+    license: License  # License for the job
     _scan: Scan  # The scan object
     _raw_output: Any  # Raw output of the job
     result: Any  # Parsed output of the job

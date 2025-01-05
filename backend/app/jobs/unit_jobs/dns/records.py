@@ -1,11 +1,14 @@
 from app.jobs.abstract_job import Job
 from app.jobs.tools import execute_command
 
+from backend.app.jobs.license import License
+
 
 class DNSRecordsJob(Job):
     requirements = ["domain"]
     key = "dns_records"
     name = "DNS Records"
+    license = License.MPLv2
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")

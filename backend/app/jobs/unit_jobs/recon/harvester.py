@@ -3,11 +3,14 @@ import re
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 
+from backend.app.jobs.license import License
+
 
 class EmailHarvesterJob(Job):
     requirements = ["domain"]
     key = "email_harvester"
     name = "Email Harvester"
+    license = License.GPLv3
 
     def run(self) -> None:
         """Performs an email harvesting scan with theHarvester."""

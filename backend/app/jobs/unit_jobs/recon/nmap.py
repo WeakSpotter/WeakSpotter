@@ -3,11 +3,14 @@ import xml.etree.ElementTree as ET
 
 from app.jobs.abstract_job import Job
 
+from backend.app.jobs.license import License
+
 
 class NmapScanJob(Job):
     requirements = ["domain"]
     key = "nmap"
     name = "Nmap Scan"
+    license = License.NSPL
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")

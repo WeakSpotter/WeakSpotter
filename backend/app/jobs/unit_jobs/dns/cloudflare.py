@@ -4,6 +4,8 @@ from typing import Tuple
 import requests
 from app.jobs.abstract_job import Job
 
+from backend.app.jobs.license import License
+
 CF_IPV4_LIST_URL = "https://www.cloudflare.com/ips-v4"
 CF_IPV6_LIST_URL = "https://www.cloudflare.com/ips-v6"
 
@@ -12,6 +14,7 @@ class CloudflareDetectJob(Job):
     requirements = ["dns_records"]
     key = "cloudflare"
     name = "Cloudflare Detection"
+    license = License.Empty
 
     def run(self) -> None:
         """Determines whether the domain is behind Cloudflare."""

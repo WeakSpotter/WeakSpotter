@@ -3,11 +3,14 @@ import json
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 
+from backend.app.jobs.license import License
+
 
 class SSHAuditJob(Job):
     requirements = ["domain"]
     key = "ssh-audit"
     name = "SSH Audit"
+    license = License.MIT
 
     def run(self) -> None:
         """Performs a scan with SSH_audit on a domain or IP address."""

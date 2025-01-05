@@ -3,11 +3,14 @@ from typing import List
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 
+from backend.app.jobs.license import License
+
 
 class CMSMapJob(Job):
     requirements: List[str] = ["domain"]
     key: str = "cmsmap"
     name: str = "CMSMap Scan"
+    license = License.GPLv3
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")

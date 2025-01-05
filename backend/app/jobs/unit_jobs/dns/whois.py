@@ -3,11 +3,14 @@ from datetime import datetime
 import whois
 from app.jobs.abstract_job import Job
 
+from backend.app.jobs.license import License
+
 
 class WhoisJob(Job):
     requirements = ["domain"]
     key = "whois"
     name = "Whois"
+    license = License.MIT
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")

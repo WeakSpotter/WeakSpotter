@@ -3,11 +3,14 @@ import re
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 
+from backend.app.jobs.license import License
+
 
 class Sublist3rJob(Job):
     requirements = ["domain"]
     key = "sublist3r"
     name = "Sublist3r Scan"
+    license = License.GPLv2
 
     def run(self):
         "Scan a domain with sublist3r."
