@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Any, List
 
+from app.jobs.license import License
 from app.jobs.tools import add_data
 from app.models.scan import Scan
-
-from backend.app.jobs.license import License
 
 
 class Job(ABC):

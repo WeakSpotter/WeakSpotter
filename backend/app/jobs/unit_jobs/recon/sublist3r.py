@@ -2,8 +2,7 @@ import re
 
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
-
-from backend.app.jobs.license import License
+from app.jobs.license import License
 
 
 class Sublist3rJob(Job):

@@ -2,8 +2,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 from app.jobs.abstract_job import Job
-
-from backend.app.jobs.license import License
+from app.jobs.license import License
 
 
 class NmapScanJob(Job):

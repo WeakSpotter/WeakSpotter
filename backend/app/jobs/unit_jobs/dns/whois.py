@@ -2,8 +2,7 @@ from datetime import datetime
 
 import whois
 from app.jobs.abstract_job import Job
-
-from backend.app.jobs.license import License
+from app.jobs.license import License
 
 
 class WhoisJob(Job):

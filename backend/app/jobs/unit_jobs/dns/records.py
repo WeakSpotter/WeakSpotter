@@ -1,7 +1,6 @@
 from app.jobs.abstract_job import Job
+from app.jobs.license import License
 from app.jobs.tools import execute_command
-
-from backend.app.jobs.license import License
 
 
 class DNSRecordsJob(Job):

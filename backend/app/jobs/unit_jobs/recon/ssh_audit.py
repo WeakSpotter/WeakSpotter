@@ -2,8 +2,7 @@ import json
 
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
-
-from backend.app.jobs.license import License
+from app.jobs.license import License
 
 
 class SSHAuditJob(Job):
