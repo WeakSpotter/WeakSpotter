@@ -1,5 +1,5 @@
 {
-  "simple": ["dns.domain.DomainJob", "recon.ssh_audit.SSHAuditJob"],
+  "simple": ["cms.droopescan.DroopescanJob", "cms.joomscan.JoomscanJob", "cms.wpscan.WpscanJob", "recon.dirb.DirbJob", "recon.dirsearch.DirsearchJob", "recon.theharvester.TheHarvesterJob", "recon.whatweb.WhatWebJob", "vulnerability.nessus.NessusJob", "vulnerability.openvas.OpenVasJob", "vulnerability.w3af.W3afJob", "cms.droopescan.DroopescanJob"],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",
