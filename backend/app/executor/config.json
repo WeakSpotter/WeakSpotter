@@ -11,6 +11,7 @@
     "recon.nmap.NmapScanJob",
     "recon.sublist3r.Sublist3rJob",
     "recon.ssh_audit.SSHAuditJob",
-    "vulnerability.nikto.NiktoJob"
+    "vulnerability.nikto.NiktoJob",
+    "cms.joomscan.JoomscanJob"
   ]
 }
