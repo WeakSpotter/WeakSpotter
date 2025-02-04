@@ -2,7 +2,8 @@
   "simple": [
     "dns.domain.DomainJob",
     "recon.ssh_audit.SSHAuditJob",
-    "cms.joomscan.JoomscanJob"
+    "cms.joomscan.JoomscanJob",
+    "cms.droopescan.DroopescanJob"
   ],
   "complex": [
     "dns.domain.DomainJob",
