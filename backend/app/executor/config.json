@@ -3,7 +3,8 @@
     "dns.domain.DomainJob",
     "recon.ssh_audit.SSHAuditJob",
     "cms.joomscan.JoomscanJob",
-    "cms.droopescan.DroopescanJob"
+    "cms.droopescan.DroopescanJob",
+    "cms.wpscan.WPScanJob"
   ],
   "complex": [
     "dns.domain.DomainJob",

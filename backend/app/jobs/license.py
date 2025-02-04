@@ -58,3 +58,9 @@ class License(enum.Enum):
         url="https://github.com/WeakSpotter/WeakSpotter/blob/main/LICENSE.md",
         gpl_compatible=True,
     )
+
+    WPScan = LicenseInfo(
+        name="WPScan License",
+        url="https://wpscan.com/",
+        gpl_compatible=False,
+    )
