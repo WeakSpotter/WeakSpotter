@@ -1,5 +1,9 @@
 {
-  "simple": ["dns.domain.DomainJob", "recon.ssh_audit.SSHAuditJob"],
+  "simple": [
+    "dns.domain.DomainJob",
+    "recon.ssh_audit.SSHAuditJob",
+    "cms.joomscan.JoomscanJob"
+  ],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",

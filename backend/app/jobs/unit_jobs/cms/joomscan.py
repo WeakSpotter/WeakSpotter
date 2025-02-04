@@ -1,6 +1,7 @@
 from app.jobs.abstract_job import Job
-from app.jobs.license import License
 from app.jobs.container import run_container
+from app.jobs.license import License
+
 
 class JoomscanJob(Job):
     requirements = []
@@ -14,13 +15,13 @@ class JoomscanJob(Job):
         self.result = {}
 
         self._raw_output = run_container(
-            "docker pull ghcr.io/weakspotter/joomscan:latest", f"-u {url}"
+            "ghcr.io/weakspotter/joomscan:latest", f"-u {url}"
         )
     def parse_results(self) -> None:
         self.result = self._raw_output
-    
+
     def score(self) :
         return 0.0
-    
+
     def definitions(self):
         return {}
