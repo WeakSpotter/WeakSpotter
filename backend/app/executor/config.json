@@ -4,7 +4,8 @@
     "recon.ssh_audit.SSHAuditJob",
     "cms.joomscan.JoomscanJob",
     "cms.droopescan.DroopescanJob",
-    "cms.wpscan.WPScanJob"
+    "cms.wpscan.WPScanJob",
+    "cms.vulnx.VulnxJob"
   ],
   "complex": [
     "dns.domain.DomainJob",
@@ -18,6 +19,9 @@
     "recon.sublist3r.Sublist3rJob",
     "recon.ssh_audit.SSHAuditJob",
     "vulnerability.nikto.NiktoJob",
-    "cms.joomscan.JoomscanJob"
+    "cms.joomscan.JoomscanJob",
+    "cms.droopescan.DroopescanJob",
+    "cms.wpscan.WPScanJob",
+    "cms.vulnx.VulnxJob"
   ]
 }
