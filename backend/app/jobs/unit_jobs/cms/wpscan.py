@@ -26,6 +26,8 @@ class WPScanJob(Job):
         clean_output = re.sub(r'\x1b\[[0-9;]*m', '', self._raw_output)
 
         section = clean_output.split('\n')
+        skip_line = 13
+        section = section[skip_line:]
 
         self.result = section
 
