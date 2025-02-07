@@ -1,13 +1,6 @@
 {
   "simple": [
-    "dns.domain.DomainJob",
-    "recon.ssh_audit.SSHAuditJob",
-    "cms.joomscan.JoomscanJob",
-    "cms.droopescan.DroopescanJob",
-    "cms.wpscan.WPScanJob",
-    "cms.vulnx.VulnxJob",
-    "scanner.zapit.ZapitJob", 
-    "recon.oralyser.OralyserJob" 
+    "scanner.wapiti.WapitiJob"
   ],
   "complex": [
     "dns.domain.DomainJob",
@@ -26,6 +19,7 @@
     "cms.wpscan.WPScanJob",
     "cms.vulnx.VulnXJob",
     "scanner.zapit.ZapitJob", 
-    "recon.oralyser.OralyserJob" 
+    "recon.oralyser.OralyserJob",
+    "scanner.wapiti.WapitiJob"
   ]
 }
