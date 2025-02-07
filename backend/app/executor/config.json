@@ -6,7 +6,8 @@
     "cms.droopescan.DroopescanJob",
     "cms.wpscan.WPScanJob",
     "cms.vulnx.VulnxJob",
-    "scanner.zapit.ZapitJob"   
+    "scanner.zapit.ZapitJob", 
+    "recon.oralyser.OralyserJob" 
   ],
   "complex": [
     "dns.domain.DomainJob",
@@ -23,7 +24,8 @@
     "cms.joomscan.JoomscanJob",
     "cms.droopescan.DroopescanJob",
     "cms.wpscan.WPScanJob",
-    "cms.vulnx.VulnxJob",
-    "scanner.zapit.ZapitJob"   
+    "cms.vulnx.VulnXJob",
+    "scanner.zapit.ZapitJob", 
+    "recon.oralyser.OralyserJob" 
   ]
 }
