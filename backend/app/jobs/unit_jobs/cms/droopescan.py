@@ -1,8 +1,8 @@
+import re
+
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
-
-import re
 
 
 class DroopescanJob(Job):
@@ -33,10 +33,10 @@ class DroopescanJob(Job):
 
         self.result = section
 
-        
+
 
     def score(self) :
         return 0.0
-    
+
     def definitions(self):
-        return {}
+        return []

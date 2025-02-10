@@ -3,7 +3,7 @@ from typing import Any, List
 
 from app.jobs.license import License
 from app.jobs.tools import add_data
-from app.models.scan import Scan
+from app.models.scan import Result, Scan
 
 
 class Job(ABC):
@@ -50,7 +50,7 @@ class Job(ABC):
         pass
 
     @abstractmethod
-    def definitions(self) -> dict:
+    def definitions(self) -> List[Result]:
         """TODO: Return a list of definitions for the job."""
         pass
 

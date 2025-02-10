@@ -30,3 +30,12 @@ class Scan(SQLModel, table=True):
     @data_dict.setter
     def data_dict(self, value):
         self.data = json.dumps(value)
+
+
+class Result(SQLModel):
+    title: str
+    score: int
+    category: str
+    short_description: str
+    description: str
+    recommendation: str
