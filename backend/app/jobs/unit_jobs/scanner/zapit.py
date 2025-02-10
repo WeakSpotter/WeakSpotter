@@ -27,4 +27,4 @@ class ZapitJob(Job):
         return 0.0
     
     def definitions(self):
-        return {}
+        return []
