@@ -12,6 +12,9 @@ class ScanStatus(IntEnum):
     completed = 2
     failed = 3
 
+class ScanType(IntEnum):
+    simple = 0
+    complex = 1
 
 class Scan(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
@@ -19,6 +22,7 @@ class Scan(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     status: ScanStatus = ScanStatus.pending
     progress: int = 0
+    type: ScanType
     current_step: str = ""
     data: str = "{}"
     user_id: Optional[int] = Field(default=None, foreign_key="user.id")
