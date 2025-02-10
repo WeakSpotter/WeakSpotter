@@ -1,8 +1,7 @@
 from app.jobs.abstract_job import Job
-from app.jobs.license import License
 from app.jobs.container import run_container
+from app.jobs.license import License
 
-import re
 
 class OralyserJob(Job):
     requirements = []
@@ -25,6 +24,6 @@ class OralyserJob(Job):
 
     def score(self):
         return 0.0
-    
+
     def definitions(self):
-        return {}
+        return []

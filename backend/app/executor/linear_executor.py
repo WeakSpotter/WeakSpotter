@@ -20,11 +20,22 @@ class LinearExecutor(Executor):
 
         Returns:
             List[Job]: The ordered list of jobs.
+
+        Raises:
+            RuntimeError: If there is a circular dependency between jobs
         """
         ordered_jobs = []
         jobs_dict = {job.key: job for job in jobs}
 
+        previous_len = -1
+
         while jobs_dict:
+            # Check for infinite loop - if no jobs were processed in last iteration
+            if len(jobs_dict) == previous_len:
+                raise RuntimeError("Circular dependency detected between jobs")
+
+            previous_len = len(jobs_dict)
+
             for key, job in list(jobs_dict.items()):
                 if all(
                     req in [j.key for j in ordered_jobs] for req in job.requirements

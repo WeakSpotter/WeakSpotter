@@ -1,7 +1,5 @@
 {
-  "simple": [
-    "scanner.wapiti.WapitiJob"
-  ],
+  "simple": ["dns.whois.WhoisJob"],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",
@@ -18,7 +16,7 @@
     "cms.droopescan.DroopescanJob",
     "cms.wpscan.WPScanJob",
     "cms.vulnx.VulnXJob",
-    "scanner.zapit.ZapitJob", 
+    "scanner.zapit.ZapitJob",
     "recon.oralyser.OralyserJob",
     "scanner.wapiti.WapitiJob"
   ]

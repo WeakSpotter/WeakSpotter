@@ -40,4 +40,4 @@ class Sublist3rJob(Job):
         return 0.0
 
     def definitions(self):
-        return {}
+        return []

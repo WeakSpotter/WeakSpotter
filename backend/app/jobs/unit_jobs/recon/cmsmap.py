@@ -24,5 +24,5 @@ class CMSMapJob(Job):
     def score(self) -> float:
         return 0.0
 
-    def definitions(self) -> dict:
-        return {}
+    def definitions(self):
+        return []

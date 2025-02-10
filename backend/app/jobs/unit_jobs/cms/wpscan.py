@@ -1,8 +1,9 @@
-from app.jobs.abstract_job import Job
-from app.jobs.license import License
-from app.jobs.container import run_container
-
 import re
+
+from app.jobs.abstract_job import Job
+from app.jobs.container import run_container
+from app.jobs.license import License
+
 
 class WPScanJob(Job):
     requirements = []
@@ -28,6 +29,6 @@ class WPScanJob(Job):
 
     def score(self):
         return 0.0
-    
+
     def definitions(self):
-        return {}
+        return []

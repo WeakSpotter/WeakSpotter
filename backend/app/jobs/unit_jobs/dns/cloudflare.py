@@ -45,7 +45,7 @@ class CloudflareDetectJob(Job):
         pass
 
     def definitions(self):
-        return {}
+        return []
 
     def score(self) -> float:
         return 0.0

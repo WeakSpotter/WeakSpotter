@@ -17,7 +17,7 @@ class DomainJob(Job):
         pass
 
     def definitions(self):
-        return {}
+        return []
 
     def score(self):
         return 100.0

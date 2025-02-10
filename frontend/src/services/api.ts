@@ -17,6 +17,15 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
 });
 
+// Add this function to handle logout
+const handleLogout = () => {
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("username");
+  // Force reload the page to reset the application state
+  window.location.href = "/login";
+};
+
+// Request interceptor (unchanged)
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");
   if (token) {
@@ -25,6 +34,23 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+// Add response interceptor
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      // Check if the error is due to an invalid token or authentication
+      if (
+        error.response.status === 401 &&
+        (error.response.data?.detail === "Invalid token" ||
+          error.response.data?.detail === "Not authenticated")
+      ) {
+        handleLogout();
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 export const api = {
   getVersion: () =>
     axiosInstance.get<{ version: string }>(`${API_URL}/version/`),
