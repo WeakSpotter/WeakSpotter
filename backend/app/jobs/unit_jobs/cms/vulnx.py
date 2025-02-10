@@ -23,16 +23,18 @@ class VulnXJob(Job):
 
     def parse_results(self):
         # Nettoyer la sortie brute en supprimant les séquences d'échappement ANSI
-        clean_output = re.sub(r'\x1b\[[0-9;]*m', '', self._raw_output)
+        clean_output = re.sub(r"\x1b\[[0-9;]*m", "", self._raw_output)
 
         # Séparer la sortie en lignes
-        section = clean_output.split('\n')
+        section = clean_output.split("\n")
 
         # Filtrer les lignes contenant des crochets [ ] et supprimer leur contenu
         filtered_lines = [
-            re.sub(r'\[.*?\]', '', line).strip()  # Supprime le contenu entre [ ] et nettoie les espaces
+            re.sub(
+                r"\[.*?\]", "", line
+            ).strip()  # Supprime le contenu entre [ ] et nettoie les espaces
             for line in section
-            if '[' in line and ']' in line
+            if "[" in line and "]" in line
         ]
 
         # Stocker le résultat filtré

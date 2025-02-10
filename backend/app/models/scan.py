@@ -31,12 +31,14 @@ class Scan(SQLModel, table=True):
     def data_dict(self, value):
         self.data = json.dumps(value)
 
+
 class Severity(IntEnum):
     debug = 0
     info = 1
     warning = 2
     error = 3
     critical = 4
+
 
 class Result(SQLModel):
     title: str

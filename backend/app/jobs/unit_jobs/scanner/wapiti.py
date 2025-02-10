@@ -15,20 +15,25 @@ class WapitiJob(Job):
         self.result = {}
 
         self._raw_output = run_container(
-            "ghcr.io/weakspotter/wapiti:latest", f"-u {url} --format json --output /tmp/wapiti-output.json"
+            "ghcr.io/weakspotter/wapiti:latest",
+            f"-u {url} --format json --output /tmp/wapiti-output.json",
         )
 
     def parse_results(self):
-        output_lines = self._raw_output.split('\n')
+        output_lines = self._raw_output.split("\n")
 
         target_line_index = next(
-            (i for i, line in enumerate(output_lines)
-            if "A report has been generated in the file /tmp/wapiti-output.json" in line),
-            -1
+            (
+                i
+                for i, line in enumerate(output_lines)
+                if "A report has been generated in the file /tmp/wapiti-output.json"
+                in line
+            ),
+            -1,
         )
 
         if target_line_index != -1:
-            filtered_output = '\n'.join(output_lines[target_line_index + 1:])
+            filtered_output = "\n".join(output_lines[target_line_index + 1 :])
             self.result = filtered_output
         else:
             self.result = self._raw_output

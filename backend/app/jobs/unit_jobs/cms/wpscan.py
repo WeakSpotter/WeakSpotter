@@ -19,13 +19,12 @@ class WPScanJob(Job):
         # Run the command in the Docker container
         self._raw_output = run_container(
             image="wpscanteam/wpscan:latest",
-            command= f"--url {url} -f json",
+            command=f"--url {url} -f json",
             ignore_errors=True,
         )
 
     def parse_results(self):
         self.result = self._raw_output
-
 
     def score(self):
         return 0.0

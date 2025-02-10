@@ -11,7 +11,7 @@ class DroopescanJob(Job):
     name = "Droopescan"
     license = License.GPLv2
 
-    def run(self) :
+    def run(self):
         "Scan csm site with droopescan."
         url = self._scan.url
         self.result = {}
@@ -20,12 +20,10 @@ class DroopescanJob(Job):
             "ghcr.io/weakspotter/droopescan:latest", f"scan drupal -u {url} -o json"
         )
 
-    def parse_results(self) :
+    def parse_results(self):
         self.result = self._raw_output
 
-
-
-    def score(self) :
+    def score(self):
         return 0.0
 
     def definitions(self):
