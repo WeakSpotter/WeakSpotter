@@ -17,6 +17,27 @@ class ContainerError(Exception):
     pass
 
 
+def ensure_image_updated(image: str, docker_client=None, k8s_client=None):
+    """Check and pull the latest version of the image if needed."""
+    if docker_client:
+        try:
+            logger.info(f"Pulling latest version of image: {image}")
+            docker_client.images.pull(image)
+            logger.info(f"Successfully updated image: {image}")
+        except DockerException as e:
+            logger.error(f"Failed to pull image {image}: {e}")
+            raise ContainerError(f"Failed to pull image {image}: {e}")
+    elif k8s_client:
+        try:
+            # For Kubernetes, we can't directly check if image is up to date
+            # but we can try to pull the image policy
+            logger.info(f"Setting image pull policy to Always for: {image}")
+            return "Always"  # This will be used in imagePullPolicy
+        except Exception as e:
+            logger.error(f"Failed to handle image pull policy for {image}: {e}")
+            raise ContainerError(f"Failed to handle image pull policy for {image}: {e}")
+
+
 def run_container(
     image: str,
     command: str,
@@ -31,6 +52,9 @@ def run_container(
         k8s_config.load_incluster_config()
         v1 = k8s_client.CoreV1Api()
 
+        # Check image update status
+        image_pull_policy = ensure_image_updated(image, k8s_client=v1)
+
         pod_name = f"weakspotter-{uuid.uuid4()}"
         pod_manifest = {
             "apiVersion": "v1",
@@ -43,6 +67,7 @@ def run_container(
                         "image": image,
                         "command": [entrypoint] if entrypoint else ["/bin/sh", "-c"],
                         "args": [command],
+                        "imagePullPolicy": image_pull_policy,  # Added image pull policy
                     }
                 ],
                 "restartPolicy": "Never",
@@ -74,6 +99,9 @@ def run_container(
         except DockerException as e:
             logger.error(f"Failed to connect to Docker: {e}")
             raise ContainerError(f"Failed to connect to Docker: {e}")
+
+        # Check image update status
+        ensure_image_updated(image, docker_client=docker_client)
 
         container_name = f"weakspotter-{uuid.uuid4()}"
         logger.info(
