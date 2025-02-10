@@ -1,6 +1,6 @@
 from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
-from app.models.scan import Scan
+from app.models.scan import Scan, ScanType
 from app.scoring.calculator import calculate_score
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
@@ -68,7 +68,7 @@ def create_scan(
             status_code=403, detail="Authentication required for complex scan"
         )
 
-    scan = Scan(url=url, user_id=current_user.id if current_user else None)
+    scan = Scan(url=url, user_id=current_user.id if current_user else None, type= ScanType.complex if complex else ScanType.simple)
     session.add(scan)
     session.commit()
     session.refresh(scan)
