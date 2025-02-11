@@ -107,6 +107,9 @@ export default function ScanDetails() {
               <strong>ID:</strong> {scan.id}
             </p>
             <p>
+              <strong>Type:</strong> {scan.type === 0 ? 'Simple' : 'Complexe'}
+            </p>
+            <p>
               <strong>URL:</strong> {scan.url}
             </p>
             <p>

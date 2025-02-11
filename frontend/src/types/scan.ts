@@ -7,6 +7,7 @@ export enum ScanStatus {
 
 export interface Scan {
   id: number;
+  type: number;
   url: string;
   status: ScanStatus;
   created_at: string;
