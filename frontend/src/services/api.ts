@@ -56,6 +56,7 @@ export const api = {
     axiosInstance.get<{ version: string }>(`${API_URL}/version/`),
   getScans: () => axiosInstance.get<Scan[]>(`${API_URL}/scans/`),
   getScan: (id: number) => axiosInstance.get<Scan>(`${API_URL}/scans/${id}`),
+  getScanDescriptions: (scanid: number, id: number) => axiosInstance.get(`${API_URL}/scans/${scanid}/descriptions/${id}`),
   getScanData: (id: number) => axiosInstance.get(`${API_URL}/scans/${id}/data`),
   getScanScore: (id: number) =>
     axiosInstance.get<number>(`${API_URL}/scans/${id}/score`),

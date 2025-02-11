@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../services/api";
+import ScanDescriptions from "./ScanDescriptions"
 import {
   Scan,
   getScanStatusText,
@@ -174,6 +175,7 @@ export default function ScanDetails() {
           </div>
         </div>
       )}
+      <ScanDescriptions />
     </div>
   );
 }
