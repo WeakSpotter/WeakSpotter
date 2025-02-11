@@ -1,5 +1,9 @@
 {
-  "simple": ["dns.whois.WhoisJob"],
+  "simple": [
+    "dns.whois.WhoisJob",
+    "dns.domain.DomainJob",
+    "recon.ssh_audit.SSHAuditJob"
+    ],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",

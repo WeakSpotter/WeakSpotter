@@ -68,7 +68,11 @@ def create_scan(
             status_code=403, detail="Authentication required for complex scan"
         )
 
-    scan = Scan(url=url, user_id=current_user.id if current_user else None, type= ScanType.complex if complex else ScanType.simple)
+    scan = Scan(
+        url=url,
+        user_id=current_user.id if current_user else None,
+        type=ScanType.complex if complex else ScanType.simple,
+    )
     session.add(scan)
     session.commit()
     session.refresh(scan)

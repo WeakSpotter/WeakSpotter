@@ -12,9 +12,11 @@ class ScanStatus(IntEnum):
     completed = 2
     failed = 3
 
+
 class ScanType(IntEnum):
     simple = 0
     complex = 1
+
 
 class Scan(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
