@@ -13,14 +13,12 @@ class User(SQLModel, table=True):
     # Scans created by this user (one-to-many)
     created_scans: List[Scan] = Relationship(
         back_populates="creator",
-        sa_relationship_kwargs={"foreign_keys": "[Scan.creator_id]"}
+        sa_relationship_kwargs={"foreign_keys": "[Scan.creator_id]"},
     )
 
     # Scans shared with this user (many-to-many)
-    scans: List[Scan] = Relationship(
-        back_populates="users",
-        link_model=UserScanLink
-    )
+    scans: List[Scan] = Relationship(back_populates="users", link_model=UserScanLink)
+
 
 class UserCreate(SQLModel):
     username: str
