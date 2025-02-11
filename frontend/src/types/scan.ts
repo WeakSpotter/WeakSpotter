@@ -5,15 +5,31 @@ export enum ScanStatus {
   failed = 3,
 }
 
+export enum ScanType {
+  simple = 0,
+  complexe = 1,
+}
+
 export interface Scan {
   id: number;
-  type: number;
+  type: ScanType;
   url: string;
   status: ScanStatus;
   created_at: string;
   progress: number;
   current_step: string;
   data: string;
+}
+
+export const getScanTypeText = (type: ScanType): string => {
+  switch (type) {
+    case ScanType.simple:
+      return "Simple";
+    case ScanType.complexe:
+      return "Complexe";
+    default:
+      return "Unknown";
+  }
 }
 
 export const getScanStatusText = (status: ScanStatus): string => {

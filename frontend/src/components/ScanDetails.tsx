@@ -6,6 +6,7 @@ import {
   getScanStatusText,
   getScanStatusClass,
   ScanStatus,
+  getScanTypeText,
 } from "../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
 
@@ -107,7 +108,7 @@ export default function ScanDetails() {
               <strong>ID:</strong> {scan.id}
             </p>
             <p>
-              <strong>Type:</strong> {scan.type === 0 ? 'Simple' : 'Complexe'}
+              <strong>Type:</strong> {getScanTypeText(scan.type)}
             </p>
             <p>
               <strong>URL:</strong> {scan.url}
