@@ -19,6 +19,7 @@ export interface Scan {
   progress: number;
   current_step: string;
   data: string;
+  creator_id: number;
 }
 
 export const getScanTypeText = (type: ScanType): string => {
@@ -30,7 +31,7 @@ export const getScanTypeText = (type: ScanType): string => {
     default:
       return "Unknown";
   }
-}
+};
 
 export const getScanStatusText = (status: ScanStatus): string => {
   switch (status) {

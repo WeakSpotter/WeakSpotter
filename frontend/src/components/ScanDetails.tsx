@@ -9,6 +9,7 @@ import {
   getScanTypeText,
 } from "../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
+import toast from "react-hot-toast";
 
 export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +30,7 @@ export default function ScanDetails() {
       setScan(scanRes.data);
       setScore(scoreRes.data);
     } catch (error) {
+      toast.error("Failed to load scan details. Please try again.");
       console.error("Error loading scan details:", error);
     } finally {
       setLoading(false);

@@ -7,12 +7,14 @@ import ScanDetails from "./components/ScanDetails";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Register from "./components/Register";
-import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
+import ProtectedRoute from "./components/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-base-200 pb-16">
+        <Toaster />
         <Navbar />
         <div className="container mx-auto px-4 py-8">
           <Routes>
