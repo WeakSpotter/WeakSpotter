@@ -1,6 +1,9 @@
+from datetime import datetime, timedelta
+
 from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
 from app.models.scan import Scan, ScanType
+from app.routes.version import get_version
 from app.scoring.calculator import calculate_score
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
@@ -10,48 +13,47 @@ from sqlmodel import select
 router = APIRouter()
 
 
-@router.get("/scans/", tags=["scans"])
-def read_scans(session: SessionDep, current_user: UserDep):
-    scans = session.exec(
-        select(Scan).where((Scan.user_id == current_user.id) | (Scan.user_id.is_(None)))
-    ).all()
-
-    return scans
-
-
-@router.get("/scans/{scan_id}", tags=["scans"])
-def read_scan(scan_id: int, session: SessionDep, current_user: UserDep):
+def get_scan_or_403(scan_id: int, session: SessionDep, current_user: UserDep) -> Scan:
     scan = session.get(Scan, scan_id)
-    if scan is None:
+    if not scan:
         raise HTTPException(status_code=404, detail="Scan not found")
-    if scan.user_id and scan.user_id != current_user.id:
+
+    if (
+        scan.creator_id
+        and scan.creator_id != current_user.id
+        and current_user not in scan.users
+    ):
         raise HTTPException(
             status_code=403, detail="Not authorized to access this scan"
         )
     return scan
 
 
+@router.get("/scans/", tags=["scans"])
+def read_scans(session: SessionDep, current_user: UserDep):
+    # Get scans where user is either creator or has access
+    scans = session.exec(
+        select(Scan).where(
+            (Scan.creator_id == current_user.id) | (Scan.users.any(id=current_user.id))
+        )
+    ).all()
+    return scans
+
+
+@router.get("/scans/{scan_id}", tags=["scans"])
+def read_scan(scan_id: int, session: SessionDep, current_user: UserDep):
+    return get_scan_or_403(scan_id, session, current_user)
+
+
 @router.get("/scans/{scan_id}/data", tags=["scans"])
 def read_scan_data(scan_id: int, session: SessionDep, current_user: UserDep) -> dict:
-    scan = session.get(Scan, scan_id)
-    if scan is None:
-        raise HTTPException(status_code=404, detail="Scan not found")
-    if scan.user_id and scan.user_id != current_user.id:
-        raise HTTPException(
-            status_code=403, detail="Not authorized to access this scan"
-        )
+    scan = get_scan_or_403(scan_id, session, current_user)
     return scan.data_dict
 
 
 @router.get("/scans/{scan_id}/score", tags=["scans"])
 def read_scan_score(scan_id: int, session: SessionDep, current_user: UserDep) -> int:
-    scan = session.get(Scan, scan_id)
-    if scan is None:
-        raise HTTPException(status_code=404, detail="Scan not found")
-    if scan.user_id and scan.user_id != current_user.id:
-        raise HTTPException(
-            status_code=403, detail="Not authorized to access this scan"
-        )
+    scan = get_scan_or_403(scan_id, session, current_user)
     return calculate_score(scan)
 
 
@@ -68,11 +70,40 @@ def create_scan(
             status_code=403, detail="Authentication required for complex scan"
         )
 
+    # Check if a recent scan with the same URL already exists and has been done in the last 1 hour
+    recent_scan = session.exec(
+        select(Scan).where(
+            Scan.url == url, Scan.created_at > datetime.utcnow() - timedelta(hours=1)
+        )
+    ).first()
+
+    print(f"Found recent scan: {recent_scan}")
+
+    if recent_scan and get_version() != "dev":
+        if (
+            recent_scan.creator_id == current_user.id
+            or current_user in recent_scan.users
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail=f"You cannot scan the same URL again so soon, please wait {recent_scan.created_at + timedelta(hours=1) - datetime.utcnow()} seconds",
+            )
+
+        # Add user to the scan
+        recent_scan.users.append(current_user)
+        session.add(recent_scan)
+        session.commit()
+        return recent_scan
+
     scan = Scan(
         url=url,
-        user_id=current_user.id if current_user else None,
+        creator_id=current_user.id if current_user else None,
         type=ScanType.complex if complex else ScanType.simple,
     )
+
+    if current_user:
+        scan.users.append(current_user)  # Add creator as a user with access
+
     session.add(scan)
     session.commit()
     session.refresh(scan)
@@ -86,8 +117,9 @@ def create_scan(
 
 @router.delete("/scans/{scan_id}", tags=["scans"])
 def delete_scan(scan_id: int, session: SessionDep, current_user: UserDep) -> dict:
-    scan = session.get(Scan, scan_id)
-    if scan.user_id and scan.user_id != current_user.id:
+    scan = get_scan_or_403(scan_id, session, current_user)
+
+    if scan.creator_id and scan.creator_id != current_user.id:
         raise HTTPException(
             status_code=403, detail="Not authorized to delete this scan"
         )
