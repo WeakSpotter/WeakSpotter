@@ -17,6 +17,14 @@ class UserScanLink(SQLModel, table=True):
         default=None, foreign_key="scan.id", primary_key=True
     )
 
+class ScanResultLink(SQLModel, table=True):
+    result_id: Optional[int] = Field(
+        default=None, foreign_key="result.id", primary_key=True
+    )
+    scan_id: Optional[int] = Field(
+        default=None, foreign_key="scan.id", primary_key=True
+    )
+
 
 class ScanStatus(IntEnum):
     pending = 0
@@ -50,6 +58,10 @@ class Scan(SQLModel, table=True):
     # Many-to-many relationship with users
     users: List["User"] = Relationship(back_populates="scans", link_model=UserScanLink)
 
+    # Many-to-many relationship with scan details
+
+    details: List["Result"] = Relationship(back_populates="scans", link_model=ScanResultLink)
+
     @property
     def data_dict(self):
         return json.loads(self.data)
@@ -67,7 +79,8 @@ class Severity(IntEnum):
     critical = 4
 
 
-class Result(SQLModel):
+class Result(SQLModel , table=True):
+    id: int = Field(default=None, primary_key=True)
     title: str
     score: int
     category: str
@@ -75,3 +88,5 @@ class Result(SQLModel):
     description: str
     recommendation: str
     severity: Severity
+
+    scans: List[Scan] = Relationship(back_populates="details", link_model=ScanResultLink)

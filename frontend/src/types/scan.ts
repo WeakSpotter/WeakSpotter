@@ -20,6 +20,7 @@ export interface Scan {
   current_step: string;
   data: string;
   creator_id: number;
+  result: string;
 }
 
 export const getScanTypeText = (type: ScanType): string => {

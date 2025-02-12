@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import ScanResult from "./ScanListResult";
 import { api } from "../services/api";
 import {
   Scan,
@@ -92,6 +93,7 @@ export default function ScanDetails() {
     scan.status === ScanStatus.pending || scan.status === ScanStatus.running;
 
   return (
+    <>
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body">
         <div className="flex justify-between items-center">
@@ -177,5 +179,7 @@ export default function ScanDetails() {
         </div>
       )}
     </div>
+    <ScanResult />
+    </>
   );
 }
