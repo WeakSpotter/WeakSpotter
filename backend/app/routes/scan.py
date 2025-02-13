@@ -99,6 +99,7 @@ def create_scan(
         url=url,
         creator_id=current_user.id if current_user else None,
         type=ScanType.complex if complex else ScanType.simple,
+        result=[],
     )
 
     if current_user:

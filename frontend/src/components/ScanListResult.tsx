@@ -1,41 +1,43 @@
-import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { api } from "../services/api";
+interface ScanListResultProps {
+    scan: any; 
+}
 
-export default function ScanResult() {
-    const { id } = useParams<{ id: string }>();
-    const { scanid } = useParams<{ scanid: string }>();
-    const [scanResult, setScanResult] = useState<any | null>(null);
-    const [loading, setLoading] = useState(true);
+export default function ScanListResult({scan}: ScanListResultProps) {
     
-    const loadScanResult = useCallback(async () => {
-        if (!id || !scanid) return;
 
-        try {
-            const scanResultRes = await api.getScanResult(parseInt(id));
-            setScanResult(scanResultRes.data);
-        } catch (error) {
-            console.error("Error loading scan descriptions:", error);
-        } finally {
-            setLoading(false);
-        }
-    }, [id]);
-
-    useEffect(() => {
-        loadScanResult();
-    }, [loadScanResult]);
-
-
-    if (!scanResult) {
+    if (!scan) {
         return <div className="alert alerte-error">Scan Description not found</div>;
-    }
-
-    if (loading) {
-        return <div></div>;
     }
 
     return (
         <>
-        </>
+    <div className="card bg-base-100 shadow-xl mt-5">
+        <div className="card-body">
+            <div className="flex justify-between items-center">
+                <h2 className="card-title"> Title </h2>
+                <h4>score</h4>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <p>
+                        short description
+                    </p>
+                </div>
+            </div>
+
+        <div className="card-actions justify-end">
+            <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                        // handleScan(scan.id);
+                    }}
+                >
+                    More details
+                </button>
+            </div>
+        </div>
+    </div>
+    </>
     )
 }

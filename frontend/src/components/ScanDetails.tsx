@@ -179,7 +179,7 @@ export default function ScanDetails() {
         </div>
       )}
     </div>
-    <ScanResult />
+    <ScanResult scan={scan}/>
     </>
   );
 }

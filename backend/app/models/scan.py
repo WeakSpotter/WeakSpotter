@@ -47,6 +47,7 @@ class Scan(SQLModel, table=True):
     type: ScanType
     current_step: str = ""
     data: str = "{}"
+    result: List["Result"] = Relationship(back_populates="scans", link_model=ScanResultLink)
 
     # Creator relationship (one-to-many)
     creator_id: Optional[int] = Field(default=None, foreign_key="user.id")
@@ -58,10 +59,7 @@ class Scan(SQLModel, table=True):
     # Many-to-many relationship with users
     users: List["User"] = Relationship(back_populates="scans", link_model=UserScanLink)
 
-    # Many-to-many relationship with scan details
-
-    details: List["Result"] = Relationship(back_populates="scans", link_model=ScanResultLink)
-
+    
     @property
     def data_dict(self):
         return json.loads(self.data)
@@ -89,4 +87,4 @@ class Result(SQLModel , table=True):
     recommendation: str
     severity: Severity
 
-    scans: List[Scan] = Relationship(back_populates="details", link_model=ScanResultLink)
+    scans: List[Scan] = Relationship(back_populates="result", link_model=ScanResultLink)
