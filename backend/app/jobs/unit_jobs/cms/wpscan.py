@@ -27,7 +27,10 @@ class WPScanJob(Job):
         self.result = self._raw_output
 
     def score(self):
-        return 0.0
+        if (self.result.contains("not seem to be running WordPress")): 
+            return -1
+        else :
+            return 0.0
 
     def definitions(self):
         return []

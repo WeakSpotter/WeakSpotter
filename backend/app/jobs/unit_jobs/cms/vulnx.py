@@ -41,7 +41,10 @@ class VulnXJob(Job):
         self.result = filtered_lines
 
     def score(self):
-        return 0.0
+        if (self.result.contains("CMS : Unknown")): 
+            return -1
+        else :
+            return 0.0
 
     def definitions(self):
         return []
