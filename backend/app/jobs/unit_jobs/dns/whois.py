@@ -37,7 +37,10 @@ class WhoisJob(Job):
         self.result = result
 
     def score(self) -> float:
-        return 0.0
+        if (self.result.contains("null")): 
+            return -1
+        else: 
+            return 0.0
 
     def definitions(self):
         return []

@@ -20,4 +20,4 @@ class DomainJob(Job):
         return []
 
     def score(self):
-        return 100.0
+        return -1
