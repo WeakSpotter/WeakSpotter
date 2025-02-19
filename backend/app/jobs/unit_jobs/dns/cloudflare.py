@@ -46,24 +46,48 @@ class CloudflareDetectJob(Job):
         pass
 
     def definitions(self):
-        if self.result["ipv4"] or self.result["ipv6"]:
-            return [
+        ipv4 = self._scan.data_dict.get("dns_records").get("a", [])
+        ipv6 = self._scan.data_dict.get("dns_records").get("aaaa", [])
+
+        results = []
+
+        if ipv4 and self.result["ipv4"]:
+            results.append(
                 Result(
-                    title="Cloudflare",
-                    description="The domain is behind Cloudflare.",
+                    title="Protected by Cloudflare (IPv4)",
+                    description="The domain is behind Cloudflare for IPv4.",
                     score=100,
                 )
-            ]
-        else:
-            return [
+            )
+        elif ipv4:
+            results.append(
                 Result(
-                    title="Cloudflare",
+                    title="Not Protected by Cloudflare (IPv4)",
+                    description="The domain is not behind Cloudflare for IPv4.",
                     severity=Severity.warning,
-                    description="The domain is not behind Cloudflare.",
                     score=0,
                 )
-            ]
-        return []
+            )
+
+        if ipv6 and self.result["ipv6"]:
+            results.append(
+                Result(
+                    title="Protected by Cloudflare (IPv6)",
+                    description="The domain is behind Cloudflare for IPv6.",
+                    score=100,
+                )
+            )
+        elif ipv6:
+            results.append(
+                Result(
+                    title="Not Protected by Cloudflare (IPv6)",
+                    description="The domain is not behind Cloudflare for IPv6.",
+                    severity=Severity.warning,
+                    score=0,
+                )
+            )
+
+        return results
 
     @staticmethod
     def fetch_cloudflare_ip_lists() -> Tuple[list, list]:

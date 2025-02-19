@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Icon from "@mdi/react";
 import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
-import { Result } from "../types/scan";
+import {
+  getCategoryLabel,
+  getSeverityClass,
+  getSeverityLabel,
+  Result,
+} from "../types/scan";
 
 interface ResultProps {
   result: Result;
@@ -11,49 +16,6 @@ export const ResultItem: React.FC<ResultProps> = ({ result }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpanded = () => setIsExpanded(!isExpanded);
-
-  const getSeverityLabel = (severity: number): string => {
-    switch (severity) {
-      case 0:
-        return "Debug";
-      case 1:
-        return "Info";
-      case 2:
-        return "Warning";
-      case 3:
-        return "Error";
-      case 4:
-        return "Critical";
-      default:
-        return "Unknown";
-    }
-  };
-
-  const getSeverityClass = (severity: number): string => {
-    switch (severity) {
-      case 0:
-        return "badge-ghost"; // Debug
-      case 1:
-        return "badge-info"; // Info
-      case 2:
-        return "badge-warning"; // Warning
-      case 3:
-        return "badge-error"; // Error
-      case 4:
-        return "badge-error"; // Critical
-      default:
-        return "badge-ghost";
-    }
-  };
-
-  const getCategoryLabel = (category: number): string => {
-    switch (category) {
-      case 0:
-        return "Unknown";
-      default:
-        return "Unknown";
-    }
-  };
 
   return (
     <div className="card bg-base-100 shadow-lg mb-4">
@@ -74,7 +36,11 @@ export const ResultItem: React.FC<ResultProps> = ({ result }) => {
               <span className="badge badge-neutral">
                 {getCategoryLabel(result.category)}
               </span>
-              <span className="badge badge-primary">Score: {result.score}</span>
+              {result.score !== -1 && (
+                <span className="badge badge-primary">
+                  Score: {result.score}
+                </span>
+              )}
             </div>
           </div>
           <Icon

@@ -75,3 +75,46 @@ export interface Result {
   score: number;
   scan_id: number;
 }
+
+export const getSeverityLabel = (severity: number): string => {
+  switch (severity) {
+    case 0:
+      return "Debug";
+    case 1:
+      return "Info";
+    case 2:
+      return "Warning";
+    case 3:
+      return "Error";
+    case 4:
+      return "Critical";
+    default:
+      return "Unknown";
+  }
+};
+
+export const getSeverityClass = (severity: number): string => {
+  switch (severity) {
+    case 0:
+      return "badge-ghost"; // Debug
+    case 1:
+      return "badge-info"; // Info
+    case 2:
+      return "badge-warning"; // Warning
+    case 3:
+      return "badge-error"; // Error
+    case 4:
+      return "badge-neutral"; // Critical
+    default:
+      return "badge-ghost";
+  }
+};
+
+export const getCategoryLabel = (category: number): string => {
+  switch (category) {
+    case 0:
+      return "Unknown";
+    default:
+      return "Unknown";
+  }
+};

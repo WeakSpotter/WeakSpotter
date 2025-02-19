@@ -5,9 +5,8 @@
     "dns.records.DNSRecordsJob",
     "dns.whois.WhoisJob",
     "http.http.HTTPVersionJob",
-    "recon.cmsmap.CMSMapJob",
-    "recon.harvester.EmailHarvesterJob",
-    "recon.nmap.NmapScanJob"
+    "recon.ssh_audit.SSHAuditJob",
+    "scanner.zapit.ZapitJob"
   ],
   "complex": [
     "dns.domain.DomainJob",
