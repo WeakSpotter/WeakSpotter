@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -19,9 +20,10 @@ export default function Login() {
       login(username, response.data.access_token);
       localStorage.setItem("authToken", response.data.access_token); // Store token in localStorage
       navigate("/");
+      toast.success("Login successful. Welcome!");
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Invalid username or password. Please try again.");
+      toast.error("Invalid username or password. Please try again.");
     } finally {
       setLoading(false);
     }

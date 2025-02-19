@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../services/api";
 import { Scan, getScanStatusText, getScanStatusClass } from "../types/scan";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export default function ScanList() {
   const [scans, setScans] = useState<Scan[]>([]);
@@ -16,6 +18,7 @@ export default function ScanList() {
       const response = await api.getScans();
       setScans(response.data);
     } catch (error) {
+      toast.error("Failed to load scans. Please try again.");
       console.error("Error loading scans:", error);
     } finally {
       setLoading(false);
@@ -29,6 +32,17 @@ export default function ScanList() {
       await api.deleteScan(id);
       setScans(scans.filter((scan) => scan.id !== id));
     } catch (error) {
+      const axiosError = error as AxiosError;
+
+      switch (axiosError.response?.status) {
+        case 403:
+          toast.error("You are not authorized to delete this scan.");
+          break;
+        default:
+          toast.error("Failed to delete scan. Please try again.");
+          break;
+      }
+
       console.error("Error deleting scan:", error);
     }
   };

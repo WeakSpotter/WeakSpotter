@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../services/api";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -20,9 +21,10 @@ export default function Register() {
       localStorage.setItem("authToken", response.data.access_token);
       localStorage.setItem("username", username);
       navigate("/");
+      toast.success("Registration successful. Welcome!");
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
+      toast.error("Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export default function CreateScan() {
   const [url, setUrl] = useState("");
@@ -26,9 +28,31 @@ export default function CreateScan() {
       const formattedUrl = formatUrl(url);
       const response = await api.createScan(formattedUrl, complex);
       navigate(`/scan/${response.data.id}`);
+      toast.success("Scan created successfully.");
     } catch (error) {
+      const axiosError = error as AxiosError;
+
+      switch (axiosError.response?.status) {
+        case 400:
+          toast.error("Invalid URL. Please enter a valid URL.");
+          break;
+        case 401:
+          toast.error("Please log in to access the complex scan feature.");
+          break;
+        case 403:
+          toast.error("You are not authorized to create a scan.");
+          break;
+        case 409:
+          toast.error(
+            "A scan for this URL already exists. Please wait at least 1 hour before scanning again.",
+          );
+          break;
+        default:
+          toast.error("Failed to create scan. Please try again.");
+          break;
+      }
+
       console.error("Error creating scan:", error);
-      alert("Failed to create scan");
     } finally {
       setLoading(false);
     }
