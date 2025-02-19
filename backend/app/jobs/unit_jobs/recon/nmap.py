@@ -2,12 +2,14 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 from app.jobs.abstract_job import Job
+from app.jobs.license import License
 
 
 class NmapScanJob(Job):
     requirements = ["domain"]
     key = "nmap"
-    name = "Nmap Scan"
+    name = "Nmap"
+    license = License.NSPL
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")
@@ -34,24 +36,27 @@ class NmapScanJob(Job):
         # Extract open ports and their details
         ports = root.findall(".//port")
         for port in ports:
+            # Initialize service element
+            service = port.find(".//service")
+            state = port.find(".//state")
+
             port_info = {
                 "protocol": port.get("protocol"),
                 "portid": port.get("portid"),
-                "state": port.find(".//state").get("state"),
+                "state": state.get("state") if state is not None else None,
                 "service": {
-                    "name": port.find(".//service").get("name"),
-                    "product": port.find(".//service").get("product"),
-                    "version": port.find(".//service").get("version"),
-                    "extrainfo": port.find(".//service").get("extrainfo"),
-                    "ostype": port.find(".//service").get("ostype"),
-                    "method": port.find(".//service").get("method"),
-                    "conf": port.find(".//service").get("conf"),
+                    "name": service.get("name") if service is not None else None,
+                    "product": service.get("product") if service is not None else None,
+                    "version": service.get("version") if service is not None else None,
+                    "extrainfo": service.get("extrainfo")
+                    if service is not None
+                    else None,
+                    "ostype": service.get("ostype") if service is not None else None,
+                    "method": service.get("method") if service is not None else None,
+                    "conf": service.get("conf") if service is not None else None,
                 },
             }
             self.result["host"]["ports"].append(port_info)
 
-    def score(self) -> float:
-        return 0.0
-
     def definitions(self):
-        return {}
+        return []

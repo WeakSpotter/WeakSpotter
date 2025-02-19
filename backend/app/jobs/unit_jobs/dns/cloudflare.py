@@ -3,6 +3,8 @@ from typing import Tuple
 
 import requests
 from app.jobs.abstract_job import Job
+from app.jobs.license import License
+from app.models.result import Result, Severity
 
 CF_IPV4_LIST_URL = "https://www.cloudflare.com/ips-v4"
 CF_IPV6_LIST_URL = "https://www.cloudflare.com/ips-v6"
@@ -12,6 +14,7 @@ class CloudflareDetectJob(Job):
     requirements = ["dns_records"]
     key = "cloudflare"
     name = "Cloudflare Detection"
+    license = License.Empty
 
     def run(self) -> None:
         """Determines whether the domain is behind Cloudflare."""
@@ -43,10 +46,48 @@ class CloudflareDetectJob(Job):
         pass
 
     def definitions(self):
-        return {}
+        ipv4 = self._scan.data_dict.get("dns_records").get("a", [])
+        ipv6 = self._scan.data_dict.get("dns_records").get("aaaa", [])
 
-    def score(self) -> float:
-        return 0.0
+        results = []
+
+        if ipv4 and self.result["ipv4"]:
+            results.append(
+                Result(
+                    title="Protected by Cloudflare (IPv4)",
+                    description="The domain is behind Cloudflare for IPv4.",
+                    score=100,
+                )
+            )
+        elif ipv4:
+            results.append(
+                Result(
+                    title="Not Protected by Cloudflare (IPv4)",
+                    description="The domain is not behind Cloudflare for IPv4.",
+                    severity=Severity.warning,
+                    score=0,
+                )
+            )
+
+        if ipv6 and self.result["ipv6"]:
+            results.append(
+                Result(
+                    title="Protected by Cloudflare (IPv6)",
+                    description="The domain is behind Cloudflare for IPv6.",
+                    score=100,
+                )
+            )
+        elif ipv6:
+            results.append(
+                Result(
+                    title="Not Protected by Cloudflare (IPv6)",
+                    description="The domain is not behind Cloudflare for IPv6.",
+                    severity=Severity.warning,
+                    score=0,
+                )
+            )
+
+        return results
 
     @staticmethod
     def fetch_cloudflare_ip_lists() -> Tuple[list, list]:

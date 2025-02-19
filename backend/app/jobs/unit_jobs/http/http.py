@@ -1,12 +1,14 @@
 import subprocess
 
 from app.jobs.abstract_job import Job
+from app.jobs.license import License
 
 
 class HTTPVersionJob(Job):
     requirements = []
     key = "http_version"
     name = "HTTP Version"
+    license = License.MIT
 
     def run(self) -> None:
         url = self._scan.url
@@ -45,8 +47,5 @@ class HTTPVersionJob(Job):
     def parse_results(self) -> None:
         pass
 
-    def score(self) -> float:
-        return 0.0
-
     def definitions(self):
-        return {}
+        return []

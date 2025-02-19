@@ -2,12 +2,14 @@ from datetime import datetime
 
 import whois
 from app.jobs.abstract_job import Job
+from app.jobs.license import License
 
 
 class WhoisJob(Job):
     requirements = ["domain"]
     key = "whois"
     name = "Whois"
+    license = License.MIT
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")
@@ -34,8 +36,5 @@ class WhoisJob(Job):
 
         self.result = result
 
-    def score(self) -> float:
-        return 0.0
-
     def definitions(self):
-        return {}
+        return []

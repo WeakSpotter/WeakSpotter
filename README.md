@@ -105,3 +105,7 @@ We also use sonarqube to analyze the code quality of the project. You can access
 ## License
 
 This project is licensed under the MIT License.
+
+## Other
+
+- [Github Repo Tracker](https://githubtracker.com/WeakSpotter/WeakSpotter)

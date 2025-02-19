@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface ScoreCircleProps {
   score: number;
@@ -9,17 +9,55 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
   score,
   size = "md",
 }) => {
-  // Ensure score is between 0 and 100
-  const validScore = Math.min(100, Math.max(0, score));
+  const [displayScore, setDisplayScore] = useState(score);
+  const animationRef = useRef<number>();
+  const previousScore = useRef(score);
+
+  useEffect(() => {
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    const startTime = performance.now();
+    const duration = 600; // Animation duration in milliseconds
+    const startValue = previousScore.current;
+    const endValue = Math.min(100, Math.max(0, score));
+    const changeInValue = endValue - startValue;
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function (ease-out cubic)
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      const currentValue = startValue + changeInValue * eased;
+      setDisplayScore(currentValue);
+
+      if (progress < 1) {
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+    previousScore.current = endValue;
+
+    // Cleanup
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [score]);
 
   // Determine color based on score
   const getColor = (score: number) => {
-    if (score >= 80) return "su"; // green (success)
-    if (score >= 50) return "wa"; // yellow (warning)
-    return "er"; // red (error)
+    if (score >= 80) return "su";
+    if (score >= 50) return "wa";
+    return "er";
   };
 
-  // Size configurations
   const sizeConfig = {
     sm: {
       circle: "w-24 h-24",
@@ -35,15 +73,15 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
     },
   };
 
-  const color = getColor(validScore);
+  const color = getColor(displayScore);
 
   return (
     <div
       className={`relative ${sizeConfig[size].circle} rounded-full flex items-center justify-center`}
       style={{
         background: `conic-gradient(
-          oklch(var(--${color})) ${validScore}%,
-          oklch(var(--b3)) ${validScore}%
+          oklch(var(--${color})) ${displayScore}%,
+          oklch(var(--b3)) ${displayScore}%
         )`,
         boxShadow: "0 0 10px rgba(0,0,0,0.1)",
       }}
@@ -68,7 +106,7 @@ export const ScoreCircle: React.FC<ScoreCircleProps> = ({
           `}
           style={{ color: `oklch(var(--${color}))` }}
         >
-          {Math.round(validScore)}
+          {Math.round(displayScore)}
         </span>
       </div>
     </div>

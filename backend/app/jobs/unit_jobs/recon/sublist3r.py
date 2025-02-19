@@ -2,12 +2,14 @@ import re
 
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
+from app.jobs.license import License
 
 
 class Sublist3rJob(Job):
     requirements = ["domain"]
     key = "sublist3r"
-    name = "Sublist3r Scan"
+    name = "Sublist3r"
+    license = License.GPLv2
 
     def run(self):
         "Scan a domain with sublist3r."
@@ -34,8 +36,5 @@ class Sublist3rJob(Job):
                 if clean_line:  # Ensure the line is not empty
                     self.result.append(clean_line)
 
-    def score(self):
-        return 0.0
-
     def definitions(self):
-        return {}
+        return []

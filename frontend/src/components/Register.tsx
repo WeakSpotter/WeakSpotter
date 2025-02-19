@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { api } from "../services/api";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,12 +17,14 @@ export default function Register() {
 
     try {
       const response = await api.register({ username, password });
+      login(username, response.data.access_token);
       localStorage.setItem("authToken", response.data.access_token);
       localStorage.setItem("username", username);
       navigate("/");
+      toast.success("Registration successful. Welcome!");
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
+      toast.error("Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }

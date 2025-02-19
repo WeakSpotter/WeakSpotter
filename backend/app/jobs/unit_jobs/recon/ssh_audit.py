@@ -2,12 +2,14 @@ import json
 
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
+from app.jobs.license import License
 
 
 class SSHAuditJob(Job):
     requirements = ["domain"]
     key = "ssh-audit"
     name = "SSH Audit"
+    license = License.MIT
 
     def run(self) -> None:
         """Performs a scan with SSH_audit on a domain or IP address."""
@@ -22,8 +24,5 @@ class SSHAuditJob(Job):
     def parse_results(self) -> None:
         self.result = json.loads(self._raw_output)
 
-    def score(self) -> float:
-        return 0.0
-
-    def definitions(self) -> dict:
-        return {}
+    def definitions(self):
+        return []

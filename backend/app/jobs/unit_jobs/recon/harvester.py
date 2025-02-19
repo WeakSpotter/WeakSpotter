@@ -2,12 +2,14 @@ import re
 
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
+from app.jobs.license import License
 
 
 class EmailHarvesterJob(Job):
     requirements = ["domain"]
     key = "email_harvester"
     name = "Email Harvester"
+    license = License.GPLv3
 
     def run(self) -> None:
         """Performs an email harvesting scan with theHarvester."""
@@ -26,8 +28,5 @@ class EmailHarvesterJob(Job):
         )
         self.result = sorted(set(email_pattern.findall(self._raw_output)))
 
-    def score(self) -> float:
-        return 0.0
-
-    def definitions(self) -> dict:
-        return {}
+    def definitions(self):
+        return []

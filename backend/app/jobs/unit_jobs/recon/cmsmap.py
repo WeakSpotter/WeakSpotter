@@ -2,12 +2,14 @@ from typing import List
 
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
+from app.jobs.license import License
 
 
 class CMSMapJob(Job):
     requirements: List[str] = ["domain"]
     key: str = "cmsmap"
-    name: str = "CMSMap Scan"
+    name: str = "CMSMap"
+    license = License.GPLv3
 
     def run(self) -> None:
         domain = self._scan.data_dict.get("domain")
@@ -19,8 +21,5 @@ class CMSMapJob(Job):
             line.strip() for line in self._raw_output.splitlines() if "[+]" in line
         ]
 
-    def score(self) -> float:
-        return 0.0
-
-    def definitions(self) -> dict:
-        return {}
+    def definitions(self):
+        return []

@@ -20,11 +20,22 @@ class LinearExecutor(Executor):
 
         Returns:
             List[Job]: The ordered list of jobs.
+
+        Raises:
+            RuntimeError: If there is a circular dependency between jobs
         """
         ordered_jobs = []
         jobs_dict = {job.key: job for job in jobs}
 
+        previous_len = -1
+
         while jobs_dict:
+            # Check for infinite loop - if no jobs were processed in last iteration
+            if len(jobs_dict) == previous_len:
+                raise RuntimeError("Circular dependency detected between jobs")
+
+            previous_len = len(jobs_dict)
+
             for key, job in list(jobs_dict.items()):
                 if all(
                     req in [j.key for j in ordered_jobs] for req in job.requirements
@@ -33,6 +44,9 @@ class LinearExecutor(Executor):
                     del jobs_dict[key]
 
         return ordered_jobs
+
+    def get_jobs(self) -> List[str]:
+        return [job.name for job in self.jobs]
 
     def run(self, scan: Scan, session: SessionDep) -> None:
         scan.status = ScanStatus.running
@@ -49,6 +63,14 @@ class LinearExecutor(Executor):
                 scan.progress = 100
                 save(session, scan)
                 return
+
+            try:
+                results = job.definitions()
+            except Exception as e:
+                print(f"Error getting definitions for job {job.name}: {e}")
+                results = []
+
+            scan.results.extend(results)
 
             scan.progress = int((i / len(self.jobs)) * 100)
             scan.current_step = ""
