@@ -3,7 +3,8 @@ from typing import Any, List
 
 from app.jobs.license import License
 from app.jobs.tools import add_data
-from app.models.scan import Result, Scan
+from app.models.result import Result
+from app.models.scan import Scan
 
 
 class Job(ABC):
@@ -42,11 +43,6 @@ class Job(ABC):
 
     @abstractmethod
     def parse_results(self) -> None:
-        pass
-
-    @abstractmethod
-    def score(self) -> float:
-        """TODO: Return a score for the job."""
         pass
 
     @abstractmethod

@@ -36,8 +36,5 @@ class Sublist3rJob(Job):
                 if clean_line:  # Ensure the line is not empty
                     self.result.append(clean_line)
 
-    def score(self):
-        return 0.0
-
     def definitions(self):
         return []

@@ -3,6 +3,7 @@ import re
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
+from app.models.result import Result
 
 
 class JoomscanJob(Job):
@@ -68,11 +69,13 @@ class JoomscanJob(Job):
 
         self.result = result
 
-    def score(self):
-        if self.result.contains("ver 404"):
-            return -1
-        else:
-            return 0.0
-
     def definitions(self):
+        if self.result.contains("ver 404"):
+            return [
+                Result(
+                    title="Joomscan",
+                    description="Joomscan could not find a Joomla site.",
+                )
+            ]
+
         return []

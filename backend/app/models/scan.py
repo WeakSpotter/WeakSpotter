@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
+    from .result import Result
     from .user import User
 
 
@@ -50,6 +51,9 @@ class Scan(SQLModel, table=True):
     # Many-to-many relationship with users
     users: List["User"] = Relationship(back_populates="scans", link_model=UserScanLink)
 
+    # One to many relationship with results
+    results: List["Result"] = Relationship(back_populates="scan")
+
     @property
     def data_dict(self):
         return json.loads(self.data)
@@ -57,6 +61,12 @@ class Scan(SQLModel, table=True):
     @data_dict.setter
     def data_dict(self, value):
         self.data = json.dumps(value)
+
+    @property
+    def score(self):
+        """Returns the mean of all result scores ignoring those set to -1."""
+        scores = [result.score for result in self.results if result.score != -1]
+        return sum(scores) / len(scores) if scores else 0
 
 
 class ScanRead(SQLModel):
@@ -69,26 +79,7 @@ class ScanRead(SQLModel):
     current_step: str
     data: str
     creator_id: Optional[int] = None
-    score: Optional[int] = None
 
     @property
     def data_dict(self):
         return json.loads(self.data)
-
-
-class Severity(IntEnum):
-    debug = 0
-    info = 1
-    warning = 2
-    error = 3
-    critical = 4
-
-
-class Result(SQLModel):
-    title: str
-    score: int
-    category: str
-    short_description: str
-    description: str
-    recommendation: str
-    severity: Severity

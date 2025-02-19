@@ -4,6 +4,7 @@ from typing import Tuple
 import requests
 from app.jobs.abstract_job import Job
 from app.jobs.license import License
+from app.models.result import Result, Severity
 
 CF_IPV4_LIST_URL = "https://www.cloudflare.com/ips-v4"
 CF_IPV6_LIST_URL = "https://www.cloudflare.com/ips-v6"
@@ -45,10 +46,24 @@ class CloudflareDetectJob(Job):
         pass
 
     def definitions(self):
+        if self.result["ipv4"] or self.result["ipv6"]:
+            return [
+                Result(
+                    title="Cloudflare",
+                    description="The domain is behind Cloudflare.",
+                    score=100,
+                )
+            ]
+        else:
+            return [
+                Result(
+                    title="Cloudflare",
+                    severity=Severity.warning,
+                    description="The domain is not behind Cloudflare.",
+                    score=0,
+                )
+            ]
         return []
-
-    def score(self) -> float:
-        return 0.0
 
     @staticmethod
     def fetch_cloudflare_ip_lists() -> Tuple[list, list]:

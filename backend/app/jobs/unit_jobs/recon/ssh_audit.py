@@ -24,11 +24,5 @@ class SSHAuditJob(Job):
     def parse_results(self) -> None:
         self.result = json.loads(self._raw_output)
 
-    def score(self) -> float:
-        if self.result.contains("null"):
-            return -1
-        else:
-            return 0.0
-
     def definitions(self):
         return []

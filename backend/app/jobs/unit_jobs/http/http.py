@@ -47,8 +47,5 @@ class HTTPVersionJob(Job):
     def parse_results(self) -> None:
         pass
 
-    def score(self) -> float:
-        return 0.0
-
     def definitions(self):
         return []

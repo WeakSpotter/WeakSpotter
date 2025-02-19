@@ -2,9 +2,8 @@ from datetime import datetime, timedelta
 
 from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
-from app.models.scan import Scan, ScanRead, ScanType
+from app.models.scan import Scan, ScanType
 from app.routes.version import get_version
-from app.scoring.calculator import calculate_score
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
@@ -41,13 +40,8 @@ def read_scans(session: SessionDep, current_user: UserDep):
 
 
 @router.get("/scans/{scan_id}", tags=["scans"])
-def read_scan(scan_id: int, session: SessionDep, current_user: UserDep) -> ScanRead:
-    scan = get_scan_or_403(scan_id, session, current_user)
-
-    scan_read = ScanRead.model_validate(scan)
-    scan_read.score = calculate_score(scan)
-
-    return scan_read
+def read_scan(scan_id: int, session: SessionDep, current_user: UserDep) -> Scan:
+    return get_scan_or_403(scan_id, session, current_user)
 
 
 @router.get("/scans/{scan_id}/data", tags=["scans"])

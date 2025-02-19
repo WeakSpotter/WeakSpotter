@@ -28,8 +28,5 @@ class EmailHarvesterJob(Job):
         )
         self.result = sorted(set(email_pattern.findall(self._raw_output)))
 
-    def score(self) -> float:
-        return -1
-
     def definitions(self):
         return []

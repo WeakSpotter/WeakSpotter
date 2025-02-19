@@ -58,8 +58,5 @@ class NmapScanJob(Job):
             }
             self.result["host"]["ports"].append(port_info)
 
-    def score(self) -> float:
-        return 0.0
-
     def definitions(self):
         return []

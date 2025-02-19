@@ -1,8 +1,7 @@
-import re
-
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
+from app.models.result import Result
 
 
 class DroopescanJob(Job):
@@ -23,11 +22,13 @@ class DroopescanJob(Job):
     def parse_results(self):
         self.result = self._raw_output
 
-    def score(self):
-        if self.result.contains("is not running drupal"):
-            return -1
-        else:
-            return 0.0
-
     def definitions(self):
+        if self.result.contains("is not running drupal"):
+            return [
+                Result(
+                    title="Droopescan",
+                    description="Droopescan could not find a Drupal site.",
+                )
+            ]
+
         return []

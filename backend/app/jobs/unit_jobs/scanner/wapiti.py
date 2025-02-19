@@ -38,8 +38,5 @@ class WapitiJob(Job):
         else:
             self.result = self._raw_output
 
-    def score(self):
-        return 0.0
-
     def definitions(self):
         return []

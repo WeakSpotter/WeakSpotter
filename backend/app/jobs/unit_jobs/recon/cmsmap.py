@@ -21,11 +21,5 @@ class CMSMapJob(Job):
             line.strip() for line in self._raw_output.splitlines() if "[+]" in line
         ]
 
-    def score(self) -> float:
-        if self.result.contains("null"):
-            return -1
-        else:
-            return 0.0
-
     def definitions(self):
         return []

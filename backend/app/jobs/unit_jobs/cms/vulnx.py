@@ -3,6 +3,7 @@ import re
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
+from app.models.result import Result
 
 
 class VulnXJob(Job):
@@ -40,11 +41,12 @@ class VulnXJob(Job):
         # Stocker le résultat filtré
         self.result = filtered_lines
 
-    def score(self):
-        if self.result.contains("CMS : Unknown"):
-            return -1
-        else:
-            return 0.0
-
     def definitions(self):
+        if self.result.contains("CMS : Unknown"):
+            return [
+                Result(
+                    title="VulnX",
+                    description="VulnX could not identify the CMS.",
+                )
+            ]
         return []

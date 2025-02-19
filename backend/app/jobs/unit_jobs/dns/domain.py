@@ -18,6 +18,3 @@ class DomainJob(Job):
 
     def definitions(self):
         return []
-
-    def score(self):
-        return -1

@@ -64,6 +64,14 @@ class LinearExecutor(Executor):
                 save(session, scan)
                 return
 
+            try:
+                results = job.definitions()
+            except Exception as e:
+                print(f"Error getting definitions for job {job.name}: {e}")
+                results = []
+
+            scan.results.extend(results)
+
             scan.progress = int((i / len(self.jobs)) * 100)
             scan.current_step = ""
             save(session, scan)

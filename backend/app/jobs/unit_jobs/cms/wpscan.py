@@ -1,8 +1,7 @@
-import re
-
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
+from app.models.result import Result
 
 
 class WPScanJob(Job):
@@ -26,11 +25,13 @@ class WPScanJob(Job):
     def parse_results(self):
         self.result = self._raw_output
 
-    def score(self):
-        if self.result.contains("not seem to be running WordPress"):
-            return -1
-        else:
-            return 0.0
-
     def definitions(self):
+        if self.result.contains("not seem to be running WordPress"):
+            return [
+                Result(
+                    title="WPScan",
+                    description="WPScan could not find a WordPress site.",
+                )
+            ]
+
         return []
