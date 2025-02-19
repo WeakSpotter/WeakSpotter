@@ -5,6 +5,7 @@ import { Scan, ScanStatus } from "../types/scan";
 import toast from "react-hot-toast";
 import { ScanHero } from "./ScanHero";
 import { ResultsContainer } from "./ResultsContainer";
+import { Result } from "../types/scan";
 
 export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();
