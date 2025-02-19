@@ -57,8 +57,6 @@ export const api = {
   getScans: () => axiosInstance.get<Scan[]>(`${API_URL}/scans/`),
   getScan: (id: number) => axiosInstance.get<Scan>(`${API_URL}/scans/${id}`),
   getScanData: (id: number) => axiosInstance.get(`${API_URL}/scans/${id}/data`),
-  getScanScore: (id: number) =>
-    axiosInstance.get<number>(`${API_URL}/scans/${id}/score`),
   createScan: (url: string, complex: boolean) =>
     axiosInstance.post<Scan>(`${API_URL}/scans/`, null, {
       params: { url, complex },

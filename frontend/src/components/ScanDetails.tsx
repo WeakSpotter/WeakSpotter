@@ -8,7 +8,6 @@ import { ScanHero } from "./ScanHero";
 export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();
   const [scan, setScan] = useState<Scan | null>(null);
-  const [score, setScore] = useState<number | null>(null); // TODO: Merge score in scan
   const [data, setData] = useState<any | null>(null); // TODO: Merge data in scan
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -17,12 +16,8 @@ export default function ScanDetails() {
     if (!id) return;
 
     try {
-      const [scanRes, scoreRes] = await Promise.all([
-        api.getScan(parseInt(id)),
-        api.getScanScore(parseInt(id)),
-      ]);
+      const [scanRes] = await Promise.all([api.getScan(parseInt(id))]);
       setScan(scanRes.data);
-      setScore(scoreRes.data);
     } catch (error) {
       toast.error("Failed to load scan details. Please try again.");
       console.error("Error loading scan details:", error);
@@ -84,7 +79,7 @@ export default function ScanDetails() {
 
   return (
     <>
-      <ScanHero scan={scan} score={score} handleViewData={handleViewData} />
+      <ScanHero scan={scan} handleViewData={handleViewData} />
       {showModal && (
         <div className="modal modal-open" onClick={handleCloseModal}>
           <div className="modal-box max-w-3xl">

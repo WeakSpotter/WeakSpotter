@@ -59,6 +59,23 @@ class Scan(SQLModel, table=True):
         self.data = json.dumps(value)
 
 
+class ScanRead(SQLModel):
+    id: Optional[int] = None
+    url: str
+    created_at: datetime
+    status: ScanStatus
+    progress: int
+    type: ScanType
+    current_step: str
+    data: str
+    creator_id: Optional[int] = None
+    score: Optional[int] = None
+
+    @property
+    def data_dict(self):
+        return json.loads(self.data)
+
+
 class Severity(IntEnum):
     debug = 0
     info = 1

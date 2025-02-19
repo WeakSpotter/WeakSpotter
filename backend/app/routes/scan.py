@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
-from app.models.scan import Scan, ScanType
+from app.models.scan import Scan, ScanRead, ScanType
 from app.routes.version import get_version
 from app.scoring.calculator import calculate_score
 from app.security import UserDep
@@ -41,20 +41,19 @@ def read_scans(session: SessionDep, current_user: UserDep):
 
 
 @router.get("/scans/{scan_id}", tags=["scans"])
-def read_scan(scan_id: int, session: SessionDep, current_user: UserDep):
-    return get_scan_or_403(scan_id, session, current_user)
+def read_scan(scan_id: int, session: SessionDep, current_user: UserDep) -> ScanRead:
+    scan = get_scan_or_403(scan_id, session, current_user)
+
+    scan_read = ScanRead.model_validate(scan)
+    scan_read.score = calculate_score(scan)
+
+    return scan_read
 
 
 @router.get("/scans/{scan_id}/data", tags=["scans"])
 def read_scan_data(scan_id: int, session: SessionDep, current_user: UserDep) -> dict:
     scan = get_scan_or_403(scan_id, session, current_user)
     return scan.data_dict
-
-
-@router.get("/scans/{scan_id}/score", tags=["scans"])
-def read_scan_score(scan_id: int, session: SessionDep, current_user: UserDep) -> int:
-    scan = get_scan_or_403(scan_id, session, current_user)
-    return calculate_score(scan)
 
 
 @router.post("/scans/", tags=["scans"])
