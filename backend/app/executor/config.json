@@ -1,5 +1,5 @@
 {
-  "simple": ["scanner.zapit.ZapitJob"],
+  "simple": ["scanner.wapiti.WapitiJob"],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",

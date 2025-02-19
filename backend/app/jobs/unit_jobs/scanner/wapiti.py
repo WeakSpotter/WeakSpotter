@@ -1,6 +1,17 @@
+import json
+
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
+from app.models.result import Result, Severity
+
+wapiti_severity_map = {
+    4: Severity.critical,
+    3: Severity.error,
+    2: Severity.warning,
+    1: Severity.warning,
+    0: Severity.info,
+}
 
 
 class WapitiJob(Job):
@@ -34,9 +45,26 @@ class WapitiJob(Job):
 
         if target_line_index != -1:
             filtered_output = "\n".join(output_lines[target_line_index + 1 :])
-            self.result = filtered_output
+            self.result = json.loads(filtered_output)
         else:
             self.result = self._raw_output
 
     def definitions(self):
-        return []
+        output = []
+
+        for cat in self.result.get("vulnerabilities", []):
+            if self.result["vulnerabilities"][cat]:
+                # We have a vuln
+                for vuln in self.result["vulnerabilities"][cat]:
+                    classification = self.result["classifications"][cat]
+                    output.append(
+                        Result(
+                            title=vuln["info"],
+                            short_description=cat,
+                            severity=wapiti_severity_map[vuln["level"]],
+                            description=classification["desc"],
+                            recommendation=classification["sol"],
+                        )
+                    )
+
+        return output
