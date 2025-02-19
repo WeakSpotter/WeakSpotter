@@ -22,9 +22,9 @@ class CMSMapJob(Job):
         ]
 
     def score(self) -> float:
-        if (self.result.contains("null")): 
+        if self.result.contains("null"):
             return -1
-        else: 
+        else:
             return 0.0
 
     def definitions(self):

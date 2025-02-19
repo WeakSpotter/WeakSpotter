@@ -25,7 +25,7 @@ class SSHAuditJob(Job):
         self.result = json.loads(self._raw_output)
 
     def score(self) -> float:
-        if (self.result.contains("null")): 
+        if self.result.contains("null"):
             return -1
         else:
             return 0.0

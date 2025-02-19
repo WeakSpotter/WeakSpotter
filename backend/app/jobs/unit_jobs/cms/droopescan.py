@@ -24,9 +24,9 @@ class DroopescanJob(Job):
         self.result = self._raw_output
 
     def score(self):
-        if (self.result.contains("is not running drupal")): 
+        if self.result.contains("is not running drupal"):
             return -1
-        else : 
+        else:
             return 0.0
 
     def definitions(self):

@@ -69,9 +69,9 @@ class JoomscanJob(Job):
         self.result = result
 
     def score(self):
-        if (self.result.contains("ver 404")): 
+        if self.result.contains("ver 404"):
             return -1
-        else :
+        else:
             return 0.0
 
     def definitions(self):
