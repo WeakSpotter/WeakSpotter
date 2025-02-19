@@ -167,3 +167,6 @@ node_modules/
 
 # Ruff Cache
 .ruff_cache/
+
+cloudflare_ipv6_list.txt
+cloudflare_ipv4_list.txt
