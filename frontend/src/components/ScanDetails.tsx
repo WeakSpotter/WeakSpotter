@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../services/api";
-import ScanDescriptions from "./ScanDescriptions"
 import { Scan, ScanStatus } from "../types/scan";
 import toast from "react-hot-toast";
 import { ScanHero } from "./ScanHero";
@@ -96,7 +95,6 @@ export default function ScanDetails() {
           </div>
         </div>
       )}
-      <ScanDescriptions />
     </>
   );
 }
