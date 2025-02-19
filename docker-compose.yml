@@ -5,7 +5,7 @@ services:
       - "8000:8000"
     environment:
       - SQLITE_PATH=/data/db.sqlite3
-      - COMMIT_HASH=dev
+      - COMMIT_HASH=prod
     volumes:
       - backend_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -29,7 +29,7 @@ services:
       - backend
     environment:
       - API_URL=http://localhost:8000/api
-      - COMMIT_HASH=dev
+      - COMMIT_HASH=prod
       - ENV=development
     develop:
       watch:
