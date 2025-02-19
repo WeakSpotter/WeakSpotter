@@ -4,11 +4,13 @@ import { api } from "../services/api";
 import { Scan, ScanStatus } from "../types/scan";
 import toast from "react-hot-toast";
 import { ScanHero } from "./ScanHero";
+import { ResultsContainer } from "./ResultsContainer";
 
 export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();
   const [scan, setScan] = useState<Scan | null>(null);
-  const [data, setData] = useState<any | null>(null); // TODO: Merge data in scan
+  const [results, setResults] = useState<Result[]>([]);
+  const [data, setData] = useState<any | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -16,8 +18,12 @@ export default function ScanDetails() {
     if (!id) return;
 
     try {
-      const [scanRes] = await Promise.all([api.getScan(parseInt(id))]);
+      const [scanRes, resultsRes] = await Promise.all([
+        api.getScan(parseInt(id)),
+        api.getScanResults(parseInt(id)),
+      ]);
       setScan(scanRes.data);
+      setResults(resultsRes.data);
     } catch (error) {
       toast.error("Failed to load scan details. Please try again.");
       console.error("Error loading scan details:", error);
@@ -59,6 +65,7 @@ export default function ScanDetails() {
       setShowModal(true);
     } catch (error) {
       console.error("Error loading scan data:", error);
+      toast.error("Failed to load scan data.");
     }
   };
 
@@ -75,11 +82,12 @@ export default function ScanDetails() {
       </div>
     );
 
-  if (!scan) return <div className="alert alert-error">Scan not found</div>; // TODO: Make a better error page / redirect to one
+  if (!scan) return <div className="alert alert-error">Scan not found</div>;
 
   return (
     <>
       <ScanHero scan={scan} handleViewData={handleViewData} />
+      <ResultsContainer results={results} />
       {showModal && (
         <div className="modal modal-open" onClick={handleCloseModal}>
           <div className="modal-box max-w-3xl">

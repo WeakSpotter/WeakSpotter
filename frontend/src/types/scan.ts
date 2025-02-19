@@ -63,3 +63,15 @@ export const getScanStatusClass = (status: ScanStatus): string => {
       return "badge-ghost";
   }
 };
+
+export interface Result {
+  id: number;
+  title: string;
+  severity: number;
+  category: number;
+  description: string;
+  short_description: string;
+  recommendation: string;
+  score: number;
+  scan_id: number;
+}
