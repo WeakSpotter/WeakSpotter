@@ -8,7 +8,7 @@ from app.jobs.license import License
 class Sublist3rJob(Job):
     requirements = ["domain"]
     key = "sublist3r"
-    name = "Sublist3r Scan"
+    name = "Sublist3r"
     license = License.GPLv2
 
     def run(self):

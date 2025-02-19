@@ -8,7 +8,7 @@ from app.jobs.license import License
 class NmapScanJob(Job):
     requirements = ["domain"]
     key = "nmap"
-    name = "Nmap Scan"
+    name = "Nmap"
     license = License.NSPL
 
     def run(self) -> None:

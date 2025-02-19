@@ -1,5 +1,6 @@
 import { getScanTypeText, Scan, ScanStatus, ScanType } from "../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
+import { useEffect, useRef, useState } from "react";
 
 interface ScanHeroProps {
   scan: Scan;
@@ -10,8 +11,50 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
   const isRefreshing =
     scan.status === ScanStatus.pending || scan.status === ScanStatus.running;
 
+  const [animatedProgress, setAnimatedProgress] = useState(0);
+  const previousProgress = useRef(0);
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const duration = 500; // Animation duration in milliseconds
+    const startProgress = previousProgress.current;
+    const endProgress = scan.progress;
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsed = currentTime - startTime;
+
+      // Easing function (ease-out)
+      const easeProgress = (t: number) => 1 - Math.pow(1 - t, 3);
+
+      if (elapsed < duration) {
+        const progress = elapsed / duration;
+        const easedProgress = easeProgress(progress);
+        const currentProgress =
+          startProgress + (endProgress - startProgress) * easedProgress;
+
+        setAnimatedProgress(currentProgress);
+        requestAnimationFrame(animate);
+      } else {
+        setAnimatedProgress(endProgress);
+        previousProgress.current = endProgress;
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [scan.progress]);
+
+  const gradientStyle =
+    animatedProgress === 100
+      ? { background: "oklch(var(--b1))" }
+      : {
+          background: `linear-gradient(90deg,
+            oklch(var(--su)/.2) ${Math.max(0, animatedProgress)}%,
+            oklch(var(--b1)) ${Math.min(100, animatedProgress)}%)`,
+        };
+
   return (
-    <div className="card bg-base-100 shadow-xl">
+    <div className="card shadow-xl" style={gradientStyle}>
       <div className="card-body">
         <div className="flex justify-between items-center">
           <h2 className="card-title">
@@ -25,7 +68,7 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
           {isRefreshing && (
             <div className="flex items-center gap-2">
               <span className="loading loading-spinner loading-sm"></span>
-              <span className="text-sm">Scanning ({scan.status})...</span>
+              <span className="text-sm">Scanning ({scan.current_step})...</span>
             </div>
           )}
         </div>

@@ -8,7 +8,7 @@ from app.jobs.license import License
 class CMSMapJob(Job):
     requirements: List[str] = ["domain"]
     key: str = "cmsmap"
-    name: str = "CMSMap Scan"
+    name: str = "CMSMap"
     license = License.GPLv3
 
     def run(self) -> None:
