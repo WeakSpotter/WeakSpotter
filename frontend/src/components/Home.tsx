@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Icon from "@mdi/react";
-import { mdiArrowRight, mdiPlayCircle, mdiCheck, mdiClose } from "@mdi/js";
+import { mdiArrowRight, mdiPlayCircle } from "@mdi/js";
+import FeatureTable from "./FeatureTable";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -41,46 +42,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-4 text-center">
           Feature Comparison
         </h2>
-        <table className="table w-full bg-base-100 rounded-lg shadow-xl">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Feature</th>
-              <th className="px-4 py-2 text-center">Simple Scan</th>
-              <th className="px-4 py-2 text-center">Complex Scan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              ["Basic Vulnerability Check", true, true],
-              ["DNS Records", true, true],
-              ["WHOIS Information", true, true],
-              ["Cloudflare Detection", true, true],
-              ["Nmap Scan", false, true],
-              ["HTTP Version Check", false, true],
-            ].map(([feature, simple, complex], idx) => (
-              <tr
-                key={idx}
-                className={`${idx % 2 === 0 ? "bg-base-200" : "bg-base-300"}`}
-              >
-                <td className="px-6 py-4">{feature}</td>
-                <td className="px-6 py-4">
-                  <Icon
-                    path={simple ? mdiCheck : mdiClose}
-                    size={1}
-                    className={`m-auto ${simple ? "text-green-500" : "text-red-500"}`}
-                  />
-                </td>
-                <td className="px-6 py-4">
-                  <Icon
-                    path={complex ? mdiCheck : mdiClose}
-                    size={1}
-                    className={`m-auto ${complex ? "text-green-500" : "text-red-500"}`}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <FeatureTable />
       </div>
     </div>
   );
