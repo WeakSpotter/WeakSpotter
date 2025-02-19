@@ -1,10 +1,10 @@
 from enum import IntEnum
 from typing import TYPE_CHECKING, Optional
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    pass
+    from .scan import Scan
 
 
 class Severity(IntEnum):
@@ -28,3 +28,7 @@ class Result(SQLModel, table=True):
     short_description: str = ""
     description: str = ""
     recommendation: str = ""
+
+    # Add these lines to create the relationship with Scan
+    scan_id: Optional[int] = Field(default=None, foreign_key="scan.id")
+    scan: Optional["Scan"] = Relationship(back_populates="results")

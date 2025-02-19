@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
+from typing import List
 
 from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
+from app.models.result import Result
 from app.models.scan import Scan, ScanType
 from app.routes.version import get_version
 from app.security import UserDep
@@ -42,6 +44,14 @@ def read_scans(session: SessionDep, current_user: UserDep):
 @router.get("/scans/{scan_id}", tags=["scans"])
 def read_scan(scan_id: int, session: SessionDep, current_user: UserDep) -> Scan:
     return get_scan_or_403(scan_id, session, current_user)
+
+
+@router.get("/scans/{scan_id}/results", tags=["scans"])
+def read_scan_results(
+    scan_id: int, session: SessionDep, current_user: UserDep
+) -> List[Result]:
+    scan = get_scan_or_403(scan_id, session, current_user)
+    return scan.results
 
 
 @router.get("/scans/{scan_id}/data", tags=["scans"])

@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import IntEnum
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import computed_field
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -62,24 +63,9 @@ class Scan(SQLModel, table=True):
     def data_dict(self, value):
         self.data = json.dumps(value)
 
+    @computed_field
     @property
-    def score(self):
+    def score(self) -> float:
         """Returns the mean of all result scores ignoring those set to -1."""
         scores = [result.score for result in self.results if result.score != -1]
         return sum(scores) / len(scores) if scores else 0
-
-
-class ScanRead(SQLModel):
-    id: Optional[int] = None
-    url: str
-    created_at: datetime
-    status: ScanStatus
-    progress: int
-    type: ScanType
-    current_step: str
-    data: str
-    creator_id: Optional[int] = None
-
-    @property
-    def data_dict(self):
-        return json.loads(self.data)
