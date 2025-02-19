@@ -7,7 +7,7 @@ export enum ScanStatus {
 
 export enum ScanType {
   simple = 0,
-  complexe = 1,
+  complex = 1,
 }
 
 export interface Scan {
@@ -27,8 +27,8 @@ export const getScanTypeText = (type: ScanType): string => {
   switch (type) {
     case ScanType.simple:
       return "Simple";
-    case ScanType.complexe:
-      return "Complexe";
+    case ScanType.complex:
+      return "Complex";
     default:
       return "Unknown";
   }
