@@ -96,6 +96,7 @@ def create_scan(
         recent_scan.users.append(current_user)
         session.add(recent_scan)
         session.commit()
+        session.refresh(recent_scan)
         return recent_scan
 
     scan = Scan(
