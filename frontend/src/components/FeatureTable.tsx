@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiCheck, mdiClose, mdiLoading } from "@mdi/js";
 import { api } from "../services/api";
+import axios from "axios";
 
 export default function FeatureTable() {
   const [features, setFeatures] = useState<{
@@ -16,7 +17,15 @@ export default function FeatureTable() {
         const response = await api.getInfo();
         setFeatures(response.data);
       } catch (err) {
-        setError("Failed to load features");
+        if (axios.isAxiosError(err) && err.response?.status === 500) {
+          setError(
+            "The server is misconfigured. Please contact the administrator.",
+          );
+        } else {
+          setError(
+            "The backend is misconfigured. Please contact the administrator. If you are the administrator you fucked up the jobs' config.json file.",
+          );
+        }
         console.error("Error fetching features:", err);
       }
     };
@@ -26,8 +35,23 @@ export default function FeatureTable() {
 
   if (error) {
     return (
-      <div className="text-center text-error">
-        <p>{error}</p>
+      <div className="alert alert-error shadow-lg">
+        <div className="flex">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current flex-shrink-0 h-6 w-6 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>{error}</span>
+        </div>
       </div>
     );
   }
