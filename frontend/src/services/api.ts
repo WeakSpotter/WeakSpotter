@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Scan } from "../types/scan";
+import { Result, Scan } from "../types/scan";
 
 declare global {
   interface Window {
