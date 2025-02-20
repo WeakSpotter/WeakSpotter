@@ -10,6 +10,9 @@ export default function Navbar() {
         <Link to="/" className="btn btn-ghost text-xl">
           WeakSpotter
         </Link>
+        <Link to="/about" className="ml-4 text-lg hidden md:inline">
+          About
+        </Link>
       </div>
       <div className="flex-none gap-2">
         <ul className="menu menu-horizontal px-1">
