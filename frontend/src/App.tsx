@@ -8,6 +8,7 @@ import Login from "./components/pages/Login";
 import Home from "./components/pages/Home";
 import Register from "./components/pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import About from "./components/pages/About";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                 </ProtectedRoute>
               }
             />{" "}
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
         {window.__APP_CONFIG__?.ENV === "development" && <Footer />}
