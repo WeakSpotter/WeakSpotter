@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiCheck, mdiClose, mdiLoading } from "@mdi/js";
-import { api } from "../services/api";
+import { api } from "../../services/api";
 import axios from "axios";
-import { Job } from "../types/scan";
+import { Job } from "../../types/scan";
 
 export default function FeatureTable() {
   const [features, setFeatures] = useState<{

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ResultItem } from "./ResultItem";
-import { getCategoryLabel, Result } from "../types/scan";
+import { ResultItem } from "../components/ResultItem";
+import { getCategoryLabel, Result } from "../../types/scan";
 
 interface ResultsContainerProps {
   results: Result[];

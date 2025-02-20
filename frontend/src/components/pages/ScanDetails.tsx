@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { api } from "../services/api";
-import { Scan, ScanStatus } from "../types/scan";
+import { api } from "../../services/api";
+import { Scan, ScanStatus } from "../../types/scan";
 import toast from "react-hot-toast";
-import { ScanHero } from "./ScanHero";
+import { ScanHero } from "../components/ScanHero";
 import { ResultsContainer } from "./ResultsContainer";
-import { Result } from "../types/scan";
+import { Result } from "../../types/scan";
 
 export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();

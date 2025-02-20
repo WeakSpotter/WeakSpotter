@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../services/api";
-import { Scan, getScanStatusText, getScanStatusClass } from "../types/scan";
+import { api } from "../../services/api";
+import { Scan, getScanStatusText, getScanStatusClass } from "../../types/scan";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 

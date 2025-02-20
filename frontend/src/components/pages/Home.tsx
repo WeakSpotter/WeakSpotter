@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import Icon from "@mdi/react";
 import { mdiArrowRight, mdiPlayCircle } from "@mdi/js";
-import FeatureTable from "./FeatureTable";
+import FeatureTable from "../components/FeatureTable";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();

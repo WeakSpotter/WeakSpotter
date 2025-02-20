@@ -1,4 +1,4 @@
-import { getScanTypeText, Scan, ScanStatus, ScanType } from "../types/scan";
+import { getScanTypeText, Scan, ScanStatus, ScanType } from "../../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
 import { useEffect, useRef, useState } from "react";
 

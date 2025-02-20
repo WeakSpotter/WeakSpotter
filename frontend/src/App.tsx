@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import ScanList from "./components/ScanList";
-import CreateScan from "./components/CreateScan";
-import ScanDetails from "./components/ScanDetails";
-import Login from "./components/Login";
-import Home from "./components/Home";
-import Register from "./components/Register";
+import Navbar from "./components/components/Navbar";
+import Footer from "./components/components/Footer";
+import ScanList from "./components/pages/ScanList";
+import CreateScan from "./components/pages/CreateScan";
+import ScanDetails from "./components/pages/ScanDetails";
+import Login from "./components/pages/Login";
+import Home from "./components/pages/Home";
+import Register from "./components/pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 

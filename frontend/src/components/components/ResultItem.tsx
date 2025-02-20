@@ -6,7 +6,7 @@ import {
   getSeverityClass,
   getSeverityLabel,
   Result,
-} from "../types/scan";
+} from "../../types/scan";
 
 interface ResultProps {
   result: Result;
