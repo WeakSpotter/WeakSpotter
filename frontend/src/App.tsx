@@ -8,7 +8,7 @@ import Login from "./components/pages/Login";
 import Home from "./components/pages/Home";
 import Register from "./components/pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
-import About from "./components/pages/about";
+import About from "./components/pages/About";
 import TOSA from "./components/pages/TOSA";
 import { Toaster } from "react-hot-toast";
 
