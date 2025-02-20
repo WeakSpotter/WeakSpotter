@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function TOSA() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
