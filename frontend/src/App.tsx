@@ -37,6 +37,7 @@ function App() {
             />{" "}
             <Route path="/about" element={<About />} />
             <Route path="/tos" element={<TOSA />} />
+            <Route path="/robots.txt" element={<div>Disallow: /</div>} />
           </Routes>
         </div>
         {window.__APP_CONFIG__?.ENV === "development" && <Footer />}
