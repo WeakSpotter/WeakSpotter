@@ -66,6 +66,7 @@ export const api = {
       params: { url, complex },
     }),
   deleteScan: (id: number) => axiosInstance.delete(`${API_URL}/scans/${id}`),
+  stopScan: (id: number) => axiosInstance.get(`${API_URL}/scans/${id}/stop/`),
   login: (credentials: { username: string; password: string }) =>
     axiosInstance.post<{ access_token: string }>(
       `${API_URL}/auth/login/`,

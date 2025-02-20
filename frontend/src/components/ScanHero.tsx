@@ -1,13 +1,13 @@
 import { getScanTypeText, Scan, ScanStatus, ScanType } from "../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
 import { useEffect, useRef, useState } from "react";
-
+import { api } from "../services/api";
+import toast from "react-hot-toast";
 interface ScanHeroProps {
   scan: Scan;
-  handleViewData: () => void;
 }
 
-export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
+export const ScanHero: React.FC<ScanHeroProps> = ({ scan }) => {
   const isRefreshing =
     scan.status === ScanStatus.pending || scan.status === ScanStatus.running;
 
@@ -53,6 +53,16 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
             oklch(var(--b1)) ${Math.min(100, animatedProgress)}%)`,
         };
 
+  const handleStopScan = async () => {
+    try {
+      await api.stopScan(scan.id);
+      toast.success("Scan stopped successfully");
+    } catch (error) {
+      toast.error("Failed to stop scan");
+      console.error("Failed to stop scan:", error);
+    }
+  };
+
   return (
     <div className="card shadow-xl" style={gradientStyle}>
       <div className="card-body">
@@ -97,14 +107,11 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
 
         <div className="card-actions justify-end">
           <button
-            onClick={handleViewData}
-            className="btn btn-primary"
-            disabled={
-              scan.status !== ScanStatus.completed &&
-              scan.status !== ScanStatus.failed
-            }
+            onClick={handleStopScan}
+            className="btn btn-error"
+            disabled={scan.status !== ScanStatus.running}
           >
-            View Data
+            Stop Scan
           </button>
         </div>
       </div>

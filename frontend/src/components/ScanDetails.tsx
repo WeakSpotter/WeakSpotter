@@ -11,8 +11,6 @@ export default function ScanDetails() {
   const { id } = useParams<{ id: string }>();
   const [scan, setScan] = useState<Scan | null>(null);
   const [results, setResults] = useState<Result[]>([]);
-  const [data, setData] = useState<any | null>(null);
-  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadScanDetails = useCallback(async () => {
@@ -57,25 +55,6 @@ export default function ScanDetails() {
     };
   }, [loadScanDetails, scan?.status]);
 
-  const handleViewData = async () => {
-    if (!id) return;
-
-    try {
-      const response = await api.getScanData(parseInt(id));
-      setData(response.data);
-      setShowModal(true);
-    } catch (error) {
-      console.error("Error loading scan data:", error);
-      toast.error("Failed to load scan data.");
-    }
-  };
-
-  const handleCloseModal = (event: React.MouseEvent) => {
-    if ((event.target as HTMLElement).classList.contains("modal")) {
-      setShowModal(false);
-    }
-  };
-
   if (loading)
     return (
       <div className="flex justify-center items-center h-64">
@@ -87,23 +66,8 @@ export default function ScanDetails() {
 
   return (
     <>
-      <ScanHero scan={scan} handleViewData={handleViewData} />
+      <ScanHero scan={scan} />
       <ResultsContainer results={results} />
-      {showModal && (
-        <div className="modal modal-open" onClick={handleCloseModal}>
-          <div className="modal-box max-w-3xl">
-            <h3 className="font-bold text-lg">Scan Data</h3>
-            <pre className="mt-4 overflow-x-auto bg-base-200 p-4 rounded-lg">
-              {JSON.stringify(data, null, 2)}
-            </pre>
-            <div className="modal-action">
-              <button onClick={() => setShowModal(false)} className="btn">
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
