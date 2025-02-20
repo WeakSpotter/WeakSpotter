@@ -25,6 +25,7 @@ class ScanStatus(IntEnum):
     running = 1
     completed = 2
     failed = 3
+    stopped = 4
 
 
 class ScanType(IntEnum):

@@ -4,7 +4,7 @@ from typing import List
 from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
 from app.models.result import Result
-from app.models.scan import Scan, ScanType
+from app.models.scan import Scan, ScanStatus, ScanType
 from app.routes.version import get_version
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
@@ -12,6 +12,8 @@ from fastapi.exceptions import HTTPException
 from sqlmodel import select
 
 router = APIRouter()
+
+back_tasks = {}
 
 
 def get_scan_or_403(scan_id: int, session: SessionDep, current_user: UserDep) -> Scan:
@@ -114,9 +116,31 @@ def create_scan(
 
     scan_type = "complex" if complex else "simple"
     executor = LinearExecutor(scan_type)
-    background_tasks.add_task(executor.run, scan, session)
+    back_tasks[scan.id] = background_tasks.add_task(executor.run, scan, session)
 
     return scan
+
+
+@router.get("/scans/{scan_id}/stop", tags=["scans"])
+def stop_scan(scan_id: int, session: SessionDep, current_user: UserDep) -> dict:
+    scan = get_scan_or_403(scan_id, session, current_user)
+
+    if scan.creator_id and scan.creator_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to stop this scan")
+
+    if scan.status in [ScanStatus.stopped, ScanStatus.completed, ScanStatus.failed]:
+        raise HTTPException(
+            status_code=400, detail="Scan is already stopped, finished or failed"
+        )
+
+    print(f"Stopping scan {scan_id}")
+    print(f"Background tasks: {back_tasks}")
+
+    back_tasks[scan_id].cancel()
+    scan.status = ScanStatus.stopped
+    session.add(scan)
+    session.commit()
+    return {"message": "Scan stopped"}
 
 
 @router.delete("/scans/{scan_id}", tags=["scans"])
