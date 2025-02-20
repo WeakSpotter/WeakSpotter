@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 interface ScanHeroProps {
   scan: Scan;
-  handleViewData: () => void;
 }
 
-export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
+export const ScanHero: React.FC<ScanHeroProps> = ({ scan }) => {
   const isRefreshing =
     scan.status === ScanStatus.pending || scan.status === ScanStatus.running;
 
@@ -93,19 +92,6 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="card-actions justify-end">
-          <button
-            onClick={handleViewData}
-            className="btn btn-primary"
-            disabled={
-              scan.status !== ScanStatus.completed &&
-              scan.status !== ScanStatus.failed
-            }
-          >
-            View Data
-          </button>
         </div>
       </div>
     </div>
