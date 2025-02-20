@@ -63,7 +63,7 @@ class ZapitJob(Job):
             output.append(
                 Result(
                     title=alert["alert"],
-                    short_description=f"{alert["alert"]} : {alert['value']}",
+                    short_description=f"{alert['alert']} : {alert['value']}",
                     severity=zapit_severity.get(alert["severity"], Severity.info),
                     score=zapit_score_mapping.get(alert["severity"], 0),
                 )
