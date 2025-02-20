@@ -9,6 +9,7 @@ export default function CreateScan() {
   const [url, setUrl] = useState("");
   const [complex, setComplex] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [acceptedTOS, setAcceptedTOS] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
@@ -79,27 +80,53 @@ export default function CreateScan() {
 
           <div className="form-control">
             <label className="label cursor-pointer">
-              <span className="label-text">Complex Scan</span>
-              <input
-                type="checkbox"
-                checked={complex}
-                onChange={(e) => setComplex(e.target.checked)}
-                className="checkbox"
-                disabled={!isAuthenticated}
-              />
+              <span className="label-text">Scan Type</span>
+              <div className="flex items-center space-x-2">
+                <span className="label-text">Simple</span>
+                <input
+                  type="checkbox"
+                  checked={complex}
+                  onChange={(e) => setComplex(e.target.checked)}
+                  className="toggle toggle-primary"
+                />
+                <span className="label-text">Complex</span>
+              </div>
             </label>
             {!isAuthenticated && (
               <p className="text-sm text-red-500 mt-2">
-                Please log in to access the complex scan feature.
+                Please log in to run a scan.
               </p>
             )}
+          </div>
+
+          <div className="form-control mt-4">
+            <label className="label cursor-pointer">
+              <input
+                type="checkbox"
+                checked={acceptedTOS}
+                onChange={(e) => setAcceptedTOS(e.target.checked)}
+                className="checkbox"
+                required
+              />
+              <span className="label-text ml-2">
+                I have read and agree to the{" "}
+                <a
+                  href="/tos"
+                  className="link link-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Terms and Conditions
+                </a>
+              </span>
+            </label>
           </div>
 
           <div className="card-actions justify-end mt-4">
             <button
               type="submit"
               className={`btn btn-primary ${loading ? "loading" : ""}`}
-              disabled={loading}
+              disabled={loading || !acceptedTOS}
             >
               Start Scan
             </button>
