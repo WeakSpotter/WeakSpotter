@@ -78,7 +78,9 @@ export default function FeatureTable() {
   const simpleFeaturesNames = features.simple.map((feature) => feature.name);
   const complexFeaturesNames = features.complex.map((feature) => feature.name);
 
-  const allFeaturesNames = allFeatures.map((feature) => feature.name);
+  const allFeaturesNames = [
+    ...new Set(allFeatures.map((feature) => feature.name)),
+  ];
 
   return (
     <table className="table w-full bg-base-100 rounded-lg shadow-xl">

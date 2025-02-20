@@ -1,5 +1,5 @@
 {
-  "simple": ["scanner.wapiti.WapitiJob"],
+  "simple": ["cms.droopescan.DroopescanJob"],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",
