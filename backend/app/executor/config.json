@@ -1,5 +1,9 @@
 {
-  "simple": ["cms.droopescan.DroopescanJob"],
+  "simple": [
+    "dns.domain.DomainJob",
+    "dns.records.DNSRecordsJob",
+    "dns.cloudflare.CloudflareDetectJob"
+  ],
   "complex": [
     "dns.domain.DomainJob",
     "dns.cloudflare.CloudflareDetectJob",

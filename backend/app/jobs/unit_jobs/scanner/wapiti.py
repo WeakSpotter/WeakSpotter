@@ -13,6 +13,14 @@ wapiti_severity_map = {
     0: Severity.info,
 }
 
+wapiti_score_mapping = {
+    4: -10,
+    3: -5,
+    2: -3,
+    1: -1,
+    0: 0,
+}
+
 
 class WapitiJob(Job):
     requirements = []

@@ -56,6 +56,7 @@ class HTTPVersionJob(Job):
                 Result(
                     title="Obsolete HTTP Version",
                     severity=Severity.warning,
+                    score=-10,
                     short_description="The server supports HTTP/1.0, which is considered obsolete.",
                     description="HTTP/1.0 is an outdated version of the HTTP protocol that has been superseded by newer versions. It lacks many security features and improvements found in later versions.",
                 )
@@ -66,6 +67,7 @@ class HTTPVersionJob(Job):
                 Result(
                     title="HTTP/1.1 Not Supported",
                     severity=Severity.error,
+                    score=-5,
                     short_description="The server does not support HTTP/1.1.",
                     description="HTTP/1.1 is the most widely used version of the HTTP protocol. Lack of support for HTTP/1.1 may indicate an outdated or misconfigured server. 33.8% of users only have HTTP/1.1 support.",
                 )
@@ -76,6 +78,7 @@ class HTTPVersionJob(Job):
                 Result(
                     title="HTTP/2 Not Supported",
                     severity=Severity.warning,
+                    score=-5,
                     short_description="The server does not support HTTP/2.",
                     description="HTTP/2 is a major revision of the HTTP protocol that offers significant performance improvements over HTTP/1.1. Lack of support for HTTP/2 may indicate an outdated or misconfigured server. 66.2% of users have HTTP/2 support.",
                 )

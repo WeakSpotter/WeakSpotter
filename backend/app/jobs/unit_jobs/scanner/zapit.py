@@ -4,11 +4,19 @@ from app.jobs.license import License
 from app.models.result import Result, Severity
 
 zapit_severity = {
-    "Informational": Severity.info,
-    "Low": Severity.warning,
+    "Informational": Severity.debug,
+    "Low": Severity.info,
     "Medium": Severity.warning,
     "High": Severity.error,
     "Critical": Severity.error,
+}
+
+zapit_score_mapping = {
+    "Informational": 0,
+    "Low": -1,
+    "Medium": -3,
+    "High": -5,
+    "Critical": -10,
 }
 
 
@@ -57,6 +65,7 @@ class ZapitJob(Job):
                     title=alert["alert"],
                     short_description=f"{alert["alert"]} : {alert['value']}",
                     severity=zapit_severity.get(alert["severity"], Severity.info),
+                    score=zapit_score_mapping.get(alert["severity"], 0),
                 )
             )
 

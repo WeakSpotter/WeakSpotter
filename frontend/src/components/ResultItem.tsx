@@ -36,11 +36,11 @@ export const ResultItem: React.FC<ResultProps> = ({ result }) => {
               <span className="badge badge-neutral">
                 {getCategoryLabel(result.category)}
               </span>
-              {result.score !== -1 && (
-                <span className="badge badge-primary">
-                  Score: {result.score}
-                </span>
-              )}
+              <span
+                className={`badge ${result.score > 0 ? "badge-success" : result.score < 0 ? "badge-error" : "badge-neutral"}`}
+              >
+                Score: {result.score}
+              </span>
             </div>
           </div>
           <Icon
