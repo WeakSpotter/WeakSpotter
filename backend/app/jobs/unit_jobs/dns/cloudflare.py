@@ -55,17 +55,17 @@ class CloudflareDetectJob(Job):
             results.append(
                 Result(
                     title="Protected by Cloudflare (IPv4)",
-                    description="The domain is behind Cloudflare for IPv4.",
-                    score=100,
+                    short_description="The domain is behind Cloudflare for IPv4.",
+                    score=5,
                 )
             )
         elif ipv4:
             results.append(
                 Result(
                     title="Not Protected by Cloudflare (IPv4)",
-                    description="The domain is not behind Cloudflare for IPv4.",
+                    short_description="The domain is not behind Cloudflare for IPv4.",
                     severity=Severity.warning,
-                    score=0,
+                    score=-5,
                 )
             )
 
@@ -73,17 +73,17 @@ class CloudflareDetectJob(Job):
             results.append(
                 Result(
                     title="Protected by Cloudflare (IPv6)",
-                    description="The domain is behind Cloudflare for IPv6.",
-                    score=100,
+                    short_description="The domain is behind Cloudflare for IPv6.",
+                    score=5,
                 )
             )
         elif ipv6:
             results.append(
                 Result(
                     title="Not Protected by Cloudflare (IPv6)",
-                    description="The domain is not behind Cloudflare for IPv6.",
+                    short_description="The domain is not behind Cloudflare for IPv6.",
                     severity=Severity.warning,
-                    score=0,
+                    score=-5,
                 )
             )
 

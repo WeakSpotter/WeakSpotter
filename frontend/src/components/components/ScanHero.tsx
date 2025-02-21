@@ -1,13 +1,12 @@
-import { getScanTypeText, Scan, ScanStatus, ScanType } from "../types/scan";
+import { getScanTypeText, Scan, ScanStatus, ScanType } from "../../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
 import { useEffect, useRef, useState } from "react";
 
 interface ScanHeroProps {
   scan: Scan;
-  handleViewData: () => void;
 }
 
-export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
+export const ScanHero: React.FC<ScanHeroProps> = ({ scan }) => {
   const isRefreshing =
     scan.status === ScanStatus.pending || scan.status === ScanStatus.running;
 
@@ -53,27 +52,34 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
             oklch(var(--b1)) ${Math.min(100, animatedProgress)}%)`,
         };
 
+  const formattedUrl = scan.url.replace(/^https?:\/\//, "");
+
   return (
     <div className="card shadow-xl" style={gradientStyle}>
       <div className="card-body">
-        <div className="flex justify-between items-center">
-          <h2 className="card-title">
-            Results for {scan.url}{" "}
+        <div className="flex items-start md:items-center flex-col md:flex-row justify-between">
+          <div className="flex items-start md:items-center flex-col md:flex-row justify-between">
+            <h2 className="card-title">
+              <span className="hidden sm:block">Results for </span>
+              {formattedUrl}{" "}
+            </h2>
             <span
-              className={`badge badge-neutral ml-2 ${scan.type === ScanType.simple ? "badge-outline" : ""}`}
+              className={`badge badge-neutral ml-0 mt-2 md:ml-2 md:mt-0 ${scan.type === ScanType.simple ? "badge-outline" : ""}`}
             >
               {getScanTypeText(scan.type)}
             </span>
-          </h2>
+          </div>
           {isRefreshing && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mt-2 md:mt-0">
               <span className="loading loading-spinner loading-sm"></span>
               <span className="text-sm">Scanning ({scan.current_step})...</span>
             </div>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <hr className="block sm:hidden my-4" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <p>
               <strong>Created:</strong>{" "}
@@ -84,7 +90,9 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
             {scan.score !== null ? (
               <>
                 <h3 className="font-semibold mb-2">Security Score</h3>
-                <ScoreCircle score={scan.score} size="md" />
+                <div className="p-4">
+                  <ScoreCircle score={scan.score} size="md" />
+                </div>
               </>
             ) : (
               <div className="text-center">
@@ -93,19 +101,6 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan, handleViewData }) => {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="card-actions justify-end">
-          <button
-            onClick={handleViewData}
-            className="btn btn-primary"
-            disabled={
-              scan.status !== ScanStatus.completed &&
-              scan.status !== ScanStatus.failed
-            }
-          >
-            View Data
-          </button>
         </div>
       </div>
     </div>

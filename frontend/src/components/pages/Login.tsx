@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { api } from "../services/api";
+import { useNavigate, Link } from "react-router-dom";
+import { api } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
-export default function Register() {
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,15 +16,14 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await api.register({ username, password });
+      const response = await api.login({ username, password });
       login(username, response.data.access_token);
-      localStorage.setItem("authToken", response.data.access_token);
-      localStorage.setItem("username", username);
+      localStorage.setItem("authToken", response.data.access_token); // Store token in localStorage
       navigate("/");
-      toast.success("Registration successful. Welcome!");
+      toast.success("Login successful. Welcome!");
     } catch (error) {
-      console.error("Registration failed:", error);
-      toast.error("Registration failed. Please try again.");
+      console.error("Login failed:", error);
+      toast.error("Invalid username or password. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -33,7 +32,7 @@ export default function Register() {
   return (
     <div className="card bg-base-100 shadow-xl max-w-xl mx-auto">
       <div className="card-body">
-        <h2 className="card-title">Register</h2>
+        <h2 className="card-title">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label className="label">
@@ -69,10 +68,16 @@ export default function Register() {
               className={`btn btn-primary ${loading ? "loading" : ""}`}
               disabled={loading}
             >
-              Register
+              Login
             </button>
           </div>
         </form>
+        <div className="mt-4 text-center">
+          <span>Don't have an account? </span>
+          <Link to="/register" className="text-primary">
+            Register
+          </Link>
+        </div>
       </div>
     </div>
   );

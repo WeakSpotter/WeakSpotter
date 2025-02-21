@@ -45,8 +45,8 @@ class LinearExecutor(Executor):
 
         return ordered_jobs
 
-    def get_jobs(self) -> List[str]:
-        return [job.name for job in self.jobs]
+    def get_jobs(self) -> List[Job]:
+        return self.jobs
 
     def run(self, scan: Scan, session: SessionDep) -> None:
         scan.status = ScanStatus.running

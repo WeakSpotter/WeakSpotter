@@ -6,7 +6,7 @@ import {
   getSeverityClass,
   getSeverityLabel,
   Result,
-} from "../types/scan";
+} from "../../types/scan";
 
 interface ResultProps {
   result: Result;
@@ -26,21 +26,26 @@ export const ResultItem: React.FC<ResultProps> = ({ result }) => {
         tabIndex={0}
       >
         <div className="flex justify-between items-center">
-          <div className="flex-1">
-            <h3 className="card-title text-lg">{result.title}</h3>
-            <p className="text-sm mt-1">{result.short_description}</p>
-            <div className="flex gap-2 mt-2">
-              <span className={`badge ${getSeverityClass(result.severity)}`}>
-                {getSeverityLabel(result.severity)}
-              </span>
-              <span className="badge badge-neutral">
-                {getCategoryLabel(result.category)}
-              </span>
-              {result.score !== -1 && (
-                <span className="badge badge-primary">
-                  Score: {result.score}
+          <div className="flex-1 flex justify-start">
+            <div
+              className={`w-20 flex items-center justify-center ${result.score > 0 ? "text-success" : result.score < 0 ? "text-error" : ""}`}
+              style={{
+                fontSize: "1.5rem",
+              }}
+            >
+              {result.score > 0 ? `+${result.score}` : result.score}
+            </div>
+            <div className="flex-1">
+              <h3 className="card-title text-lg">{result.title}</h3>
+              <p className="text-sm mt-1">{result.short_description}</p>
+              <div className="flex gap-2 mt-2">
+                <span className={`badge ${getSeverityClass(result.severity)}`}>
+                  {getSeverityLabel(result.severity)}
                 </span>
-              )}
+                <span className="badge badge-neutral">
+                  {getCategoryLabel(result.category)}
+                </span>
+              </div>
             </div>
           </div>
           <Icon

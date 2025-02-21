@@ -21,6 +21,14 @@
     </a>
 </div>
 
+<div align="center">
+    <a href="https://github.com/WeakSpotter/WeakSpotter/actions/workflows/release.yaml">
+        <img src="https://github.com/WeakSpotter/WeakSpotter/actions/workflows/release.yaml/badge.svg?branch=main" alt="Release Main">
+    </a>
+    <a href="https://github.com/WeakSpotter/WeakSpotter/actions/workflows/release.yaml">
+        <img src="https://github.com/WeakSpotter/WeakSpotter/actions/workflows/release.yaml/badge.svg?branch=develop" alt="Release Dev">
+    </a>
+</div>
 
 Description
 

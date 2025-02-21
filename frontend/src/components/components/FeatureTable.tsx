@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiCheck, mdiClose, mdiLoading } from "@mdi/js";
-import { api } from "../services/api";
+import { api } from "../../services/api";
 import axios from "axios";
+import { Job } from "../../types/scan";
 
 export default function FeatureTable() {
   const [features, setFeatures] = useState<{
-    simple: string[];
-    complex: string[];
+    simple: Job[];
+    complex: Job[];
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,6 +75,13 @@ export default function FeatureTable() {
     new Set([...features.simple, ...features.complex]),
   );
 
+  const simpleFeaturesNames = features.simple.map((feature) => feature.name);
+  const complexFeaturesNames = features.complex.map((feature) => feature.name);
+
+  const allFeaturesNames = [
+    ...new Set(allFeatures.map((feature) => feature.name)),
+  ];
+
   return (
     <table className="table w-full bg-base-100 rounded-lg shadow-xl">
       <thead>
@@ -84,7 +92,7 @@ export default function FeatureTable() {
         </tr>
       </thead>
       <tbody>
-        {allFeatures.map((feature, idx) => (
+        {allFeaturesNames.map((feature, idx) => (
           <tr
             key={idx}
             className={`${idx % 2 === 0 ? "bg-base-200" : "bg-base-300"}`}
@@ -92,10 +100,12 @@ export default function FeatureTable() {
             <td className="px-6 py-4">{feature}</td>
             <td className="px-6 py-4">
               <Icon
-                path={features.simple.includes(feature) ? mdiCheck : mdiClose}
+                path={
+                  simpleFeaturesNames.includes(feature) ? mdiCheck : mdiClose
+                }
                 size={1}
                 className={`m-auto ${
-                  features.simple.includes(feature)
+                  simpleFeaturesNames.includes(feature)
                     ? "text-green-500"
                     : "text-red-500"
                 }`}
@@ -103,10 +113,12 @@ export default function FeatureTable() {
             </td>
             <td className="px-6 py-4">
               <Icon
-                path={features.complex.includes(feature) ? mdiCheck : mdiClose}
+                path={
+                  complexFeaturesNames.includes(feature) ? mdiCheck : mdiClose
+                }
                 size={1}
                 className={`m-auto ${
-                  features.complex.includes(feature)
+                  complexFeaturesNames.includes(feature)
                     ? "text-green-500"
                     : "text-red-500"
                 }`}

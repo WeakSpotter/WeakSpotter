@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ResultItem } from "./ResultItem";
-import { getCategoryLabel, Result } from "../types/scan";
+import { getCategoryLabel, Result } from "../../types/scan";
 
 interface ResultsContainerProps {
   results: Result[];
@@ -42,7 +42,7 @@ export const ResultsContainer: React.FC<ResultsContainerProps> = ({
       : results;
 
   const sortedResults = [...filteredResults].sort(
-    (a, b) => b.severity - a.severity,
+    (a, b) => b.severity - a.severity || a.score - b.score,
   );
 
   return (

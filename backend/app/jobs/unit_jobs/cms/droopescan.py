@@ -1,7 +1,9 @@
+import json
+
 from app.jobs.abstract_job import Job
 from app.jobs.container import run_container
 from app.jobs.license import License
-from app.models.result import Result
+from app.models.result import Result, Severity
 
 
 class DroopescanJob(Job):
@@ -16,19 +18,39 @@ class DroopescanJob(Job):
         self.result = {}
 
         self._raw_output = run_container(
-            "ghcr.io/weakspotter/droopescan:latest", f"scan drupal -u {url} -o json"
+            "ghcr.io/weakspotter/droopescan:latest",
+            f"scan drupal -u {url} -o json --hide-progressbar",
         )
 
     def parse_results(self):
-        self.result = self._raw_output
+        try:
+            self.result = json.loads(self._raw_output)
+        except json.JSONDecodeError:
+            if "is not running drupal" in self._raw_output:
+                self.result = {"error": "is not running drupal"}
+            else:
+                self.result = {"error": "unknown", "content": self._raw_output}
 
     def definitions(self):
-        if self.result.contains("is not running drupal"):
+        if "error" in self.result:
+            if self.result["error"] == "is not running drupal":
+                # Not a drupal website
+                return [
+                    Result(
+                        title="Droopescan",
+                        description="Droopescan could not find a Drupal site.",
+                    )
+                ]
+
+            # The tool fucked up
             return [
                 Result(
                     title="Droopescan",
-                    description="Droopescan could not find a Drupal site.",
+                    description="An unknown error occurred.",
+                    severity=Severity.debug,
                 )
             ]
 
-        return []
+        output = []
+
+        return output

@@ -1,11 +1,8 @@
 {
   "simple": [
     "dns.domain.DomainJob",
-    "dns.cloudflare.CloudflareDetectJob",
     "dns.records.DNSRecordsJob",
-    "dns.whois.WhoisJob",
-    "http.http.HTTPVersionJob",
-    "recon.ssh_audit.SSHAuditJob",
+    "dns.cloudflare.CloudflareDetectJob",
     "scanner.zapit.ZapitJob"
   ],
   "complex": [
