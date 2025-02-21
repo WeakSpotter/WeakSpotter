@@ -5,7 +5,6 @@ from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
 from app.models.result import Result
 from app.models.scan import Scan, ScanType
-from app.routes.version import get_version
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
@@ -73,36 +72,54 @@ def create_scan(
             status_code=403, detail="Authentication required for complex scan"
         )
 
+    one_hour_ago = datetime.utcnow() - timedelta(hours=1)
+
     # Check if a recent scan with the same URL already exists and has been done in the last 1 hour
-    recent_scan = session.exec(
-        select(Scan).where(
-            Scan.url == url, Scan.created_at > datetime.utcnow() - timedelta(hours=1)
-        )
-    ).first()
+    # Prioritize retrieving a complex scan if available
+    all_recent_scan = session.exec(
+        select(Scan).where(Scan.url == url, Scan.created_at > one_hour_ago)
+    ).all()
 
-    print(f"Found recent scan: {recent_scan}")
+    recent_scan = None
 
-    if recent_scan and get_version() != "dev":
-        if (
-            recent_scan.creator_id == current_user.id
-            or current_user in recent_scan.users
-        ):
-            raise HTTPException(
-                status_code=409,
-                detail=f"You cannot scan the same URL again so soon, please wait {recent_scan.created_at + timedelta(hours=1) - datetime.utcnow()} seconds",
-            )
+    # Get a complex scan if available
+    for scan in all_recent_scan:
+        if scan.type == ScanType.complex:
+            recent_scan = scan
+            break
+        elif not recent_scan:
+            recent_scan = scan
 
-        # Add user to the scan
-        recent_scan.users.append(current_user)
-        session.add(recent_scan)
-        session.commit()
-        session.refresh(recent_scan)
-        return recent_scan
+    if recent_scan:  # and get_version() != "dev":
+        print("recent_scan", recent_scan)
+        # If a complex scan is requested and we cannot return a cached complex scan, do a complex scan
+        # Do not change this: Current unsuccesful attemps to refactor this: 3
+        # Is the scan is already available to the user, tell the user to fuck off
+        if not complex or recent_scan.type != ScanType.simple:
+            if (
+                recent_scan.creator_id == current_user.id
+                or current_user in recent_scan.users
+            ):
+                wait_time = (
+                    recent_scan.created_at + timedelta(hours=1) - datetime.utcnow()
+                )
+                raise HTTPException(
+                    status_code=409,
+                    detail=f"You cannot scan the same URL again so soon, please wait {wait_time} seconds",
+                )
 
+            # Add user to the scan
+            recent_scan.users.append(current_user)
+            session.add(recent_scan)
+            session.commit()
+            session.refresh(recent_scan)
+            return recent_scan
+
+    scan_type = ScanType.complex if complex else ScanType.simple
     scan = Scan(
         url=url,
         creator_id=current_user.id if current_user else None,
-        type=ScanType.complex if complex else ScanType.simple,
+        type=scan_type,
     )
 
     if current_user:
