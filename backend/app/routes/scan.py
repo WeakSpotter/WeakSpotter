@@ -5,6 +5,7 @@ from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
 from app.models.result import Result
 from app.models.scan import Scan, ScanType
+from app.routes.version import get_version
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
@@ -90,7 +91,7 @@ def create_scan(
         elif not recent_scan:
             recent_scan = scan
 
-    if recent_scan:  # and get_version() != "dev":
+    if recent_scan and get_version() != "dev":
         print("recent_scan", recent_scan)
         # If a complex scan is requested and we cannot return a cached complex scan, do a complex scan
         # Do not change this: Current unsuccesful attemps to refactor this: 3
