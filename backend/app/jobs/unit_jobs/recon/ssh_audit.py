@@ -45,3 +45,5 @@ class SSHAuditJob(Job):
                         description=f"La configuration SSH présente une vulnérabilité connue identifiée par {cve}. Il est recommandé de mettre à jour ou de reconfigurer le service SSH pour corriger cette vulnérabilité.",
                     )
                 ]
+
+        return []
