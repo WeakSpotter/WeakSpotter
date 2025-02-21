@@ -10,6 +10,7 @@ import Register from "./components/pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import About from "./components/pages/About";
 import TOSA from "./components/pages/TOSA";
+import NotFound from "./components/pages/404"; // Import the NotFound component
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/tos" element={<TOSA />} />
             <Route path="/robots.txt" element={<div>Disallow: /</div>} />
+            <Route path="*" element={<NotFound />} />{" "}
           </Routes>
         </div>
         {window.__APP_CONFIG__?.ENV === "development" && <Footer />}

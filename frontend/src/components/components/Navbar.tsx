@@ -11,7 +11,7 @@ export default function Navbar() {
           <span className="hidden md:inline">WeakSpotter</span>
           <span className="md:hidden">WS</span>
         </Link>
-        <Link to="/about" className="ml-4 text-lg hidden md:inline">
+        <Link to="/about" className="ml-4 hidden md:inline">
           About
         </Link>
       </div>
@@ -45,11 +45,6 @@ export default function Navbar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
-              <li>
-                <Link to="/profile" className="justify-between">
-                  Profile
-                </Link>
-              </li>
               <li>
                 <button onClick={logout}>Logout</button>
               </li>
