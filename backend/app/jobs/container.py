@@ -65,7 +65,7 @@ def run_container(
                     {
                         "name": "container",
                         "image": image,
-                        "command": [entrypoint] if entrypoint else ["/bin/sh", "-c"],
+                        "command": [entrypoint] if entrypoint else None,
                         "args": [command],
                         "imagePullPolicy": image_pull_policy,  # Added image pull policy
                     }
