@@ -2,7 +2,8 @@
   "simple": [
     "dns.domain.DomainJob",
     "dns.records.DNSRecordsJob",
-    "dns.cloudflare.CloudflareDetectJob"
+    "dns.cloudflare.CloudflareDetectJob",
+    "scanner.zapit.ZapitJob"
   ],
   "complex": [
     "dns.domain.DomainJob",
