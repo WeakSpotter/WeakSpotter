@@ -65,7 +65,6 @@ def run_container(
                     {
                         "name": "container",
                         "image": image,
-                        "command": [entrypoint] if entrypoint else None,
                         "args": [command],
                         "imagePullPolicy": image_pull_policy,  # Added image pull policy
                     }
@@ -73,6 +72,9 @@ def run_container(
                 "restartPolicy": "Never",
             },
         }
+
+        if entrypoint:
+            pod_manifest["spec"]["containers"][0]["command"] = [entrypoint]
 
         logger.info(f"Creating Kubernetes Pod: {pod_name} in namespace: {namespace}")
         v1.create_namespaced_pod(namespace=namespace, body=pod_manifest)
