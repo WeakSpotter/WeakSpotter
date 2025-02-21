@@ -23,7 +23,7 @@ class SSHAuditJob(Job):
         )
 
     def parse_results(self) -> None:
-        self.result = json.loads(self._raw_output)        
+        self.result = json.loads(self._raw_output)
 
     def definitions(self):
         if not self.result:
@@ -35,13 +35,13 @@ class SSHAuditJob(Job):
                     description="No SSH Found results were found for the domain.",
                 )
             ]
-        if "cves" in self.result and self.result["cves"]: 
+        if "cves" in self.result and self.result["cves"]:
             for cve in self.result["cves"]:
                 return [
                     Result(
                         title=f"Vulénrabilité SSH {cve}",
                         severity=Severity.critical,
                         score=-10,
-                        description=f"La configuration SSH présente une vulnérabilité connue identifiée par {cve}. Il est recommandé de mettre à jour ou de reconfigurer le service SSH pour corriger cette vulnérabilité."
+                        description=f"La configuration SSH présente une vulnérabilité connue identifiée par {cve}. Il est recommandé de mettre à jour ou de reconfigurer le service SSH pour corriger cette vulnérabilité.",
                     )
                 ]
