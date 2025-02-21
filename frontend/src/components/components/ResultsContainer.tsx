@@ -42,7 +42,7 @@ export const ResultsContainer: React.FC<ResultsContainerProps> = ({
       : results;
 
   const sortedResults = [...filteredResults].sort(
-    (a, b) => b.severity - a.severity,
+    (a, b) => b.severity - a.severity || a.score - b.score,
   );
 
   return (
