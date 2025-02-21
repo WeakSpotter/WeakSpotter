@@ -8,7 +8,8 @@ export default function Navbar() {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
-          WeakSpotter
+          <span className="hidden md:inline">WeakSpotter</span>
+          <span className="md:hidden">WS</span>
         </Link>
         <Link to="/about" className="ml-4 text-lg hidden md:inline">
           About

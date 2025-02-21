@@ -46,6 +46,8 @@ export default function ScanDetails() {
           scan?.status === ScanStatus.running
         ) {
           loadScanDetails();
+        } else {
+          window.clearInterval(intervalId);
         }
 
         if (elapsedTime >= 30000) {
