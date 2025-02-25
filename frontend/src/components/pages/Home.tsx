@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Icon from "@mdi/react";
-import { mdiArrowRight, mdiPlayCircle } from "@mdi/js";
+import {
+  mdiArrowRight,
+  mdiPlayCircle,
+  mdiShieldCheck,
+  mdiMagnify,
+  mdiChartLine,
+} from "@mdi/js";
 import FeatureTable from "../components/FeatureTable";
+import scanExample from "../../assets/scan_example.png";
+import scanExampleMobile from "../../assets/scan_example_mobile.png";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -38,6 +46,56 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <div className="container mx-auto px-4 pt-8 pb-16">
+        <div className="flex flex-col lg:flex-row justify-around items-center">
+          <div className="flex flex-col items-center text-center p-4">
+            <Icon path={mdiShieldCheck} size={2} className="mb-2" />
+            <h3 className="text-xl font-bold">Secure</h3>
+            <p className="mt-2">
+              Ensure your web applications are secure with our comprehensive
+              vulnerability scanning.
+            </p>
+          </div>
+          <div className="divider lg:divider-horizontal"></div>
+          <div className="flex flex-col items-center text-center p-4">
+            <Icon path={mdiMagnify} size={2} className="mb-2" />
+            <h3 className="text-xl font-bold">Discover</h3>
+            <p className="mt-2">
+              Identify potential weaknesses and vulnerabilities in your web
+              applications effortlessly.
+            </p>
+          </div>
+          <div className="divider lg:divider-horizontal"></div>
+          <div className="flex flex-col items-center text-center p-4">
+            <Icon path={mdiChartLine} size={2} className="mb-2" />
+            <h3 className="text-xl font-bold">Analyze</h3>
+            <p className="mt-2">
+              Gain insights and detailed reports to help you understand and fix
+              vulnerabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div className="mockup-browser bg-base-300 border shadow-lg max-w-[70vw] mx-auto">
+          <div className="mockup-browser-toolbar">
+            <div className="input">https://weakspotter.ozeliurs.com</div>
+          </div>
+          <img
+            src={scanExample}
+            alt="Scan Example"
+            className="max-w-full h-auto hidden md:block"
+          />
+          <img
+            className="max-w-full h-auto block md:hidden"
+            src={scanExampleMobile}
+            alt="Scan Example"
+          />
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-8">
         <h2 className="text-3xl font-bold mb-4 text-center">
           Feature Comparison
