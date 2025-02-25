@@ -51,28 +51,30 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row justify-around items-center">
           <div className="flex flex-col items-center text-center p-4">
             <Icon path={mdiShieldCheck} size={2} className="mb-2" />
-            <h3 className="text-xl font-bold">Secure</h3>
+            <h3 className="text-xl font-bold">Simple by desing</h3>
             <p className="mt-2">
-              Ensure your web applications are secure with our comprehensive
-              vulnerability scanning.
+            Identify potential weaknesses and vulnerabilities in your web 
+            applications effortlessly, by providing a simple URL.
             </p>
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div className="flex flex-col items-center text-center p-4">
             <Icon path={mdiMagnify} size={2} className="mb-2" />
-            <h3 className="text-xl font-bold">Discover</h3>
+            <h3 className="text-xl font-bold">Easy to Understand</h3>
             <p className="mt-2">
-              Identify potential weaknesses and vulnerabilities in your web
-              applications effortlessly.
+              Gain insights and detailed reports to help you understand and fix
+              vulnerabilities. These reports include information on the severity 
+              of each issue, a clear description, and recommended solutions.
             </p>
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div className="flex flex-col items-center text-center p-4">
             <Icon path={mdiChartLine} size={2} className="mb-2" />
-            <h3 className="text-xl font-bold">Analyze</h3>
+            <h3 className="text-xl font-bold">Improve you Cybersecurity</h3>
             <p className="mt-2">
-              Gain insights and detailed reports to help you understand and fix
-              vulnerabilities.
+              Our historical functionality allows you to track and review past 
+              vulnerability scans, providing a detailed records of your web 
+              application's security.
             </p>
           </div>
         </div>
