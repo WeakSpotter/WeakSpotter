@@ -49,7 +49,7 @@ export const ResultsContainer: React.FC<ResultsContainerProps> = ({
     <div className="mt-4 space-y-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Scan Results</h2>
-        <div className="flex gap-2">
+        <div className="hidden md:flex gap-2">
           <button
             className={`btn ${selectedCategory === null ? "btn-primary" : "btn-outline"}`}
             onClick={() => setSelectedCategory(null)}
