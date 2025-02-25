@@ -5,10 +5,12 @@ from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
 from app.models.result import Result
 from app.models.scan import Scan, ScanType
+from app.reports.scan_report import generate_scan_report
 from app.routes.version import get_version
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
+from fastapi.responses import StreamingResponse
 from sqlmodel import select
 
 router = APIRouter()
@@ -52,6 +54,26 @@ def read_scan_results(
 ) -> List[Result]:
     scan = get_scan_or_403(scan_id, session, current_user)
     return scan.results
+
+
+@router.get("/scans/{scan_id}/report", tags=["scans"])
+def generate_report(scan_id: int, session: SessionDep, current_user: UserDep):
+    """Generate a PDF report for a scan."""
+    scan = get_scan_or_403(scan_id, session, current_user)
+
+    # Generate the PDF report
+    pdf_buffer = generate_scan_report(scan)
+
+    # Return the PDF as a downloadable file
+    filename = (
+        f"scan_report_{scan.id}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.pdf"
+    )
+
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
 
 
 @router.get("/scans/{scan_id}/data", tags=["scans"])

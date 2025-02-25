@@ -1,6 +1,10 @@
 import { getScanTypeText, Scan, ScanStatus, ScanType } from "../../types/scan";
 import { ScoreCircle } from "./ScoreCircle";
 import { useEffect, useRef, useState } from "react";
+import { api } from "../../services/api";
+import { toast } from "react-hot-toast";
+import Icon from "@mdi/react";
+import { mdiFilePdfBox } from "@mdi/js";
 
 interface ScanHeroProps {
   scan: Scan;
@@ -12,6 +16,24 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan }) => {
 
   const [animatedProgress, setAnimatedProgress] = useState(0);
   const previousProgress = useRef(0);
+
+  const handleDownloadReport = async () => {
+    try {
+      const response = await api.getScanReport(scan.id);
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `scan_report_${scan.id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading report:", error);
+      toast.error("Failed to download report");
+    }
+  };
 
   useEffect(() => {
     const startTime = Date.now();
@@ -69,12 +91,25 @@ export const ScanHero: React.FC<ScanHeroProps> = ({ scan }) => {
               {getScanTypeText(scan.type)}
             </span>
           </div>
-          {isRefreshing && (
-            <div className="flex items-center gap-2 mt-2 md:mt-0">
-              <span className="loading loading-spinner loading-sm"></span>
-              <span className="text-sm">Scanning ({scan.current_step})...</span>
-            </div>
-          )}
+          <div className="flex items-center gap-2 mt-2 md:mt-0">
+            {isRefreshing ? (
+              <>
+                <span className="loading loading-spinner loading-sm"></span>
+                <span className="text-sm">
+                  Scanning ({scan.current_step})...
+                </span>
+              </>
+            ) : (
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={handleDownloadReport}
+                disabled={scan.status !== ScanStatus.completed}
+              >
+                <Icon path={mdiFilePdfBox} size={1} />
+                Download Report
+              </button>
+            )}
+          </div>
         </div>
 
         <hr className="block sm:hidden my-4" />
