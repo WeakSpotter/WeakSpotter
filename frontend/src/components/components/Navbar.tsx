@@ -25,6 +25,9 @@ export default function Navbar() {
               <li>
                 <Link to="/scans">My Scans</Link>
               </li>
+              <li>
+                <Link to="/history">History</Link>
+              </li>
             </>
           )}
         </ul>

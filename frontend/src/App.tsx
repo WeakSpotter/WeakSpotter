@@ -10,7 +10,8 @@ import Register from "./components/pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import About from "./components/pages/About";
 import TOSA from "./components/pages/TOSA";
-import NotFound from "./components/pages/404"; // Import the NotFound component
+import NotFound from "./components/pages/404";
+import History from "./components/pages/History";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -22,10 +23,8 @@ function App() {
         <div className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/create" element={<CreateScan />} />{" "}
-            {/* Remove ProtectedRoute */}
-            <Route path="/scan/:id" element={<ScanDetails />} />{" "}
-            {/* Remove ProtectedRoute */}
+            <Route path="/create" element={<CreateScan />} />
+            <Route path="/scan/:id" element={<ScanDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
@@ -35,11 +34,11 @@ function App() {
                   <ScanList />
                 </ProtectedRoute>
               }
-            />{" "}
+            />
             <Route path="/about" element={<About />} />
             <Route path="/tos" element={<TOSA />} />
-            <Route path="/robots.txt" element={<div>Disallow: /</div>} />
-            <Route path="*" element={<NotFound />} />{" "}
+            <Route path="/history" element={<History />} />{" "}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
         {window.__APP_CONFIG__?.ENV === "development" && <Footer />}
