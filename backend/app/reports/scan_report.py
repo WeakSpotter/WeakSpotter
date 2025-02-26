@@ -158,7 +158,7 @@ def generate_scan_report(scan: Scan) -> BytesIO:
                 result_data.append(
                     [
                         Paragraph(result.short_description, styles["NormalText"]),
-                        "",
+                        Paragraph("", styles["NormalText"]),
                     ]
                 )
 
@@ -166,10 +166,10 @@ def generate_scan_report(scan: Scan) -> BytesIO:
                 result_data.append(
                     [
                         Paragraph(
-                            f"<b>Details:</b><br/>{result.description}",
+                            f"<b>Details:</b><br/>{result.description}</br>",
                             styles["NormalText"],
                         ),
-                        "",
+                        Paragraph("", styles["NormalText"]),
                     ]
                 )
 
@@ -177,10 +177,10 @@ def generate_scan_report(scan: Scan) -> BytesIO:
                 result_data.append(
                     [
                         Paragraph(
-                            f"<b>Recommendation:</b><br/>{result.recommendation}",
+                            f"<b>Recommendation:</b><br/>{result.recommendation}</br>",
                             styles["NormalText"],
                         ),
-                        "",
+                        Paragraph("", styles["NormalText"]),
                     ]
                 )
 
