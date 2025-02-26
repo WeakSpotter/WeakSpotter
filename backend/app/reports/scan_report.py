@@ -1,4 +1,5 @@
 from io import BytesIO
+from xml.sax.saxutils import escape
 
 from app.models.result import Severity
 from app.models.scan import Scan
@@ -139,10 +140,19 @@ def generate_scan_report(scan: Scan) -> BytesIO:
         )
 
         for result in sorted_results:
-            # Result container with background
+            # Escape user-provided content
+            safe_title = escape(result.title)
+            safe_short_description = (
+                escape(result.short_description) if result.short_description else ""
+            )
+            safe_description = escape(result.description) if result.description else ""
+            safe_recommendation = (
+                escape(result.recommendation) if result.recommendation else ""
+            )
+
             result_data = [
                 [
-                    Paragraph(f"{result.title}", styles["ResultTitle"]),
+                    Paragraph(f"{safe_title}", styles["ResultTitle"]),
                     Paragraph(
                         f"{create_severity_badge(result.severity)} Score Impact: {result.score:+d}",
                         ParagraphStyle(
@@ -157,7 +167,7 @@ def generate_scan_report(scan: Scan) -> BytesIO:
             if result.short_description:
                 result_data.append(
                     [
-                        Paragraph(result.short_description, styles["NormalText"]),
+                        Paragraph(safe_short_description, styles["NormalText"]),
                         Paragraph("", styles["NormalText"]),
                     ]
                 )
@@ -166,7 +176,7 @@ def generate_scan_report(scan: Scan) -> BytesIO:
                 result_data.append(
                     [
                         Paragraph(
-                            f"<b>Details:</b><br/>{result.description}</br>",
+                            f"<b>Details:</b><br/>{safe_description}</br>",
                             styles["NormalText"],
                         ),
                         Paragraph("", styles["NormalText"]),
@@ -177,7 +187,7 @@ def generate_scan_report(scan: Scan) -> BytesIO:
                 result_data.append(
                     [
                         Paragraph(
-                            f"<b>Recommendation:</b><br/>{result.recommendation}</br>",
+                            f"<b>Recommendation:</b><br/>{safe_recommendation}</br>",
                             styles["NormalText"],
                         ),
                         Paragraph("", styles["NormalText"]),
