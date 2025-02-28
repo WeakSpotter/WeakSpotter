@@ -70,6 +70,7 @@ class WapitiJob(Job):
                             title=vuln["info"],
                             short_description=cat,
                             severity=wapiti_severity_map[vuln["level"]],
+                            score=wapiti_score_mapping[vuln["level"]],
                             description=classification["desc"],
                             recommendation=classification["sol"],
                         )
