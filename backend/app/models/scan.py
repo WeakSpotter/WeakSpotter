@@ -67,5 +67,8 @@ class Scan(SQLModel, table=True):
     @property
     def score(self) -> float:
         """Returns the mean of all result scores ignoring those set to -1."""
-        scores = [result.score for result in self.results if result.score != -1]
-        return sum(scores) / len(scores) if scores else 0
+        score = 100
+        for result in self.results:
+            score += result.score
+
+        return score if 100 > score > 0 else (0 if score < 0 else 100)

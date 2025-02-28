@@ -170,3 +170,5 @@ node_modules/
 
 cloudflare_ipv6_list.txt
 cloudflare_ipv4_list.txt
+
+.DS_Store

@@ -17,7 +17,7 @@ class Executor(ABC):
         self.jobs = [self._import_job(job)() for job in self._read_config(job_cat)]
 
     @abstractmethod
-    def get_jobs(self) -> List[str]:
+    def get_jobs(self) -> List[Job]:
         """
         Returns the list of jobs for the executor.
 

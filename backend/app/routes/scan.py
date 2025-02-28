@@ -5,10 +5,12 @@ from app.database import SessionDep
 from app.executor.linear_executor import LinearExecutor
 from app.models.result import Result
 from app.models.scan import Scan, ScanType
+from app.reports.scan_report import generate_scan_report
 from app.routes.version import get_version
 from app.security import UserDep
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
+from fastapi.responses import StreamingResponse
 from sqlmodel import select
 
 router = APIRouter()
@@ -54,6 +56,26 @@ def read_scan_results(
     return scan.results
 
 
+@router.get("/scans/{scan_id}/report", tags=["scans"])
+def generate_report(scan_id: int, session: SessionDep, current_user: UserDep):
+    """Generate a PDF report for a scan."""
+    scan = get_scan_or_403(scan_id, session, current_user)
+
+    # Generate the PDF report
+    pdf_buffer = generate_scan_report(scan)
+
+    # Return the PDF as a downloadable file
+    filename = (
+        f"scan_report_{scan.id}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.pdf"
+    )
+
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
 @router.get("/scans/{scan_id}/data", tags=["scans"])
 def read_scan_data(scan_id: int, session: SessionDep, current_user: UserDep) -> dict:
     scan = get_scan_or_403(scan_id, session, current_user)
@@ -73,35 +95,54 @@ def create_scan(
             status_code=403, detail="Authentication required for complex scan"
         )
 
-    # Check if a recent scan with the same URL already exists and has been done in the last 1 hour
-    recent_scan = session.exec(
-        select(Scan).where(
-            Scan.url == url, Scan.created_at > datetime.utcnow() - timedelta(hours=1)
-        )
-    ).first()
+    one_hour_ago = datetime.utcnow() - timedelta(hours=1)
 
-    print(f"Found recent scan: {recent_scan}")
+    # Check if a recent scan with the same URL already exists and has been done in the last 1 hour
+    # Prioritize retrieving a complex scan if available
+    all_recent_scan = session.exec(
+        select(Scan).where(Scan.url == url, Scan.created_at > one_hour_ago)
+    ).all()
+
+    recent_scan = None
+
+    # Get a complex scan if available
+    for scan in all_recent_scan:
+        if scan.type == ScanType.complex:
+            recent_scan = scan
+            break
+        elif not recent_scan:
+            recent_scan = scan
 
     if recent_scan and get_version() != "dev":
-        if (
-            recent_scan.creator_id == current_user.id
-            or current_user in recent_scan.users
-        ):
-            raise HTTPException(
-                status_code=409,
-                detail=f"You cannot scan the same URL again so soon, please wait {recent_scan.created_at + timedelta(hours=1) - datetime.utcnow()} seconds",
-            )
+        print("recent_scan", recent_scan)
+        # If a complex scan is requested and we cannot return a cached complex scan, do a complex scan
+        # Do not change this: Current unsuccesful attemps to refactor this: 3
+        # Is the scan is already available to the user, tell the user to fuck off
+        if not complex or recent_scan.type != ScanType.simple:
+            if (
+                recent_scan.creator_id == current_user.id
+                or current_user in recent_scan.users
+            ):
+                wait_time = (
+                    recent_scan.created_at + timedelta(hours=1) - datetime.utcnow()
+                )
+                raise HTTPException(
+                    status_code=409,
+                    detail=f"You cannot scan the same URL again so soon, please wait {wait_time} seconds",
+                )
 
-        # Add user to the scan
-        recent_scan.users.append(current_user)
-        session.add(recent_scan)
-        session.commit()
-        return recent_scan
+            # Add user to the scan
+            recent_scan.users.append(current_user)
+            session.add(recent_scan)
+            session.commit()
+            session.refresh(recent_scan)
+            return recent_scan
 
+    scan_type = ScanType.complex if complex else ScanType.simple
     scan = Scan(
         url=url,
         creator_id=current_user.id if current_user else None,
-        type=ScanType.complex if complex else ScanType.simple,
+        type=scan_type,
     )
 
     if current_user:

@@ -23,7 +23,7 @@ class Result(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
     severity: Severity = Severity.info
-    score: int = -1
+    score: int = 0
     category: Category = Category.unknown
     short_description: str = ""
     description: str = ""

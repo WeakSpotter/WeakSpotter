@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Result, Scan } from "../types/scan";
+import { Result, Scan, Job } from "../types/scan";
 
 declare global {
   interface Window {
@@ -60,14 +60,16 @@ export const api = {
     axiosInstance.get<Result[]>(`${API_URL}/scans/${id}/results`),
   getScanData: (id: number) => axiosInstance.get(`${API_URL}/scans/${id}/data`),
   getInfo: () =>
-    axiosInstance.get<{ simple: string[]; complex: string[] }>(
-      `${API_URL}/info/`,
-    ),
+    axiosInstance.get<{ simple: Job[]; complex: Job[] }>(`${API_URL}/info/`),
   createScan: (url: string, complex: boolean) =>
     axiosInstance.post<Scan>(`${API_URL}/scans/`, null, {
       params: { url, complex },
     }),
   deleteScan: (id: number) => axiosInstance.delete(`${API_URL}/scans/${id}`),
+  getScanReport: (id: number) =>
+    axiosInstance.get(`${API_URL}/scans/${id}/report`, {
+      responseType: "blob",
+    }),
   login: (credentials: { username: string; password: string }) =>
     axiosInstance.post<{ access_token: string }>(
       `${API_URL}/auth/login/`,

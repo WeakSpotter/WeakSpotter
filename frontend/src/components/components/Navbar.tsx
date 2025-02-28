@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Navbar() {
   const { isAuthenticated, username, logout } = useAuth();
@@ -8,7 +8,11 @@ export default function Navbar() {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
-          WeakSpotter
+          <span className="hidden md:inline">WeakSpotter</span>
+          <span className="md:hidden">WS</span>
+        </Link>
+        <Link to="/about" className="ml-4 hidden md:inline">
+          About
         </Link>
       </div>
       <div className="flex-none gap-2">
@@ -20,6 +24,9 @@ export default function Navbar() {
               </li>
               <li>
                 <Link to="/scans">My Scans</Link>
+              </li>
+              <li>
+                <Link to="/history">History</Link>
               </li>
             </>
           )}
@@ -41,11 +48,6 @@ export default function Navbar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
-              <li>
-                <Link to="/profile" className="justify-between">
-                  Profile
-                </Link>
-              </li>
               <li>
                 <button onClick={logout}>Logout</button>
               </li>

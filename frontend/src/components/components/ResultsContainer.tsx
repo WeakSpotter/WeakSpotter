@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ResultItem } from "./ResultItem";
-import { getCategoryLabel, Result } from "../types/scan";
+import { getCategoryLabel, Result } from "../../types/scan";
 
 interface ResultsContainerProps {
   results: Result[];
@@ -42,14 +42,14 @@ export const ResultsContainer: React.FC<ResultsContainerProps> = ({
       : results;
 
   const sortedResults = [...filteredResults].sort(
-    (a, b) => b.severity - a.severity,
+    (a, b) => b.severity - a.severity || a.score - b.score,
   );
 
   return (
     <div className="mt-4 space-y-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Scan Results</h2>
-        <div className="flex gap-2">
+        <div className="hidden md:flex gap-2">
           <button
             className={`btn ${selectedCategory === null ? "btn-primary" : "btn-outline"}`}
             onClick={() => setSelectedCategory(null)}

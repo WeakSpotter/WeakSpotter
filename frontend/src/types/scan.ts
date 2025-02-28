@@ -118,3 +118,10 @@ export const getCategoryLabel = (category: number): string => {
       return "Unknown";
   }
 };
+
+export interface Job {
+  name: string;
+  license_name: string;
+  license_url: string;
+  license_gpl_compatible: boolean;
+}

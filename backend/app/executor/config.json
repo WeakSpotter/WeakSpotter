@@ -1,12 +1,9 @@
 {
   "simple": [
     "dns.domain.DomainJob",
-    "dns.cloudflare.CloudflareDetectJob",
     "dns.records.DNSRecordsJob",
-    "dns.whois.WhoisJob",
-    "http.http.HTTPVersionJob",
-    "recon.ssh_audit.SSHAuditJob",
-    "scanner.zapit.ZapitJob"
+    "scanner.wapiti.WapitiJob",
+    "cms.vulnx.VulnXJob"
   ],
   "complex": [
     "dns.domain.DomainJob",
