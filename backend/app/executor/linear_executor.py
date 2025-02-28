@@ -66,6 +66,10 @@ class LinearExecutor(Executor):
 
             try:
                 results = job.definitions()
+
+                for result in results:
+                    result.gen(session)
+
             except Exception as e:
                 print(f"Error getting definitions for job {job.name}: {e}")
                 results = []
